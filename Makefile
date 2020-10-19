@@ -25,8 +25,8 @@ MKDIR         = mkdir -p
 COPY          = cp -f
 COPY_FILE     = cp -f
 COPY_DIR      = cp -f -R
-INSTALL_FILE  = install -m 6755 -p -o root -g root
-INSTALL_PROGRAM = install -m 6755 -p -o root -g root
+INSTALL_FILE  = install -m 644 -p
+INSTALL_PROGRAM = install -m 755 -p
 INSTALL_DIR   = cp -f -R
 QINSTALL      = /usr/bin/qmake -install qinstall
 QINSTALL_PROGRAM = /usr/bin/qmake -install qinstall -exe
@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = markdowneditor1.0.0
-DISTDIR = /home/peter/git/markdown-qt/markdowneditor/.tmp/markdowneditor1.0.0
+DISTDIR = /home/peter/git/markdowneditor/.tmp/markdowneditor1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1 -Wl,-rpath-link,/usr/lib
 LIBS          = $(SUBLIBS) /usr/lib/libQt5WebEngineWidgets.so /usr/lib/libQt5WebEngineCore.so /usr/lib/libQt5Quick.so /usr/lib/libQt5PrintSupport.so /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5QmlModels.so /usr/lib/libQt5WebChannel.so /usr/lib/libQt5Qml.so /usr/lib/libQt5Network.so /usr/lib/libQt5Positioning.so /usr/lib/libQt5Core.so -lGL -lpthread   
@@ -703,17 +703,17 @@ moc_mainwindow.cpp: mainwindow.h \
 		document.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/peter/git/markdown-qt/markdowneditor/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/peter/git/markdown-qt/markdowneditor -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+	/usr/bin/moc $(DEFINES) --include /home/peter/git/markdowneditor/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/peter/git/markdowneditor -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include mainwindow.h -o moc_mainwindow.cpp
 
 moc_previewpage.cpp: previewpage.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/peter/git/markdown-qt/markdowneditor/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/peter/git/markdown-qt/markdowneditor -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include previewpage.h -o moc_previewpage.cpp
+	/usr/bin/moc $(DEFINES) --include /home/peter/git/markdowneditor/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/peter/git/markdowneditor -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include previewpage.h -o moc_previewpage.cpp
 
 moc_document.cpp: document.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/peter/git/markdown-qt/markdowneditor/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/peter/git/markdown-qt/markdowneditor -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include document.h -o moc_document.cpp
+	/usr/bin/moc $(DEFINES) --include /home/peter/git/markdowneditor/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/peter/git/markdowneditor -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include document.h -o moc_document.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
