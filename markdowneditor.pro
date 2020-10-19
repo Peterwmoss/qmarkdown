@@ -20,9 +20,6 @@ RESOURCES = \
 # the source code of the .js files is not removed from the embedded qrc file.
 CONFIG -= qtquickcompiler
 
-FORMS += \
-    mainwindow.ui
-
 DISTFILES += \
     resources/3rdparty/MARKDOWN-LICENSE.txt \
     resources/3rdparty/MARKED-LICENSE.txt

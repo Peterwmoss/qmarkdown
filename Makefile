@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_WEBENGINEWIDGETS_LIB -DQT_WEBENGINECORE_LIB -DQT_QUICK_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QMLMODELS_LIB -DQT_WEBCHANNEL_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_POSITIONING_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I. -I. -I/usr/lib/qt/mkspecs/linux-g++
+INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -265,7 +265,7 @@ TARGET        = markdowneditor
 first: all
 ####### Build rules
 
-markdowneditor: ui_mainwindow.h $(OBJECTS)  
+markdowneditor:  $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: markdowneditor.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/lib/qt/mkspecs/features/spec_pre.prf \
@@ -655,7 +655,6 @@ distdir: FORCE
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.h previewpage.h document.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp mainwindow.cpp previewpage.cpp document.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -719,21 +718,15 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h
+compiler_uic_make_all:
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h
-ui_mainwindow.h: mainwindow.ui \
-		/usr/bin/uic \
-		/usr/include/qt/QtWebEngineWidgets/qwebengineview.h
-	/usr/bin/uic mainwindow.ui -o ui_mainwindow.h
-
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
