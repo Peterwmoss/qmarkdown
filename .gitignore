@@ -1,3 +1,5 @@
 *.o
 moc*
 markdowneditor
+ui_mainwindow.h
+qrc_markdowneditor.cpp
