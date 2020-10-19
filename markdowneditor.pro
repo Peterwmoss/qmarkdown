@@ -28,5 +28,5 @@ DISTFILES += \
     resources/3rdparty/MARKED-LICENSE.txt
 
 # install
-target.path = $$[QT_INSTALL_EXAMPLES]/webenginewidgets/markdowneditor
+target.path = /usr/bin/markdowneditor
 INSTALLS += target
