@@ -37,15 +37,14 @@
       "-I/usr/include/qt/QtPositioning",
       "-I/usr/include/qt/QtCore",
       "-I.",
-      "-I.",
       "-I/usr/lib/qt/mkspecs/linux-g++",
       "-o",
       "main.o",
       "main.cpp"
     ],
-    "directory": "/home/peter/git/markdown-qt/markdowneditor",
-    "file": "/home/peter/git/markdown-qt/markdowneditor/main.cpp",
-    "output": "/home/peter/git/markdown-qt/markdowneditor/main.o"
+    "directory": "/home/peter/git/qmarkdown",
+    "file": "/home/peter/git/qmarkdown/main.cpp",
+    "output": "/home/peter/git/qmarkdown/main.o"
   },
   {
     "arguments": [
@@ -84,16 +83,15 @@
       "-I/usr/include/qt/QtNetwork",
       "-I/usr/include/qt/QtPositioning",
       "-I/usr/include/qt/QtCore",
-      "-I.",
       "-I.",
       "-I/usr/lib/qt/mkspecs/linux-g++",
       "-o",
       "mainwindow.o",
       "mainwindow.cpp"
     ],
-    "directory": "/home/peter/git/markdown-qt/markdowneditor",
-    "file": "/home/peter/git/markdown-qt/markdowneditor/mainwindow.cpp",
-    "output": "/home/peter/git/markdown-qt/markdowneditor/mainwindow.o"
+    "directory": "/home/peter/git/qmarkdown",
+    "file": "/home/peter/git/qmarkdown/mainwindow.cpp",
+    "output": "/home/peter/git/qmarkdown/mainwindow.o"
   },
   {
     "arguments": [
@@ -132,64 +130,15 @@
       "-I/usr/include/qt/QtNetwork",
       "-I/usr/include/qt/QtPositioning",
       "-I/usr/include/qt/QtCore",
-      "-I.",
-      "-I.",
-      "-I/usr/lib/qt/mkspecs/linux-g++",
-      "-o",
-      "previewpage.o",
-      "previewpage.cpp"
-    ],
-    "directory": "/home/peter/git/markdown-qt/markdowneditor",
-    "file": "/home/peter/git/markdown-qt/markdowneditor/previewpage.cpp",
-    "output": "/home/peter/git/markdown-qt/markdowneditor/previewpage.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/g++",
-      "-c",
-      "-pipe",
-      "-O2",
-      "-Wall",
-      "-Wextra",
-      "-D_REENTRANT",
-      "-fPIC",
-      "-DQT_NO_DEBUG",
-      "-DQT_WEBENGINEWIDGETS_LIB",
-      "-DQT_WEBENGINECORE_LIB",
-      "-DQT_QUICK_LIB",
-      "-DQT_PRINTSUPPORT_LIB",
-      "-DQT_WIDGETS_LIB",
-      "-DQT_GUI_LIB",
-      "-DQT_QMLMODELS_LIB",
-      "-DQT_WEBCHANNEL_LIB",
-      "-DQT_QML_LIB",
-      "-DQT_NETWORK_LIB",
-      "-DQT_POSITIONING_LIB",
-      "-DQT_CORE_LIB",
-      "-I.",
-      "-I/usr/include/qt",
-      "-I/usr/include/qt/QtWebEngineWidgets",
-      "-I/usr/include/qt/QtWebEngineCore",
-      "-I/usr/include/qt/QtQuick",
-      "-I/usr/include/qt/QtPrintSupport",
-      "-I/usr/include/qt/QtWidgets",
-      "-I/usr/include/qt/QtGui",
-      "-I/usr/include/qt/QtQmlModels",
-      "-I/usr/include/qt/QtWebChannel",
-      "-I/usr/include/qt/QtQml",
-      "-I/usr/include/qt/QtNetwork",
-      "-I/usr/include/qt/QtPositioning",
-      "-I/usr/include/qt/QtCore",
-      "-I.",
       "-I.",
       "-I/usr/lib/qt/mkspecs/linux-g++",
       "-o",
       "document.o",
       "document.cpp"
     ],
-    "directory": "/home/peter/git/markdown-qt/markdowneditor",
-    "file": "/home/peter/git/markdown-qt/markdowneditor/document.cpp",
-    "output": "/home/peter/git/markdown-qt/markdowneditor/document.o"
+    "directory": "/home/peter/git/qmarkdown",
+    "file": "/home/peter/git/qmarkdown/document.cpp",
+    "output": "/home/peter/git/qmarkdown/document.o"
   },
   {
     "arguments": [
@@ -228,16 +177,15 @@
       "-I/usr/include/qt/QtNetwork",
       "-I/usr/include/qt/QtPositioning",
       "-I/usr/include/qt/QtCore",
-      "-I.",
       "-I.",
       "-I/usr/lib/qt/mkspecs/linux-g++",
       "-o",
-      "qrc_markdowneditor.o",
-      "qrc_markdowneditor.cpp"
+      "qrc_qmarkdown.o",
+      "qrc_qmarkdown.cpp"
     ],
-    "directory": "/home/peter/git/markdown-qt/markdowneditor",
-    "file": "/home/peter/git/markdown-qt/markdowneditor/qrc_markdowneditor.cpp",
-    "output": "/home/peter/git/markdown-qt/markdowneditor/qrc_markdowneditor.o"
+    "directory": "/home/peter/git/qmarkdown",
+    "file": "/home/peter/git/qmarkdown/qrc_qmarkdown.cpp",
+    "output": "/home/peter/git/qmarkdown/qrc_qmarkdown.o"
   },
   {
     "arguments": [
@@ -276,16 +224,15 @@
       "-I/usr/include/qt/QtNetwork",
       "-I/usr/include/qt/QtPositioning",
       "-I/usr/include/qt/QtCore",
-      "-I.",
       "-I.",
       "-I/usr/lib/qt/mkspecs/linux-g++",
       "-o",
       "moc_mainwindow.o",
       "moc_mainwindow.cpp"
     ],
-    "directory": "/home/peter/git/markdown-qt/markdowneditor",
-    "file": "/home/peter/git/markdown-qt/markdowneditor/moc_mainwindow.cpp",
-    "output": "/home/peter/git/markdown-qt/markdowneditor/moc_mainwindow.o"
+    "directory": "/home/peter/git/qmarkdown",
+    "file": "/home/peter/git/qmarkdown/moc_mainwindow.cpp",
+    "output": "/home/peter/git/qmarkdown/moc_mainwindow.o"
   },
   {
     "arguments": [
@@ -324,63 +271,14 @@
       "-I/usr/include/qt/QtNetwork",
       "-I/usr/include/qt/QtPositioning",
       "-I/usr/include/qt/QtCore",
-      "-I.",
-      "-I.",
-      "-I/usr/lib/qt/mkspecs/linux-g++",
-      "-o",
-      "moc_previewpage.o",
-      "moc_previewpage.cpp"
-    ],
-    "directory": "/home/peter/git/markdown-qt/markdowneditor",
-    "file": "/home/peter/git/markdown-qt/markdowneditor/moc_previewpage.cpp",
-    "output": "/home/peter/git/markdown-qt/markdowneditor/moc_previewpage.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/g++",
-      "-c",
-      "-pipe",
-      "-O2",
-      "-Wall",
-      "-Wextra",
-      "-D_REENTRANT",
-      "-fPIC",
-      "-DQT_NO_DEBUG",
-      "-DQT_WEBENGINEWIDGETS_LIB",
-      "-DQT_WEBENGINECORE_LIB",
-      "-DQT_QUICK_LIB",
-      "-DQT_PRINTSUPPORT_LIB",
-      "-DQT_WIDGETS_LIB",
-      "-DQT_GUI_LIB",
-      "-DQT_QMLMODELS_LIB",
-      "-DQT_WEBCHANNEL_LIB",
-      "-DQT_QML_LIB",
-      "-DQT_NETWORK_LIB",
-      "-DQT_POSITIONING_LIB",
-      "-DQT_CORE_LIB",
-      "-I.",
-      "-I/usr/include/qt",
-      "-I/usr/include/qt/QtWebEngineWidgets",
-      "-I/usr/include/qt/QtWebEngineCore",
-      "-I/usr/include/qt/QtQuick",
-      "-I/usr/include/qt/QtPrintSupport",
-      "-I/usr/include/qt/QtWidgets",
-      "-I/usr/include/qt/QtGui",
-      "-I/usr/include/qt/QtQmlModels",
-      "-I/usr/include/qt/QtWebChannel",
-      "-I/usr/include/qt/QtQml",
-      "-I/usr/include/qt/QtNetwork",
-      "-I/usr/include/qt/QtPositioning",
-      "-I/usr/include/qt/QtCore",
-      "-I.",
       "-I.",
       "-I/usr/lib/qt/mkspecs/linux-g++",
       "-o",
       "moc_document.o",
       "moc_document.cpp"
     ],
-    "directory": "/home/peter/git/markdown-qt/markdowneditor",
-    "file": "/home/peter/git/markdown-qt/markdowneditor/moc_document.cpp",
-    "output": "/home/peter/git/markdown-qt/markdowneditor/moc_document.o"
+    "directory": "/home/peter/git/qmarkdown",
+    "file": "/home/peter/git/qmarkdown/moc_document.cpp",
+    "output": "/home/peter/git/qmarkdown/moc_document.o"
   }
 ]
