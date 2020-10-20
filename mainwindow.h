@@ -23,6 +23,7 @@ private:
   Ui::MainWindow *ui;
   QString m_filePath;
   Document m_content;
+  void loadFile(QFile *file);
 };
 
 #endif
