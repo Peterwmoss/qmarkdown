@@ -15,8 +15,8 @@ EQ            = =
 CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_WEBENGINEWIDGETS_LIB -DQT_WEBENGINECORE_LIB -DQT_QUICK_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QMLMODELS_LIB -DQT_WEBCHANNEL_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_POSITIONING_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -O3 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O3 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I. -I/usr/lib/qt/mkspecs/linux-g++
 QMAKE         = /usr/bin/qmake
 DEL_FILE      = rm -f
@@ -54,15 +54,19 @@ OBJECTS_DIR   = ./
 
 SOURCES       = main.cpp \
 		mainwindow.cpp \
-		document.cpp qrc_qmarkdown.cpp \
+		document.cpp \
+		preview.cpp qrc_qmarkdown.cpp \
 		moc_mainwindow.cpp \
-		moc_document.cpp
+		moc_document.cpp \
+		moc_preview.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		document.o \
+		preview.o \
 		qrc_qmarkdown.o \
 		moc_mainwindow.o \
-		moc_document.o
+		moc_document.o \
+		moc_preview.o
 DIST          = resources/3rdparty/MARKDOWN-LICENSE.txt \
 		resources/3rdparty/MARKED-LICENSE.txt \
 		/usr/lib/qt/mkspecs/features/spec_pre.prf \
@@ -248,9 +252,11 @@ DIST          = resources/3rdparty/MARKDOWN-LICENSE.txt \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		qmarkdown.pro mainwindow.h \
-		document.h main.cpp \
+		document.h \
+		preview.h main.cpp \
 		mainwindow.cpp \
-		document.cpp
+		document.cpp \
+		preview.cpp
 QMAKE_TARGET  = qmarkdown
 DESTDIR       = 
 TARGET        = qmarkdown
@@ -647,8 +653,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources/qmarkdown.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents mainwindow.h document.h $(DISTDIR)/
-	$(COPY_FILE) --parents main.cpp mainwindow.cpp document.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents mainwindow.h document.h preview.h $(DISTDIR)/
+	$(COPY_FILE) --parents main.cpp mainwindow.cpp document.cpp preview.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -689,9 +695,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_document.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_document.cpp moc_preview.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_document.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_document.cpp moc_preview.cpp
 moc_mainwindow.cpp: mainwindow.h \
 		document.h \
 		moc_predefs.h \
@@ -702,6 +708,11 @@ moc_document.cpp: document.h \
 		moc_predefs.h \
 		/usr/bin/moc
 	/usr/bin/moc $(DEFINES) --include /home/peter/git/qmarkdown/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/peter/git/qmarkdown -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include document.h -o moc_document.cpp
+
+moc_preview.cpp: preview.h \
+		moc_predefs.h \
+		/usr/bin/moc
+	/usr/bin/moc $(DEFINES) --include /home/peter/git/qmarkdown/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/peter/git/qmarkdown -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I/usr/include/c++/10.2.0 -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu -I/usr/include/c++/10.2.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/10.2.0/include-fixed -I/usr/include preview.h -o moc_preview.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -731,6 +742,9 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 document.o: document.cpp document.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o document.o document.cpp
 
+preview.o: preview.cpp preview.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o preview.o preview.cpp
+
 qrc_qmarkdown.o: qrc_qmarkdown.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qmarkdown.o qrc_qmarkdown.cpp
 
@@ -739,6 +753,9 @@ moc_mainwindow.o: moc_mainwindow.cpp
 
 moc_document.o: moc_document.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_document.o moc_document.cpp
+
+moc_preview.o: moc_preview.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_preview.o moc_preview.cpp
 
 ####### Install
 

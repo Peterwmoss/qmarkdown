@@ -5,11 +5,13 @@ QT += webenginewidgets webchannel
 HEADERS += \
     mainwindow.h \
     document.h \
+    preview.h \
 
 SOURCES = \
     main.cpp \
     mainwindow.cpp \
     document.cpp \
+    preview.cpp \
 
 RESOURCES = \
     resources/qmarkdown.qrc

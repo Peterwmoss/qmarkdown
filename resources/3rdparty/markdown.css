@@ -1,4 +1,4 @@
-/* From: https://github.com/simonlc/Markdown-CSS/blob/0f06996399c7f15b8454aaa8b3ea52b8a607b9fd/markdown.css */
+/* Mostly from: https://github.com/simonlc/Markdown-CSS/blob/0f06996399c7f15b8454aaa8b3ea52b8a607b9fd/markdown.css */
 
 html {
     font-size: 100%;
@@ -9,8 +9,7 @@ html {
 
 body {
     color: #444;
-    font-family: Georgia, Palatino, "Palatino Linotype", Times,
-        "Times New Roman", serif;
+    font-family: "Roboto", sans-serif;
     font-size: 12px;
     line-height: 1.5em;
     padding: 1em;
@@ -66,7 +65,7 @@ a::selection {
 }
 
 p {
-    margin: 1em 0;
+    margin: 0.5em 0;
 }
 
 img {
@@ -81,7 +80,7 @@ h5,
 h6 {
     font-weight: normal;
     color: #111;
-    line-height: 1em;
+    line-height: 0.5em;
 }
 
 h4,

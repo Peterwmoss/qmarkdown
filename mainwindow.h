@@ -2,6 +2,7 @@
 #define MAINWINDOW_HEADER
 
 #include "document.h"
+#include "preview.h"
 #include <QFile>
 #include <QMainWindow>
 #include <QString>
@@ -23,6 +24,7 @@ private:
   Ui::MainWindow *ui;
   QString m_filePath;
   Document m_content;
+  void setupShortcuts(Preview *page);
   void loadFile(QFile *file);
 };
 
