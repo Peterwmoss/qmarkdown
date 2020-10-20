@@ -2,3 +2,4 @@
 moc*
 qmarkdown
 qrc_qmarkdown.cpp
+.clangd
