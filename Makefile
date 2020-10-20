@@ -147,7 +147,7 @@ moc_preview.o: moc_preview.cpp
 
 ####### Install
 
-install_target: first
+install_target: all
 	@test -d $(INSTALL_ROOT)/usr/bin/ || $(MKDIR) $(INSTALL_ROOT)/usr/bin/
 	$(INSTALL_PROGRAM) $(TARGET) $(INSTALL_ROOT)/usr/bin/$(TARGET)
 	-$(STRIP) $(INSTALL_ROOT)/usr/bin/$(TARGET)
