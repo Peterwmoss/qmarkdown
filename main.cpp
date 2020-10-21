@@ -1,19 +1,18 @@
 #include "mainwindow.h"
 
 #include <QApplication>
-#include <QFile>
-#include <cstdio>
+#include <QString>
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationName("qMarkdown");
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QApplication app(argc, argv);
 
-  QFile file;
+  QString file;
   if (argc == 2) {
-    file.setFileName(argv[1]);
+    file = argv[1];
   } else
-    file.setFileName(":/help.md");
+    file = ":/help.md";
 
   MainWindow window(&file);
   window.show();

@@ -1,11 +1,17 @@
 #include "mainwindow.h"
 #include "document.h"
 #include "preview.h"
+#include "qnamespace.h"
+#include "qsslsocket.h"
 #include "qwebchannel.h"
 #include "qwebengineview.h"
 #include "ui_mainwindow.h"
 
+#include <QDebug>
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
+#include <QLineEdit>
 #include <QShortcut>
 #include <QString>
 #include <QTextStream>
@@ -13,49 +19,109 @@
 #include <QWebChannel>
 #include <QWebEnginePage>
 
-MainWindow::MainWindow(QFile *file, QWidget *parent)
+MainWindow::MainWindow(QString *file, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  ui->preview->setContextMenuPolicy(Qt::NoContextMenu);
+  ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
+
+  m_file = new QFile(*file);
 
   Preview *page = new Preview(this);
-  ui->preview->setPage(page);
+  ui->Preview->setPage(page);
 
   QWebChannel *channel = new QWebChannel(this);
   channel->registerObject(QStringLiteral("content"), &m_content);
   page->setWebChannel(channel);
 
-  ui->preview->setUrl(QUrl("qrc:/index.html"));
+  ui->Preview->setUrl(QUrl("qrc:/index.html"));
 
-  loadFile(file);
+  loadFile();
 
   // Reload file every 1 second
   QTimer *reload = new QTimer(this);
-  connect(reload, &QTimer::timeout, this, [=]() { this->loadFile(file); });
+  connect(reload, &QTimer::timeout, this, [=]() { this->loadFile(); });
   reload->start(1000);
 
   setupShortcuts(page);
 }
 
-void MainWindow::setupShortcuts(Preview *page) {
-  // Q to close
-  new QShortcut(Qt::Key_Q, this, SLOT(close()));
-
-  // 0 to reset zoom
-  new QShortcut(Qt::Key_0, ui->preview, [=]() { page->resetZoom(); });
-
-  // Vim keys to move
-  new QShortcut(Qt::Key_J, ui->preview, [=]() { page->scrollDown(); });
-  new QShortcut(Qt::Key_K, ui->preview, [=]() { page->scrollUp(); });
-  new QShortcut(Qt::Key_H, ui->preview, [=]() { page->scrollLeft(); });
-  new QShortcut(Qt::Key_L, ui->preview, [=]() { page->scrollRight(); });
+void fileEnter(Ui::MainWindow *ui) {
+  ui->Preview->setFocus();
+  ui->FileInput->hide();
+  ui->FileInput->setText("");
 }
 
-MainWindow::~MainWindow() { delete ui; }
+void MainWindow::setupShortcuts(Preview *page) {
+  // Q to close
+  q = new QShortcut(Qt::Key_Q, this, SLOT(close()));
 
-void MainWindow::loadFile(QFile *file) {
-  file->open(QIODevice::ReadOnly);
-  QTextStream stream(file);
+  // 0 to reset zoom
+  zero = new QShortcut(Qt::Key_0, ui->Preview, [=]() { page->resetZoom(); });
+
+  // Vim keys to move
+  j = new QShortcut(Qt::Key_J, ui->Preview, [=]() { page->scrollDown(); });
+  k = new QShortcut(Qt::Key_K, ui->Preview, [=]() { page->scrollUp(); });
+  h = new QShortcut(Qt::Key_H, ui->Preview, [=]() { page->scrollLeft(); });
+  l = new QShortcut(Qt::Key_L, ui->Preview, [=]() { page->scrollRight(); });
+
+  // o to open new file
+  o = new QShortcut(Qt::Key_O, ui->Preview, [=]() {
+    ui->FileInput->show();
+    ui->FileInput->setFocus();
+  });
+  // Escape to close file input
+  esc = new QShortcut(Qt::Key_Escape, ui->Preview, [=]() {
+    if (ui->StatusBar->isVisible())
+      ui->StatusBar->hide();
+    else if (ui->FileInput->isVisible())
+      fileEnter(ui);
+  });
+
+  // Open file
+  ret = new QShortcut(Qt::Key_Return, ui->Preview, [=]() {
+    if (setFile(ui->FileInput->text()))
+      fileEnter(ui);
+  });
+}
+
+MainWindow::~MainWindow() {
+  delete ui;
+  delete m_file;
+  delete q;
+  delete o;
+  delete h;
+  delete j;
+  delete k;
+  delete l;
+  delete zero;
+  delete ret;
+}
+
+void MainWindow::loadFile() {
+  m_file->open(QIODevice::ReadOnly);
+  QTextStream stream(m_file);
   m_content.setText(stream.readAll());
-  file->close();
+  m_file->close();
+  delete &stream;
+}
+
+bool fileExists(QString *path) {
+  path->replace("~", QDir::homePath());
+  QFileInfo check_file(*path);
+  if (check_file.exists() && check_file.isFile())
+    return true;
+  else
+    return false;
+}
+
+bool MainWindow::setFile(QString path) {
+  if (fileExists(&path)) {
+    m_file->setFileName(path);
+    loadFile();
+    return true;
+  } else {
+    ui->StatusBar->show();
+    ui->StatusBar->showMessage("File not found");
+    return false;
+  }
 }

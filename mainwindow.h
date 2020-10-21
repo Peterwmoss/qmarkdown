@@ -5,6 +5,7 @@
 #include "preview.h"
 #include <QFile>
 #include <QMainWindow>
+#include <QShortcut>
 #include <QString>
 
 QT_BEGIN_NAMESPACE
@@ -17,15 +18,18 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  explicit MainWindow(QFile *file, QWidget *parent = nullptr);
+  explicit MainWindow(QString *file, QWidget *parent = nullptr);
   ~MainWindow();
 
+  bool setFile(QString path);
+
 private:
+  QShortcut *q, *o, *h, *j, *k, *l, *zero, *esc, *ret;
   Ui::MainWindow *ui;
-  QString m_filePath;
   Document m_content;
+  QFile *m_file;
   void setupShortcuts(Preview *page);
-  void loadFile(QFile *file);
+  void loadFile();
 };
 
 #endif

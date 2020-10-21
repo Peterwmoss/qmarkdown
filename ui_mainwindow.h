@@ -1,15 +1,11 @@
-/********************************************************************************
-** Form generated from reading UI file 'mainwindow.ui'
-**
-** Created by: Qt User Interface Compiler version 5.15.1
-**
-** WARNING! All changes made in this file will be lost when recompiling UI file!
-********************************************************************************/
+#ifndef UI_MAINWINDOW_HEADER
+#define UI_MAINWINDOW_HEADER
 
-#ifndef UI_MAINWINDOW_H
-#define UI_MAINWINDOW_H
-
-#include "qwebengineview.h"
+#include "qmainwindow.h"
+#include <QLineEdit>
+#include <QShortcut>
+#include <QStatusBar>
+#include <QWebEngineView>
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
@@ -20,22 +16,34 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow {
 public:
   QWidget *centralwidget;
-  QWebEngineView *preview;
+  QWebEngineView *Preview;
+  QLineEdit *FileInput;
+  QStatusBar *StatusBar;
 
   void setupUi(QMainWindow *MainWindow) {
     if (MainWindow->objectName().isEmpty())
-      MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+      MainWindow->setObjectName("MainWindow");
     MainWindow->resize(800, 600);
-    preview = new QWebEngineView(MainWindow);
-    preview->setObjectName(QString::fromUtf8("preview"));
+    Preview = new QWebEngineView(MainWindow);
+    Preview->setObjectName("preview");
 
-    MainWindow->setCentralWidget(preview);
+    FileInput = new QLineEdit();
+    FileInput->setObjectName("fileInput");
+    FileInput->setPlaceholderText("File");
+    FileInput->hide();
+
+    StatusBar = new QStatusBar();
+    StatusBar->hide();
+
+    MainWindow->setMenuWidget(FileInput);
+    MainWindow->setCentralWidget(Preview);
+    MainWindow->setStatusBar(StatusBar);
 
     MainWindow->setWindowTitle(
         QCoreApplication::translate("MainWindow", "MarkDown Editor", nullptr));
 
     QMetaObject::connectSlotsByName(MainWindow);
-  } // setupUi
+  }
 };
 
 namespace Ui {
@@ -44,4 +52,4 @@ class MainWindow : public Ui_MainWindow {};
 
 QT_END_NAMESPACE
 
-#endif // UI_MAINWINDOW_H
+#endif
