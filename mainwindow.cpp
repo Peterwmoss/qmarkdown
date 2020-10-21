@@ -102,7 +102,6 @@ void MainWindow::loadFile() {
   QTextStream stream(m_file);
   m_content.setText(stream.readAll());
   m_file->close();
-  delete &stream;
 }
 
 bool fileExists(QString *path) {
