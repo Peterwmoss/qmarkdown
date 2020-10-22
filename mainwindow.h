@@ -24,11 +24,18 @@ public:
   bool setFile(QString path);
 
 private:
+  // Shortcuts
   QShortcut *q, *o, *h, *j, *k, *l, *zero, *esc, *ret;
-  Ui::MainWindow *ui;
-  Document m_content;
-  QFile *m_file;
   void setupShortcuts(Preview *page);
+
+  // UI
+  Ui::MainWindow *ui;
+  Preview *page;
+
+  // Backend
+  Document m_content;
+  QWebChannel *channel;
+  QFile *m_file;
   void loadFile();
 };
 

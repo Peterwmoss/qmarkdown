@@ -15,22 +15,22 @@ bool Preview::acceptNavigationRequest(const QUrl &url,
 }
 
 void Preview::scrollDown() {
-  QString scrollDown = QStringLiteral("window.scrollBy(0, 50)");
+  QString scrollDown("window.scrollBy(0, 50)");
   runJavaScript(scrollDown);
 }
 
 void Preview::scrollUp() {
-  QString scrollUp = QStringLiteral("window.scrollBy(0, -50)");
+  QString scrollUp("window.scrollBy(0, -50)");
   runJavaScript(scrollUp);
 }
 
 void Preview::scrollLeft() {
-  QString scrollUp = QStringLiteral("window.scrollBy(-50, 0)");
+  QString scrollUp("window.scrollBy(-50, 0)");
   runJavaScript(scrollUp);
 }
 
 void Preview::scrollRight() {
-  QString scrollUp = QStringLiteral("window.scrollBy(50, 0)");
+  QString scrollUp("window.scrollBy(50, 0)");
   runJavaScript(scrollUp);
 }
 

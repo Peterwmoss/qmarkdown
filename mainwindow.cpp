@@ -22,27 +22,47 @@
 MainWindow::MainWindow(QString *file, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
-  ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
 
   m_file = new QFile(*file);
 
-  Preview *page = new Preview(this);
-  ui->Preview->setPage(page);
-
-  QWebChannel *channel = new QWebChannel(this);
+  channel = new QWebChannel(this);
   channel->registerObject(QStringLiteral("content"), &m_content);
+
+  page = new Preview(this);
   page->setWebChannel(channel);
 
+  ui->Preview->setPage(page);
+  ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
   ui->Preview->setUrl(QUrl("qrc:/index.html"));
 
   loadFile();
 
   // Reload file every 1 second
-  QTimer *reload = new QTimer(this);
-  connect(reload, &QTimer::timeout, this, [=]() { this->loadFile(); });
-  reload->start(1000);
+  QTimer reload(this);
+  connect(&reload, &QTimer::timeout, this, [=]() { this->loadFile(); });
+  reload.start(1000);
 
   setupShortcuts(page);
+}
+
+MainWindow::~MainWindow() {
+  // Shortcuts
+  delete q;
+  delete o;
+  delete h;
+  delete j;
+  delete k;
+  delete l;
+  delete zero;
+  delete ret;
+
+  // UI
+  delete ui;
+  delete page;
+
+  // Backend
+  delete channel;
+  delete m_file;
 }
 
 void fileEnter(Ui::MainWindow *ui) {
@@ -82,19 +102,6 @@ void MainWindow::setupShortcuts(Preview *page) {
     if (setFile(ui->FileInput->text()))
       fileEnter(ui);
   });
-}
-
-MainWindow::~MainWindow() {
-  delete ui;
-  delete m_file;
-  delete q;
-  delete o;
-  delete h;
-  delete j;
-  delete k;
-  delete l;
-  delete zero;
-  delete ret;
 }
 
 void MainWindow::loadFile() {
