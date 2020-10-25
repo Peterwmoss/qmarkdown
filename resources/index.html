@@ -11,7 +11,9 @@
         <script>
             const placeholder = document.getElementById("placeholder");
 
-            const updateText = (text) => (placeholder.innerHTML = marked(text));
+            const updateText = (text) => {
+                placeholder.innerHTML = marked(text);
+            };
 
             new QWebChannel(qt.webChannelTransport, (channel) => {
                 const content = channel.objects.content;
