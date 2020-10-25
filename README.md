@@ -5,4 +5,4 @@ kind of thing (or at least aims to be).
 
 ## Dependencies
 
-`qt5`
+`rcc`
