@@ -7,18 +7,14 @@
         <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
     </head>
     <body>
-        <div id="placeholder" class="markdown-body"></div>
+        <div id="placeholder"></div>
         <script>
-            "use strict";
+            const placeholder = document.getElementById("placeholder");
 
-            var placeholder = document.getElementById("placeholder");
+            const updateText = (text) => (placeholder.innerHTML = marked(text));
 
-            var updateText = function (text) {
-                placeholder.innerHTML = marked(text);
-            };
-
-            new QWebChannel(qt.webChannelTransport, function (channel) {
-                var content = channel.objects.content;
+            new QWebChannel(qt.webChannelTransport, (channel) => {
+                const content = channel.objects.content;
                 updateText(content.text);
                 content.textChanged.connect(updateText);
             });
