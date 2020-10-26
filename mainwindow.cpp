@@ -39,10 +39,10 @@ MainWindow::MainWindow(QString *file, QWidget *parent)
 
   // Reload file every 1 second
   QTimer reload(this);
-  connect(&reload, &QTimer::timeout, this, [=]() { this->loadFile(); });
+  connect(&reload, &QTimer::timeout, this, [this]() { this->loadFile(); });
   reload.start(1000);
 
-  setupShortcuts(page);
+  setupShortcuts();
 }
 
 MainWindow::~MainWindow() {
@@ -71,36 +71,41 @@ void fileEnter(Ui::MainWindow *ui) {
   ui->FileInput->setText("");
 }
 
-void MainWindow::setupShortcuts(Preview *page) {
+void MainWindow::setupShortcuts() {
   // Q to close
   q = new QShortcut(Qt::Key_Q, this, SLOT(close()));
 
   // 0 to reset zoom
-  zero = new QShortcut(Qt::Key_0, ui->Preview, [=]() { page->resetZoom(); });
+  zero = new QShortcut(Qt::Key_0, ui->Preview,
+                       [this]() { this->page->resetZoom(); });
 
   // Vim keys to move
-  j = new QShortcut(Qt::Key_J, ui->Preview, [=]() { page->scrollDown(); });
-  k = new QShortcut(Qt::Key_K, ui->Preview, [=]() { page->scrollUp(); });
-  h = new QShortcut(Qt::Key_H, ui->Preview, [=]() { page->scrollLeft(); });
-  l = new QShortcut(Qt::Key_L, ui->Preview, [=]() { page->scrollRight(); });
+  j = new QShortcut(Qt::Key_J, ui->Preview,
+                    [this]() { this->page->scrollDown(); });
+  k = new QShortcut(Qt::Key_K, ui->Preview,
+                    [this]() { this->page->scrollUp(); });
+  h = new QShortcut(Qt::Key_H, ui->Preview,
+                    [this]() { this->page->scrollLeft(); });
+  l = new QShortcut(Qt::Key_L, ui->Preview,
+                    [this]() { this->page->scrollRight(); });
 
   // o to open new file
-  o = new QShortcut(Qt::Key_O, ui->Preview, [=]() {
-    ui->FileInput->show();
-    ui->FileInput->setFocus();
+  o = new QShortcut(Qt::Key_O, ui->Preview, [this]() {
+    this->ui->FileInput->show();
+    this->ui->FileInput->setFocus();
   });
   // Escape to close file input
-  esc = new QShortcut(Qt::Key_Escape, ui->Preview, [=]() {
-    if (ui->StatusBar->isVisible())
-      ui->StatusBar->hide();
-    else if (ui->FileInput->isVisible())
-      fileEnter(ui);
+  esc = new QShortcut(Qt::Key_Escape, ui->Preview, [this]() {
+    if (this->ui->StatusBar->isVisible())
+      this->ui->StatusBar->hide();
+    else if (this->ui->FileInput->isVisible())
+      fileEnter(this->ui);
   });
 
   // Open file
-  ret = new QShortcut(Qt::Key_Return, ui->Preview, [=]() {
-    if (setFile(ui->FileInput->text()))
-      fileEnter(ui);
+  ret = new QShortcut(Qt::Key_Return, ui->Preview, [this]() {
+    if (setFile(this->ui->FileInput->text()))
+      fileEnter(this->ui);
   });
 }
 

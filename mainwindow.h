@@ -26,7 +26,7 @@ public:
 private:
   // Shortcuts
   QShortcut *q, *o, *h, *j, *k, *l, *zero, *esc, *ret;
-  void setupShortcuts(Preview *page);
+  void setupShortcuts();
 
   // UI
   Ui::MainWindow *ui;
