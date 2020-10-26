@@ -1,9 +1,11 @@
 #include "mainwindow.h"
-#include "resgen.h"
+#include "qstringliteral.h"
 
 #include <QApplication>
-#include <QResource>
+#include <QDir>
 #include <QString>
+#include <regex>
+#include <string>
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationName("qMarkdown");
@@ -11,17 +13,18 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
   QString file;
-
-  res_gen();
-
-  QResource::registerResource("images.rcc");
+  std::string path;
 
   if (argc == 2) {
     file = argv[1];
-  } else
+    std::regex e(R"((.*/)*(.*md))");
+    path = regex_replace(argv[1], e, "$1");
+  } else {
+    path = ".";
     file = ":/help.md";
+  }
 
-  MainWindow window(&file);
+  MainWindow window(path, &file);
   window.show();
 
   return app.exec();

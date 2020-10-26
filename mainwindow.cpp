@@ -2,9 +2,9 @@
 #include "document.h"
 #include "preview.h"
 #include "qnamespace.h"
-#include "qsslsocket.h"
 #include "qwebchannel.h"
 #include "qwebengineview.h"
+#include "resgen.h"
 #include "ui_mainwindow.h"
 
 #include <QDebug>
@@ -12,16 +12,21 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QLineEdit>
+#include <QResource>
 #include <QShortcut>
 #include <QString>
 #include <QTextStream>
 #include <QTimer>
 #include <QWebChannel>
 #include <QWebEnginePage>
+#include <iostream>
+#include <string>
 
-MainWindow::MainWindow(QString *file, QWidget *parent)
+MainWindow::MainWindow(std::string path, QString *file, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
+
+  current_path = path;
 
   m_file = new QFile(*file);
 
@@ -35,34 +40,67 @@ MainWindow::MainWindow(QString *file, QWidget *parent)
   ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
   ui->Preview->setUrl(QUrl("qrc:/index.html"));
 
+  loadImages();
   loadFile();
 
   // Reload file every 1 second
-  QTimer reload(this);
-  connect(&reload, &QTimer::timeout, this, [this]() { this->loadFile(); });
-  reload.start(1000);
+  reload = new QTimer(this);
+  connect(reload, &QTimer::timeout, this, &MainWindow::reloadFile);
+  reload->start(1000);
 
   setupShortcuts();
 }
 
-MainWindow::~MainWindow() {
-  // Shortcuts
-  delete q;
-  delete o;
-  delete h;
-  delete j;
-  delete k;
-  delete l;
-  delete zero;
-  delete ret;
+bool fileExists(QString *path) {
+  path->replace("~", QDir::homePath());
+  QFileInfo check_file(*path);
+  if (check_file.exists() && check_file.isFile())
+    return true;
+  else
+    return false;
+}
 
-  // UI
-  delete ui;
-  delete page;
+void MainWindow::reloadFile() {
+  if (current_text != m_content.getText()) {
+    current_text = m_content.getText();
+    loadImages();
+  }
+  loadFile();
+}
 
-  // Backend
-  delete channel;
-  delete m_file;
+void MainWindow::loadFile() {
+  m_file->open(QIODevice::ReadOnly);
+  QTextStream stream(m_file);
+  QString file_text(stream.readAll());
+  m_content.setText(file_text);
+  m_file->close();
+}
+
+void MainWindow::loadImages() {
+  if (!current_path.empty())
+    res_gen(current_path);
+  else
+    res_gen(".");
+
+  std::string rcc_path = current_path + "images.rcc";
+
+  QString qpath = rcc_path.c_str();
+
+  if (fileExists(&qpath))
+    QResource::registerResource(qpath);
+}
+
+bool MainWindow::setFile(QString path) {
+  if (fileExists(&path)) {
+    current_path = path.toStdString();
+    m_file->setFileName(path);
+    loadFile();
+    return true;
+  } else {
+    ui->StatusBar->show();
+    ui->StatusBar->showMessage("File not found");
+    return false;
+  }
 }
 
 void fileEnter(Ui::MainWindow *ui) {
@@ -109,30 +147,25 @@ void MainWindow::setupShortcuts() {
   });
 }
 
-void MainWindow::loadFile() {
-  m_file->open(QIODevice::ReadOnly);
-  QTextStream stream(m_file);
-  m_content.setText(stream.readAll());
-  m_file->close();
-}
+MainWindow::~MainWindow() {
+  // Shortcuts
+  delete q;
+  delete o;
+  delete h;
+  delete j;
+  delete k;
+  delete l;
+  delete zero;
+  delete ret;
 
-bool fileExists(QString *path) {
-  path->replace("~", QDir::homePath());
-  QFileInfo check_file(*path);
-  if (check_file.exists() && check_file.isFile())
-    return true;
-  else
-    return false;
-}
+  // UI
+  delete ui;
+  delete page;
 
-bool MainWindow::setFile(QString path) {
-  if (fileExists(&path)) {
-    m_file->setFileName(path);
-    loadFile();
-    return true;
-  } else {
-    ui->StatusBar->show();
-    ui->StatusBar->showMessage("File not found");
-    return false;
-  }
+  // Backend
+  delete channel;
+  delete m_file;
+  delete reload;
+
+  system("rm -f images.rcc");
 }

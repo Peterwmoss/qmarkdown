@@ -6,3 +6,5 @@ void Document::setText(const QString &text) {
   m_text = text;
   emit textChanged(m_text);
 }
+
+QString Document::getText() { return m_text; }

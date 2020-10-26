@@ -1,6 +1,8 @@
 #ifndef RESGEN_HEADER
 #define RESGEN_HEADER
 
-void res_gen();
+#include <string>
+
+void res_gen(std::string path);
 
 #endif

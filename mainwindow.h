@@ -7,6 +7,8 @@
 #include <QMainWindow>
 #include <QShortcut>
 #include <QString>
+#include <QTimer>
+#include <string>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -18,7 +20,8 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  explicit MainWindow(QString *file, QWidget *parent = nullptr);
+  explicit MainWindow(std::string path, QString *file,
+                      QWidget *parent = nullptr);
   ~MainWindow();
 
   bool setFile(QString path);
@@ -34,9 +37,14 @@ private:
 
   // Backend
   Document m_content;
+  QString current_text;
+  std::string current_path;
   QWebChannel *channel;
+  QTimer *reload;
   QFile *m_file;
   void loadFile();
+  void reloadFile();
+  void loadImages();
 };
 
 #endif

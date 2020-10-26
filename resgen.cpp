@@ -3,20 +3,22 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <regex>
 #include <string>
 
 using namespace std;
 
-void read_directory(ofstream *outfile, string path) {
+void read_directory(ofstream *outfile, int depth, string path) {
   for (const auto &entry : filesystem::directory_iterator(path)) {
-    if (entry.is_directory())
-      read_directory(outfile, entry.path());
+    if (entry.is_directory() && depth < 2) {
+      read_directory(outfile, depth + 1, entry.path());
+    }
     if (entry.path().string().ends_with(".png"))
       *outfile << "<file>" << path << "</file>" << endl;
   }
 }
 
-void res_gen() {
+void res_gen(string path) {
   ofstream outfile("images.qrc");
 
   cout << "Generating images.qrc based on all images in current directory"
@@ -25,7 +27,7 @@ void res_gen() {
   outfile << "<!DOCTYPE RCC><RCC version='1.0'>" << endl;
   outfile << "<qresource>" << endl;
 
-  read_directory(&outfile, ".");
+  read_directory(&outfile, 0, path);
 
   outfile << "</qresource>" << endl;
   outfile << "</RCC>" << endl;
