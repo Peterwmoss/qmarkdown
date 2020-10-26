@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "resgen.h"
 
 #include <QApplication>
 #include <QResource>
@@ -10,6 +11,8 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
   QString file;
+
+  res_gen();
 
   QResource::registerResource("images.rcc");
 
