@@ -10,7 +10,7 @@
 
 CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_WEBENGINEWIDGETS_LIB -DQT_WEBENGINECORE_LIB -DQT_QUICK_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QMLMODELS_LIB -DQT_WEBCHANNEL_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_POSITIONING_LIB -DQT_CORE_LIB
-CXXFLAGS      = -pipe -O3 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -O3 -Wall -Wextra -D_REENTRANT -fPIC -std=c++20 $(DEFINES)
 INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I. -I/usr/lib/qt/mkspecs/linux-g++
 DEL_FILE      = rm -f
 INSTALL_FILE  = install -m 644 -p
@@ -56,7 +56,8 @@ SOURCES = main.cpp \
 		preview.cpp qrc_qmarkdown.cpp \
 		moc_mainwindow.cpp \
 		moc_document.cpp \
-		moc_preview.cpp
+		moc_preview.cpp \
+        resgen.cpp
 OBJECTS = main.o \
 		mainwindow.o \
 		document.o \
@@ -64,7 +65,8 @@ OBJECTS = main.o \
 		qrc_qmarkdown.o \
 		moc_mainwindow.o \
 		moc_document.o \
-		moc_preview.o
+		moc_preview.o \
+        resgen.o
 TARGET = qmarkdown
 
 ####### Build rules
@@ -126,6 +128,9 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		preview.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
+
+resgen.o: resgen.cpp resgen.h
+	$(CXX) -c $(CXXFLAGS) -o resgen.o resgen.cpp
 
 document.o: document.cpp document.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o document.o document.cpp
