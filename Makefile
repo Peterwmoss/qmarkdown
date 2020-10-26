@@ -66,6 +66,7 @@ OBJECTS = main.o \
 		moc_mainwindow.o \
 		moc_document.o \
 		moc_preview.o \
+		helpers.o \
         resgen.o
 TARGET = qmarkdown
 
@@ -120,17 +121,22 @@ moc_preview.cpp: preview.h \
 
 main.o: main.cpp mainwindow.h \
 		document.h \
-		preview.h
+		preview.h \
+        helpers.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
 
 mainwindow.o: mainwindow.cpp mainwindow.h \
 		document.h \
 		preview.h \
+        helpers.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 resgen.o: resgen.cpp resgen.h
 	$(CXX) -c $(CXXFLAGS) -o resgen.o resgen.cpp
+
+helpers.o: helpers.cpp helpers.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o helpers.o helpers.cpp
 
 document.o: document.cpp document.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o document.o document.cpp
@@ -159,7 +165,6 @@ install_target: all
 
 uninstall_target:
 	-$(DEL_FILE) $(INSTALL_ROOT)/usr/bin/$(TARGET)
-
 
 install: install_target
 
