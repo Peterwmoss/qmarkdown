@@ -24,11 +24,11 @@ a {
 }
 
 a:visited {
-    color: #0b0080;
+    color: #0645ad;
 }
 
 a:hover {
-    color: #06e;
+    color: #25a;
 }
 
 a:active {
@@ -36,7 +36,7 @@ a:active {
 }
 
 a:focus {
-    outline: thin dotted;
+    outline: thin solid;
 }
 
 a:hover,
@@ -65,7 +65,7 @@ a::selection {
 }
 
 p {
-    margin: 0.5em 0;
+    margin: 0.5em 2em;
 }
 
 img {
@@ -91,10 +91,15 @@ h6 {
 
 h1 {
     font-size: 2.5em;
+    text-decoration-line: underline;
+    text-decoration-color: #111;
+    font-weight: bolder;
 }
 
 h2 {
     font-size: 2em;
+    font-style: italic;
+    font-weight: bold;
 }
 
 h3 {
@@ -185,7 +190,7 @@ sub {
 
 ul,
 ol {
-    margin: 1em 0;
+    margin: 0 0;
     padding: 0 0 0 2em;
 }
 

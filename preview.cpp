@@ -34,4 +34,14 @@ void Preview::scrollRight() {
   runJavaScript(scrollUp);
 }
 
+void Preview::scrollTop() {
+  QString scrollUp("window.scrollTo(0,0)");
+  runJavaScript(scrollUp);
+}
+
+void Preview::scrollBottom() {
+  QString scrollUp("window.scrollTo(0,document.body.scrollHeight)");
+  runJavaScript(scrollUp);
+}
+
 void Preview::resetZoom() { setZoomFactor(1.0); }

@@ -32,7 +32,7 @@ public:
 
 private:
   // Shortcuts
-  QShortcut *q, *o, *h, *j, *k, *l, *zero, *esc, *ret;
+  QShortcut *q, *o, *h, *j, *k, *l, *g, *G, *zero, *esc, *ret;
   void setupShortcuts();
 
   // UI

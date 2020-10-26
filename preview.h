@@ -18,6 +18,9 @@ public:
   void scrollDown();
   void scrollLeft();
   void scrollRight();
+  void scrollTop();
+  void scrollBottom();
+
   void resetZoom();
 };
 

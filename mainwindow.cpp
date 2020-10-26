@@ -2,6 +2,7 @@
 #include "document.h"
 #include "helpers.h"
 #include "preview.h"
+#include "qnamespace.h"
 #include "resgen.h"
 #include "ui_mainwindow.h"
 
@@ -116,6 +117,11 @@ void MainWindow::setupShortcuts() {
   l = new QShortcut(Qt::Key_L, ui->Preview,
                     [this]() { this->page->scrollRight(); });
 
+  g = new QShortcut(Qt::Key_G, ui->Preview,
+                    [this]() { this->page->scrollTop(); });
+  G = new QShortcut(QKeySequence(Qt::SHIFT + Qt::Key_G), ui->Preview,
+                    [this]() { this->page->scrollBottom(); });
+
   // o to open new file
   o = new QShortcut(Qt::Key_O, ui->Preview, [this]() {
     this->ui->FileInput->show();
@@ -144,6 +150,8 @@ MainWindow::~MainWindow() {
   delete j;
   delete k;
   delete l;
+  delete g;
+  delete G;
   delete zero;
   delete ret;
 
