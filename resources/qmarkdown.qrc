@@ -4,5 +4,7 @@
         <file>index.html</file>
         <file>3rdparty/markdown.css</file>
         <file>3rdparty/marked.js</file>
+        <file>3rdparty/prism.js</file>
+        <file>3rdparty/prism.css</file>
     </qresource>
 </RCC>
