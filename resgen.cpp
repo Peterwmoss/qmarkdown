@@ -21,9 +21,6 @@ void read_directory(ofstream *outfile, int depth, string path) {
 void res_gen(string path) {
   ofstream outfile("images.qrc");
 
-  cout << "Generating images.qrc based on all images in current directory"
-       << endl;
-
   outfile << "<!DOCTYPE RCC><RCC version='1.0'>" << endl;
   outfile << "<qresource>" << endl;
 
@@ -34,9 +31,7 @@ void res_gen(string path) {
 
   outfile.close();
 
-  cout << "Compiling to images.rcc" << endl;
+  // Clean up
   system("rcc -binary images.qrc -o images.rcc");
-
-  cout << "Removing images.qrc" << endl;
   system("rm -f images.qrc");
 }
