@@ -3,7 +3,10 @@
 
 #include "document.h"
 #include "preview.h"
+
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QMainWindow>
 #include <QShortcut>
 #include <QString>
@@ -13,7 +16,8 @@
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
-}
+
+} // namespace Ui
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow {
@@ -42,9 +46,9 @@ private:
   QWebChannel *channel;
   QTimer *reload;
   QFile *m_file;
+  void loadImages();
   void loadFile();
   void reloadFile();
-  void loadImages();
 };
 
 #endif

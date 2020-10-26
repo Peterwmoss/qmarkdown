@@ -1,16 +1,13 @@
 #include "mainwindow.h"
 #include "document.h"
+#include "helpers.h"
 #include "preview.h"
-#include "qnamespace.h"
-#include "qwebchannel.h"
-#include "qwebengineview.h"
 #include "resgen.h"
 #include "ui_mainwindow.h"
 
 #include <QDebug>
 #include <QDir>
 #include <QFile>
-#include <QFileInfo>
 #include <QLineEdit>
 #include <QResource>
 #include <QShortcut>
@@ -51,15 +48,6 @@ MainWindow::MainWindow(std::string path, QString *file, QWidget *parent)
   setupShortcuts();
 }
 
-bool fileExists(QString *path) {
-  path->replace("~", QDir::homePath());
-  QFileInfo check_file(*path);
-  if (check_file.exists() && check_file.isFile())
-    return true;
-  else
-    return false;
-}
-
 void MainWindow::reloadFile() {
   if (current_text != m_content.getText()) {
     current_text = m_content.getText();
@@ -92,7 +80,8 @@ void MainWindow::loadImages() {
 
 bool MainWindow::setFile(QString path) {
   if (fileExists(&path)) {
-    current_path = path.toStdString();
+    std::string std_string(path.toStdString());
+    current_path = fix_path(&std_string);
     m_file->setFileName(path);
     loadFile();
     return true;
