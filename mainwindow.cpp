@@ -20,6 +20,8 @@
 #include <iostream>
 #include <string>
 
+#define QRC_FILE ".images.rcc"
+
 MainWindow::MainWindow(std::string path, QString *file, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
@@ -71,7 +73,7 @@ void MainWindow::loadImages() {
   else
     res_gen(".");
 
-  std::string rcc_path = current_path + "images.rcc";
+  std::string rcc_path = current_path + QRC_FILE;
 
   QString qpath = rcc_path.c_str();
 
@@ -164,5 +166,7 @@ MainWindow::~MainWindow() {
   delete m_file;
   delete reload;
 
-  system("rm -f images.rcc");
+  std::string s = "rm -f ";
+  s.append(QRC_FILE);
+  system(s.c_str());
 }
