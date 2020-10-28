@@ -1,4 +1,5 @@
 #include "resgen.h"
+#include "helpers.h"
 
 #include <filesystem>
 #include <fstream>
@@ -32,6 +33,6 @@ void res_gen(string path) {
   outfile.close();
 
   // Clean up
-  system("rcc -binary images.qrc -o images.rcc");
+  system(("rcc -binary images.qrc -o " + QRC_FILE).c_str());
   system("rm -f images.qrc");
 }

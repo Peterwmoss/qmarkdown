@@ -133,7 +133,7 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
 
 resgen.o: resgen.cpp resgen.h
-	$(CXX) -c $(CXXFLAGS) -o resgen.o resgen.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o resgen.o resgen.cpp
 
 helpers.o: helpers.cpp helpers.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o helpers.o helpers.cpp
