@@ -158,14 +158,10 @@ moc_preview.o: moc_preview.cpp
 
 ####### Install
 
-install_target: all
-	@test -d $(INSTALL_ROOT)/usr/bin/ || $(MKDIR) $(INSTALL_ROOT)/usr/bin/
-	$(INSTALL_PROGRAM) $(TARGET) $(INSTALL_ROOT)/usr/bin/$(TARGET)
-	-$(STRIP) $(INSTALL_ROOT)/usr/bin/$(TARGET)
+install: all
+	mkdir -p $(DESTDIR)${PREFIX}/bin
+	$(INSTALL_PROGRAM) $(TARGET) $(DESTDIR)${PREFIX}/usr/bin/$(TARGET)
+	-$(STRIP) ${DESTDIR}${PREFIX}/usr/bin/$(TARGET)
 
-uninstall_target:
-	-$(DEL_FILE) $(INSTALL_ROOT)/usr/bin/$(TARGET)
-
-install: install_target
-
-uninstall: uninstall_target
+uninstall:
+	-$(DEL_FILE) ${DESTDIR}${PREFIX}/usr/bin/$(TARGET)
