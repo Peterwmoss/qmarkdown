@@ -15,7 +15,7 @@ void read_directory(ofstream *outfile, int depth, string path) {
       read_directory(outfile, depth + 1, entry.path());
     }
     if (entry.path().string().ends_with(".png"))
-      *outfile << "<file>" << entry.path().string() << "</file>" << endl;
+      *outfile << "<file>" << path << "</file>" << endl;
   }
 }
 
