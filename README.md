@@ -11,14 +11,13 @@ This software is provided under the
 
 ## Dependencies
 
-`qt5-base`
+* `qt5-base`
 
 ## Installation
 
 ### Make dependencies
 
 * `g++` version 9 or above
-* `strip`
 
 ### Arch based distros
 
