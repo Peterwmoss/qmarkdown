@@ -11,11 +11,15 @@ using namespace std;
 
 void read_directory(ofstream *outfile, int depth, string path) {
   for (const auto &entry : filesystem::directory_iterator(path)) {
+    if (entry.path().string().ends_with(".png")) {
+      *outfile << "<file>" << path << "</file>" << endl;
+      break;
+    }
+  }
+  for (const auto &entry : filesystem::directory_iterator(path)) {
     if (entry.is_directory() && depth < 2) {
       read_directory(outfile, depth + 1, entry.path());
     }
-    if (entry.path().string().ends_with(".png"))
-      *outfile << "<file>" << path << "</file>" << endl;
   }
 }
 
