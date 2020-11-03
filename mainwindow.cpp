@@ -3,6 +3,7 @@
 #include "helpers.h"
 #include "preview.h"
 #include "qnamespace.h"
+#include "qresource.h"
 #include "resgen.h"
 #include "ui_mainwindow.h"
 
@@ -73,8 +74,10 @@ void MainWindow::loadImages() {
 
   QString qpath = (current_path + QRC_FILE).c_str();
 
-  if (fileExists(&qpath))
+  if (fileExists(&qpath)) {
     QResource::registerResource(qpath);
+    system(("rm -f " + QRC_FILE).c_str());
+  }
 }
 
 bool MainWindow::setFile(QString path) {
@@ -117,7 +120,7 @@ void MainWindow::setupShortcuts() {
 
   g = new QShortcut(Qt::Key_G, ui->Preview,
                     [this]() { this->page->scrollTop(); });
-  G = new QShortcut(QKeySequence(Qt::SHIFT + Qt::Key_G), ui->Preview,
+  G = new QShortcut(QKeySequence(Qt::Key_Shift + Qt::Key_G), ui->Preview,
                     [this]() { this->page->scrollBottom(); });
 
   // o to open new file
