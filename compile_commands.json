@@ -43,9 +43,9 @@
       "main.o",
       "main.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/main.cpp",
-    "output": "/home/peter/git/qmarkdown/main.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/main.cpp",
+    "output": "/home/peter/git/qMarkdown/src/main.o"
   },
   {
     "arguments": [
@@ -91,9 +91,9 @@
       "mainwindow.o",
       "mainwindow.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/mainwindow.cpp",
-    "output": "/home/peter/git/qmarkdown/mainwindow.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/mainwindow.cpp",
+    "output": "/home/peter/git/qMarkdown/src/mainwindow.o"
   },
   {
     "arguments": [
@@ -139,9 +139,9 @@
       "document.o",
       "document.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/document.cpp",
-    "output": "/home/peter/git/qmarkdown/document.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/document.cpp",
+    "output": "/home/peter/git/qMarkdown/src/document.o"
   },
   {
     "arguments": [
@@ -187,9 +187,9 @@
       "preview.o",
       "preview.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/preview.cpp",
-    "output": "/home/peter/git/qmarkdown/preview.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/preview.cpp",
+    "output": "/home/peter/git/qMarkdown/src/preview.o"
   },
   {
     "arguments": [
@@ -235,9 +235,9 @@
       "qrc_qmarkdown.o",
       "qrc_qmarkdown.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/qrc_qmarkdown.cpp",
-    "output": "/home/peter/git/qmarkdown/qrc_qmarkdown.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/qrc_qmarkdown.cpp",
+    "output": "/home/peter/git/qMarkdown/src/qrc_qmarkdown.o"
   },
   {
     "arguments": [
@@ -283,9 +283,9 @@
       "moc_mainwindow.o",
       "moc_mainwindow.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/moc_mainwindow.cpp",
-    "output": "/home/peter/git/qmarkdown/moc_mainwindow.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/moc_mainwindow.cpp",
+    "output": "/home/peter/git/qMarkdown/src/moc_mainwindow.o"
   },
   {
     "arguments": [
@@ -331,9 +331,9 @@
       "moc_document.o",
       "moc_document.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/moc_document.cpp",
-    "output": "/home/peter/git/qmarkdown/moc_document.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/moc_document.cpp",
+    "output": "/home/peter/git/qMarkdown/src/moc_document.o"
   },
   {
     "arguments": [
@@ -379,9 +379,9 @@
       "moc_preview.o",
       "moc_preview.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/moc_preview.cpp",
-    "output": "/home/peter/git/qmarkdown/moc_preview.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/moc_preview.cpp",
+    "output": "/home/peter/git/qMarkdown/src/moc_preview.o"
   },
   {
     "arguments": [
@@ -427,9 +427,9 @@
       "helpers.o",
       "helpers.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/helpers.cpp",
-    "output": "/home/peter/git/qmarkdown/helpers.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/helpers.cpp",
+    "output": "/home/peter/git/qMarkdown/src/helpers.o"
   },
   {
     "arguments": [
@@ -455,12 +455,28 @@
       "-DQT_NETWORK_LIB",
       "-DQT_POSITIONING_LIB",
       "-DQT_CORE_LIB",
+      "-I.",
+      "-I/usr/include/qt",
+      "-I/usr/include/qt/QtWebEngineWidgets",
+      "-I/usr/include/qt/QtWebEngineCore",
+      "-I/usr/include/qt/QtQuick",
+      "-I/usr/include/qt/QtPrintSupport",
+      "-I/usr/include/qt/QtWidgets",
+      "-I/usr/include/qt/QtGui",
+      "-I/usr/include/qt/QtQmlModels",
+      "-I/usr/include/qt/QtWebChannel",
+      "-I/usr/include/qt/QtQml",
+      "-I/usr/include/qt/QtNetwork",
+      "-I/usr/include/qt/QtPositioning",
+      "-I/usr/include/qt/QtCore",
+      "-I.",
+      "-I/usr/lib/qt/mkspecs/linux-g++",
       "-o",
       "resgen.o",
       "resgen.cpp"
     ],
-    "directory": "/home/peter/git/qmarkdown",
-    "file": "/home/peter/git/qmarkdown/resgen.cpp",
-    "output": "/home/peter/git/qmarkdown/resgen.o"
+    "directory": "/home/peter/git/qMarkdown/src",
+    "file": "/home/peter/git/qMarkdown/src/resgen.cpp",
+    "output": "/home/peter/git/qMarkdown/src/resgen.o"
   }
 ]
