@@ -160,8 +160,8 @@ moc_preview.o: moc_preview.cpp
 
 install: all
 	mkdir -p $(DESTDIR)${PREFIX}/bin
-	$(INSTALL_PROGRAM) $(TARGET) $(DESTDIR)${PREFIX}/usr/bin/$(TARGET)
-	-$(STRIP) ${DESTDIR}${PREFIX}/usr/bin/$(TARGET)
+	$(INSTALL_PROGRAM) $(TARGET) $(DESTDIR)${PREFIX}/bin/$(TARGET)
+	-$(STRIP) ${DESTDIR}${PREFIX}/bin/$(TARGET)
 
 uninstall:
-	-$(DEL_FILE) ${DESTDIR}${PREFIX}/usr/bin/$(TARGET)
+	-$(DEL_FILE) ${DESTDIR}${PREFIX}/bin/$(TARGET)
