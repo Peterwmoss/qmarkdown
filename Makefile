@@ -79,9 +79,7 @@ qmarkdown:  $(OBJECTS)
 
 clean:
 	-$(DEL_FILE) $(OBJECTS)
-	-$(DEL_FILE) *~ core *.core
 	-$(DEL_FILE) $(TARGET) 
-	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) moc_mainwindow.cpp moc_document.cpp moc_preview.cpp
 	-$(DEL_FILE) qrc_qmarkdown.cpp
 	-$(DEL_FILE) moc_predefs.h
