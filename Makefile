@@ -9,36 +9,33 @@
 ####### Compiler, tools and options
 
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_WEBENGINEWIDGETS_LIB -DQT_WEBENGINECORE_LIB -DQT_QUICK_LIB -DQT_PRINTSUPPORT_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_QMLMODELS_LIB -DQT_WEBCHANNEL_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_POSITIONING_LIB -DQT_CORE_LIB
-CXXFLAGS      = -pipe -O3 -Wall -Wextra -D_REENTRANT -fPIC -std=c++20 $(DEFINES)
-INCPATH       = -I. -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtQuick -I/usr/include/qt/QtPrintSupport -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtQmlModels -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtQml -I/usr/include/qt/QtNetwork -I/usr/include/qt/QtPositioning -I/usr/include/qt/QtCore -I. -I/usr/lib/qt/mkspecs/linux-g++
+CXXFLAGS      = -O3 -Wall -Wextra -fPIC -std=c++20
+INCPATH       = -I. -I./src -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtCore
 DEL_FILE      = rm -f
 INSTALL_FILE  = install -m 644 -p
 INSTALL_PROGRAM = install -m 755 -p
 LINK          = g++
+SRCDIR        = src
+BUILDDIR      = build
 LFLAGS        = -Wl,-O1 -Wl,-rpath-link,/usr/lib
-LIBS          = $(SUBLIBS) /usr/lib/libQt5WebEngineWidgets.so /usr/lib/libQt5WebEngineCore.so /usr/lib/libQt5Quick.so /usr/lib/libQt5PrintSupport.so /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5QmlModels.so /usr/lib/libQt5WebChannel.so /usr/lib/libQt5Qml.so /usr/lib/libQt5Network.so /usr/lib/libQt5Positioning.so /usr/lib/libQt5Core.so -lGL -lpthread   
-STRIP         = strip
+LIBS          = /usr/lib/libQt5WebEngineWidgets.so /usr/lib/libQt5WebEngineCore.so /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5WebChannel.so /usr/lib/libQt5Core.so -lGL -lpthread   
+
+####### MOC
+
 MOCS = moc_predefs.h \
        moc_mainwindow.cpp \
        moc_document.cpp \
        moc_preview.cpp
-MOC_CMD = /usr/bin/moc $(DEFINES) --include \
-      /home/peter/git/qmarkdown/moc_predefs.h \
+MOC_CMD = /usr/bin/moc --include \
+      $(BUILDDIR)/moc_predefs.h \
+	  -I. \
       -I/usr/lib/qt/mkspecs/linux-g++ \
-      -I/home/peter/git/qmarkdown \
       -I/usr/include/qt \
       -I/usr/include/qt/QtWebEngineWidgets \
       -I/usr/include/qt/QtWebEngineCore \
-      -I/usr/include/qt/QtQuick \
-      -I/usr/include/qt/QtPrintSupport \
       -I/usr/include/qt/QtWidgets \
       -I/usr/include/qt/QtGui \
-      -I/usr/include/qt/QtQmlModels \
       -I/usr/include/qt/QtWebChannel \
-      -I/usr/include/qt/QtQml \
-      -I/usr/include/qt/QtNetwork \
-      -I/usr/include/qt/QtPositioning \
       -I/usr/include/qt/QtCore \
       -I/usr/include/c++/10.2.0 \
       -I/usr/include/c++/10.2.0/x86_64-pc-linux-gnu \
@@ -50,14 +47,16 @@ MOC_CMD = /usr/bin/moc $(DEFINES) --include \
 
 ####### Files
 
-SOURCES = main.cpp \
-		mainwindow.cpp \
-		document.cpp \
-		preview.cpp qrc_qmarkdown.cpp \
+SOURCES = $(SRCDIR)/main.cpp \
+		$(SRCDIR)/mainwindow.cpp \
+		$(SRCDIR)/document.cpp \
+		$(SRCDIR)/preview.cpp \
+        $(SRCDIR)/resgen.cpp \
+		qrc_qmarkdown.cpp \
 		moc_mainwindow.cpp \
 		moc_document.cpp \
-		moc_preview.cpp \
-        resgen.cpp
+		moc_preview.cpp
+
 OBJECTS = main.o \
 		mainwindow.o \
 		document.o \
@@ -86,61 +85,63 @@ clean:
 
 ####### Sub-libraries
 
-RESOURCES = resources/qmarkdown.qrc \
-            resources/help.md \
-            resources/index.html \
-            resources/3rdparty/markdown.css \
-            resources/3rdparty/marked.js
+RESOURCES = $(SRCDIR)/resources/qmarkdown.qrc \
+            $(SRCDIR)/resources/help.md \
+            $(SRCDIR)/resources/index.html \
+            $(SRCDIR)/resources/3rdparty/markdown.css \
+            $(SRCDIR)/resources/3rdparty/marked.js
 
 qrc_qmarkdown.cpp: $(RESOURCES) /usr/bin/rcc
-	/usr/bin/rcc -name qmarkdown resources/qmarkdown.qrc -o qrc_qmarkdown.cpp
+	/usr/bin/rcc -name qmarkdown $(SRCDIR)/resources/qmarkdown.qrc -o qrc_qmarkdown.cpp
 
 moc_predefs.h: /usr/lib/qt/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/qt/mkspecs/features/data/dummy.cpp
 
-moc_mainwindow.cpp: mainwindow.h \
-                    document.h \
-                    preview.h \
+moc_mainwindow.cpp: $(SRCDIR)/mainwindow.h \
+                    $(SRCDIR)/document.h \
+                    $(SRCDIR)/preview.h \
                     moc_predefs.h \
                     /usr/bin/moc
-	$(MOC_CMD) mainwindow.h -o moc_mainwindow.cpp
+	$(MOC_CMD) $(SRCDIR)/mainwindow.h -o moc_mainwindow.cpp
 
-moc_document.cpp: document.h \
+moc_document.cpp: $(SRCDIR)/document.h \
                   moc_predefs.h \
                   /usr/bin/moc 
-	$(MOC_CMD) document.h -o moc_document.cpp
+	$(MOC_CMD) $(SRCDIR)/document.h -o moc_document.cpp
 
-moc_preview.cpp: preview.h \
+moc_preview.cpp: $(SRCDIR)/preview.h \
                  moc_predefs.h \
                  /usr/bin/moc
-	$(MOC_CMD) preview.h -o moc_preview.cpp
+	$(MOC_CMD) $(SRCDIR)/preview.h -o moc_preview.cpp
 
 ####### Compile
 
-main.o: main.cpp mainwindow.h \
-		document.h \
-		preview.h \
-        helpers.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
+main.o: $(SRCDIR)/main.cpp \
+        $(SRCDIR)/mainwindow.h \
+		$(SRCDIR)/document.h \
+		$(SRCDIR)/preview.h \
+        $(SRCDIR)/helpers.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o $(SRCDIR)/main.cpp
 
-mainwindow.o: mainwindow.cpp mainwindow.h \
-		document.h \
-		preview.h \
-        helpers.h \
-		ui_mainwindow.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o mainwindow.cpp
+mainwindow.o: $(SRCDIR)/mainwindow.cpp \
+        $(SRCDIR)/mainwindow.h \
+		$(SRCDIR)/document.h \
+		$(SRCDIR)/preview.h \
+        $(SRCDIR)/helpers.h \
+		$(SRCDIR)/ui_mainwindow.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o $(SRCDIR)/mainwindow.cpp
 
-resgen.o: resgen.cpp resgen.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o resgen.o resgen.cpp
+resgen.o: $(SRCDIR)/resgen.cpp $(SRCDIR)/resgen.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o resgen.o $(SRCDIR)/resgen.cpp
 
-helpers.o: helpers.cpp helpers.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o helpers.o helpers.cpp
+helpers.o: $(SRCDIR)/helpers.cpp $(SRCDIR)/helpers.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o helpers.o $(SRCDIR)/helpers.cpp
 
-document.o: document.cpp document.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o document.o document.cpp
+document.o: $(SRCDIR)/document.cpp $(SRCDIR)/document.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o document.o $(SRCDIR)/document.cpp
 
-preview.o: preview.cpp preview.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o preview.o preview.cpp
+preview.o: $(SRCDIR)/preview.cpp $(SRCDIR)/preview.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o preview.o $(SRCDIR)/preview.cpp
 
 qrc_qmarkdown.o: qrc_qmarkdown.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qmarkdown.o qrc_qmarkdown.cpp
@@ -157,9 +158,9 @@ moc_preview.o: moc_preview.cpp
 ####### Install
 
 install: all
-	mkdir -p $(DESTDIR)${PREFIX}/bin
-	$(INSTALL_PROGRAM) $(TARGET) $(DESTDIR)${PREFIX}/bin/$(TARGET)
-	-$(STRIP) ${DESTDIR}${PREFIX}/bin/$(TARGET)
+	mkdir -p $(DESTDIR)$(PREFIX)/bin
+	$(INSTALL_PROGRAM) $(TARGET) $(DESTDIR)$(PREFIX)/bin/$(TARGET)
+	-strip $(DESTDIR)$(PREFIX)/bin/$(TARGET)
 
 uninstall:
-	-$(DEL_FILE) ${DESTDIR}${PREFIX}/bin/$(TARGET)
+	-$(DEL_FILE) $(DESTDIR)$(PREFIX)/bin/$(TARGET)
