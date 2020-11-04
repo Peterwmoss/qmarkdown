@@ -17,7 +17,6 @@ bool read_directory(ofstream *outfile, int depth, string path) {
     if (entry.path().string().ends_with(".png")) {
       status = true;
       *outfile << "<file>" << entry.path().string() << "</file>" << endl;
-      break;
     }
   }
   return status;

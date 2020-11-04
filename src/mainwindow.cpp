@@ -164,4 +164,7 @@ MainWindow::~MainWindow() {
   delete channel;
   delete m_file;
   delete reload;
+
+  // Cleanup
+  system(("rm -f " + QRC_FILE).c_str());
 }
