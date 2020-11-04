@@ -3,5 +3,3 @@ moc*
 qmarkdown
 qrc_qmarkdown.cpp
 .clangd
-*.tar.gz
-src/**
