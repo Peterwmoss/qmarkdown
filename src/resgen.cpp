@@ -14,9 +14,17 @@ bool read_directory(ofstream *outfile, int depth, string path) {
   for (const auto &entry : filesystem::directory_iterator(path)) {
     if (entry.is_directory() && depth < 2)
       read_directory(outfile, depth + 1, entry.path());
-    if (entry.path().string().ends_with(".png")) {
-      status = true;
-      *outfile << "<file>" << entry.path().string() << "</file>" << endl;
+    const string e_path = entry.path().string();
+    const string image_types[] = {".png", ".jpg", ".jpeg", ".gif"};
+    for (string type : image_types) {
+      const size_t p_length = e_path.size();
+      const size_t t_length = type.size();
+      if (p_length >= t_length) {
+        if (e_path.compare(p_length - t_length, t_length, type) == 0) {
+          status = true;
+          *outfile << "<file>" << e_path << "</file>" << endl;
+        }
+      }
     }
   }
   return status;
