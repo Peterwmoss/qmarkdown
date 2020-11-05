@@ -26,3 +26,5 @@ add_executable(qmarkdown
 )
 
 target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngine Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui)
+
+install(TARGETS qmarkdown DESTINATION ${DESTDIR}${PREFIX}/usr/bin)
