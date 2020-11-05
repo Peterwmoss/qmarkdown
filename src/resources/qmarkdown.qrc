@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>help.md</file>
         <file>index.html</file>
-        <file>3rdparty/markdown.css</file>
+        <file>markdown.css</file>
         <file>3rdparty/marked.js</file>
         <file>3rdparty/prism.js</file>
         <file>3rdparty/prism.css</file>
