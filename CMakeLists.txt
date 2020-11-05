@@ -7,7 +7,7 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
-find_package(Qt5WebEngine REQUIRED)
+find_package(Qt5WebEngineCore REQUIRED)
 find_package(Qt5WebEngineWidgets REQUIRED)
 find_package(Qt5WebChannel REQUIRED)
 find_package(Qt5Gui REQUIRED)
@@ -25,6 +25,6 @@ add_executable(qmarkdown
     src/resources/qmarkdown.qrc
 )
 
-target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngine Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui)
+target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngineCore Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui)
 
 install(TARGETS qmarkdown DESTINATION ${DESTDIR}${PREFIX}/usr/bin)
