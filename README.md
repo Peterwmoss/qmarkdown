@@ -15,11 +15,22 @@ This software is provided under the
 
 ---
 
+### Ubuntu packages
+
+* `qt5-default`
+* `qtwebengine5-dev`
+
+#### Ubuntu Optional
+
+* `fonts-roboto` - default font, but fallbacks to *sans-serif*
+
+### Arch packages
+
 * `qt5-base`
 * `qt5-webengine`
 * `qt5-webchannel`
 
-### Optional
+#### Arch Optional
 
 * `ttf-roboto` - default font, but fallbacks to *sans-serif*
 
@@ -30,14 +41,16 @@ This software is provided under the
 ```bash
 git clone https://github.com/Peterkmoss/qmarkdown.git &&
 cd qmarkdown &&
+cmake . &&
 make &&
 sudo make install
 ```
 
 ### Make dependencies (in addition to normal dependencies)
 
-* `g++` version 9 or above
+* c++ compiler with support for c++17
 * `git` (to clone repository)
+* `cmake`
 
 ### Arch based distros
 
