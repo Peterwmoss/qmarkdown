@@ -4,14 +4,14 @@
 #include "document.h"
 #include "preview.h"
 
-#include <QDir>
 #include <QFile>
-#include <QFileInfo>
 #include <QMainWindow>
 #include <QShortcut>
 #include <QString>
 #include <QTimer>
 #include <string>
+
+#define NUM_SHORTCUTS 11
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,7 +32,7 @@ public:
 
 private:
   // Shortcuts
-  QShortcut *q, *o, *h, *j, *k, *l, *g, *G, *zero, *esc, *ret;
+  QShortcut *shortcuts[NUM_SHORTCUTS];
   void setupShortcuts();
 
   // UI

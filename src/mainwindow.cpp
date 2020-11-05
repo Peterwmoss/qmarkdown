@@ -2,8 +2,6 @@
 #include "document.h"
 #include "helpers.h"
 #include "preview.h"
-#include "qnamespace.h"
-#include "qresource.h"
 #include "resgen.h"
 #include "ui_mainwindow.h"
 
@@ -18,7 +16,6 @@
 #include <QTimer>
 #include <QWebChannel>
 #include <QWebEnginePage>
-#include <iostream>
 #include <string>
 
 MainWindow::MainWindow(std::string path, QString *file, QWidget *parent)
@@ -102,34 +99,35 @@ void fileEnter(Ui::MainWindow *ui) {
 
 void MainWindow::setupShortcuts() {
   // Q to close
-  q = new QShortcut(Qt::Key_Q, this, SLOT(close()));
+  shortcuts[0] = new QShortcut(Qt::Key_Q, this, SLOT(close()));
 
   // 0 to reset zoom
-  zero = new QShortcut(Qt::Key_0, ui->Preview,
-                       [this]() { this->page->resetZoom(); });
+  shortcuts[1] = new QShortcut(Qt::Key_0, ui->Preview,
+                               [this]() { this->page->resetZoom(); });
 
   // Vim keys to move
-  j = new QShortcut(Qt::Key_J, ui->Preview,
-                    [this]() { this->page->scrollDown(); });
-  k = new QShortcut(Qt::Key_K, ui->Preview,
-                    [this]() { this->page->scrollUp(); });
-  h = new QShortcut(Qt::Key_H, ui->Preview,
-                    [this]() { this->page->scrollLeft(); });
-  l = new QShortcut(Qt::Key_L, ui->Preview,
-                    [this]() { this->page->scrollRight(); });
+  shortcuts[2] = new QShortcut(Qt::Key_J, ui->Preview,
+                               [this]() { this->page->scrollDown(); });
+  shortcuts[3] = new QShortcut(Qt::Key_K, ui->Preview,
+                               [this]() { this->page->scrollUp(); });
+  shortcuts[4] = new QShortcut(Qt::Key_H, ui->Preview,
+                               [this]() { this->page->scrollLeft(); });
+  shortcuts[5] = new QShortcut(Qt::Key_L, ui->Preview,
+                               [this]() { this->page->scrollRight(); });
 
-  g = new QShortcut(Qt::Key_G, ui->Preview,
-                    [this]() { this->page->scrollTop(); });
-  G = new QShortcut(QKeySequence(Qt::Key_Shift + Qt::Key_G), ui->Preview,
+  shortcuts[6] = new QShortcut(Qt::Key_G, ui->Preview,
+                               [this]() { this->page->scrollTop(); });
+  shortcuts[7] =
+      new QShortcut(QKeySequence(Qt::Key_Shift + Qt::Key_G), ui->Preview,
                     [this]() { this->page->scrollBottom(); });
 
   // o to open new file
-  o = new QShortcut(Qt::Key_O, ui->Preview, [this]() {
+  shortcuts[8] = new QShortcut(Qt::Key_O, ui->Preview, [this]() {
     this->ui->FileInput->show();
     this->ui->FileInput->setFocus();
   });
   // Escape to close file input
-  esc = new QShortcut(Qt::Key_Escape, ui->Preview, [this]() {
+  shortcuts[9] = new QShortcut(Qt::Key_Escape, ui->Preview, [this]() {
     if (this->ui->StatusBar->isVisible())
       this->ui->StatusBar->hide();
     else if (this->ui->FileInput->isVisible())
@@ -137,7 +135,7 @@ void MainWindow::setupShortcuts() {
   });
 
   // Open file
-  ret = new QShortcut(Qt::Key_Return, ui->Preview, [this]() {
+  shortcuts[10] = new QShortcut(Qt::Key_Return, ui->Preview, [this]() {
     if (setFile(this->ui->FileInput->text()))
       fileEnter(this->ui);
   });
@@ -145,16 +143,9 @@ void MainWindow::setupShortcuts() {
 
 MainWindow::~MainWindow() {
   // Shortcuts
-  delete q;
-  delete o;
-  delete h;
-  delete j;
-  delete k;
-  delete l;
-  delete g;
-  delete G;
-  delete zero;
-  delete ret;
+  int i = 0;
+  while (i < NUM_SHORTCUTS)
+    delete shortcuts[i++];
 
   // UI
   delete ui;
