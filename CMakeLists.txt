@@ -15,6 +15,10 @@ find_package(Qt5Gui REQUIRED)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+link_libraries(
+    stdc++fs
+)
+
 add_executable(qmarkdown
     src/helpers.cpp
     src/resgen.cpp
