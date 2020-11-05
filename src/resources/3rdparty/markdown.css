@@ -1,38 +1,48 @@
-/* Mostly from: https://github.com/simonlc/Markdown-CSS/blob/0f06996399c7f15b8454aaa8b3ea52b8a607b9fd/markdown.css */
+:root {
+    --black: #0b0c10;
+    --dark-grey: #1f2833;
+    --grey: #888;
+    --light-grey: #c5c6c7;
+    --xlight-grey: #eee;
+    --dark-blue: #0645ad;
+    --light-blue: #0677bb;
+    --cyan: #66fcf1;
+    --blue: #45a29e;
+    --white: #fefefe;
+    --yellow: #faa700;
 
-html {
-    font-size: 100%;
-    overflow-y: scroll;
-    -webkit-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
+    --font-s: 12px;
+    --font-m: 14px;
+    --font-l: 16px;
 }
 
 body {
-    color: #444;
+    color: var(--dark-grey);
+    background: var(--white);
     font-family: "Roboto", sans-serif;
-    font-size: 12px;
-    line-height: 1.5em;
+    font-size: var(--font-s);
     padding: 1em;
     margin: auto;
-    max-width: 80%;
-    background: #fefefe;
+    max-width: 60em;
 }
 
-a {
-    color: #0645ad;
+p {
+    margin: 0.5em 0;
+}
+
+a,
+a:visited,
+a:focus {
+    color: var(--dark-blue);
     text-decoration: none;
 }
 
-a:visited {
-    color: #0645ad;
-}
-
 a:hover {
-    color: #25a;
+    color: var(--light-blue);
 }
 
 a:active {
-    color: #faa700;
+    color: var(--yellow);
 }
 
 a:focus {
@@ -44,32 +54,10 @@ a:active {
     outline: 0;
 }
 
-::-moz-selection {
-    background: rgba(255, 255, 0, 0.3);
-    color: #000;
-}
-
-::selection {
-    background: rgba(255, 255, 0, 0.3);
-    color: #000;
-}
-
-a::-moz-selection {
-    background: rgba(255, 255, 0, 0.3);
-    color: #0645ad;
-}
-
-a::selection {
-    background: rgba(255, 255, 0, 0.3);
-    color: #0645ad;
-}
-
-p {
-    margin: 0.5em 0em;
-}
-
 img {
     max-width: 100%;
+    border: 0;
+    vertical-align: middle;
 }
 
 h1,
@@ -78,44 +66,38 @@ h3,
 h4,
 h5,
 h6 {
-    color: #111;
-    line-height: 1em;
-}
-
-h4,
-h5,
-h6 {
+    color: var(--black);
     font-weight: bold;
+    line-height: 0.9em;
+    margin: 1em 0 0.4em 0;
 }
 
 h1 {
-    font-size: 2.5em;
-    font-weight: bold;
+    font-size: 2.7em;
 }
 
 h2 {
-    font-size: 2em;
-    font-weight: bold;
+    font-size: 2.2em;
 }
 
 h3 {
-    font-size: 1.5em;
+    font-size: 1.8em;
 }
 
 h4 {
-    font-size: 1.2em;
+    font-size: 1.4em;
 }
 
 h5 {
-    font-size: 1em;
+    font-size: 1.1em;
 }
 
 h6 {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 blockquote {
-    color: #666666;
+    color: var(--light-grey);
     margin: 0;
     padding-left: 3em;
     border-left: 0.5em #eee solid;
@@ -124,19 +106,16 @@ blockquote {
 hr {
     display: block;
     border: 0;
-    border-top: 1px solid #aaa;
+    border-top: 1px solid var(--light-grey);
     border-bottom: 1px solid #eee;
     margin: 1em 0;
     padding: 0;
 }
 
 pre,
-code,
-kbd,
-samp {
-    color: #000;
-    font-family: monospace, monospace;
-    font-size: 1em;
+code {
+    color: var(--black);
+    font-family: monospace;
 }
 
 pre {
@@ -150,39 +129,6 @@ strong {
     font-weight: bold;
 }
 
-dfn {
-    font-style: italic;
-}
-
-ins {
-    background: #ff9;
-    color: #000;
-    text-decoration: none;
-}
-
-mark {
-    background: #ff0;
-    color: #000;
-    font-style: italic;
-    font-weight: bold;
-}
-
-sub,
-sup {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
-}
-
-sup {
-    top: -0.5em;
-}
-
-sub {
-    bottom: -0.25em;
-}
-
 ul,
 ol {
     margin: 0 0;
@@ -193,33 +139,48 @@ li p:last-child {
     margin: 0;
 }
 
-dd {
-    margin: 0 0 0 2em;
-}
-
-img {
-    border: 0;
-    -ms-interpolation-mode: bicubic;
-    vertical-align: middle;
-}
-
 table {
     border-collapse: collapse;
-    border-spacing: 0;
+    margin: 25px 0;
+    min-width: 20em;
 }
 
+tr {
+    background-color: var(--xlight-grey);
+    text-align: center;
+}
+
+th {
+    font-size: 1.2em;
+}
+
+th,
+tr:hover {
+    background-color: var(--grey);
+}
+
+th,
 td {
-    vertical-align: top;
+    padding: 12px 15px;
+    border: 1px solid var(--dark-grey);
+}
+
+tr:nth-of-type(even) {
+    background-color: var(--light-grey);
+}
+
+tr:nth-of-type(even):hover {
+    background-color: var(--grey);
 }
 
 @media only screen and (min-width: 480px) {
     body {
-        font-size: 14px;
+        font-size: var(--font-m);
     }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 780px) {
     body {
-        font-size: 16px;
+        font-size: var(--font-l);
     }
 }
