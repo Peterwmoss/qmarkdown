@@ -1,15 +1,19 @@
 # qMarkdown
 
+---
+
 qMarkdown is a simple QT-based markdown viewer, it's light-weight and easy to use.
 
 ## License
 
+---
+
 This software is provided under the
 [GNU GLPv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
 
----
-
 ## Dependencies
+
+---
 
 * `qt5-base`
 * `qt5-webengine`
@@ -20,6 +24,15 @@ This software is provided under the
 * `ttf-roboto` - default font, but fallbacks to *sans-serif*
 
 ## Installation
+
+---
+
+```bash
+git clone https://github.com/Peterkmoss/qmarkdown.git &&
+cd qmarkdown &&
+make &&
+sudo make install
+```
 
 ### Make dependencies (in addition to normal dependencies)
 
@@ -32,9 +45,9 @@ There is an
 [AUR package available](https://aur.archlinux.org/packages/qmarkdown/) for all
 arch-based users
 
----
-
 ## Usage
+
+---
 
 `qmarkdown <file>`
 
@@ -52,9 +65,9 @@ arch-based users
 
 * `o` - Opens textfield to enter filename of new file (WIP)
 
----
-
 ## Disclaimer
+
+---
 
 This software is provided AS-IS with all faults, security issues and alike that
 might come with it.
