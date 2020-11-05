@@ -16,6 +16,6 @@ jobs:
     - name: Install dependencies
       run: sudo apt update && sudo apt install build-essential qt5-default cmake qtwebengine5-dev libboost-filesystem-dev
     - name: cmake
-      run: CXX="g++" CC="g++" cmake .
+      run: CXX="g++" CC="gcc" cmake .
     - name: make
       run: make
