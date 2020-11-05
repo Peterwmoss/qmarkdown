@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v2.9.0
+    - name: Install dependencies
+      run: sudo apt install qt5-default
     - name: make
       run: make
