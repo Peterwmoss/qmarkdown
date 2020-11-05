@@ -12,12 +12,19 @@ This software is provided under the
 ## Dependencies
 
 * `qt5-base`
+* `qt5-webengine`
+* `qt5-webchannel`
+
+### Optional
+
+* `ttf-roboto` - default font, but fallbacks to *sans-serif*
 
 ## Installation
 
-### Make dependencies
+### Make dependencies (in addition to normal dependencies)
 
 * `g++` version 9 or above
+* `git` (to clone repository)
 
 ### Arch based distros
 
