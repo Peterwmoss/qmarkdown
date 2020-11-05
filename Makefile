@@ -9,7 +9,7 @@
 ####### Compiler, tools and options
 
 CXX           = g++
-CXXFLAGS      = -O3 -Wall -Wextra -fPIC -std=c++20
+CXXFLAGS      = -O3 -Wall -Wextra -fPIC -std=c++17
 INCPATH       = -I. -I./src -I/usr/include/qt -I/usr/include/qt/QtWebEngineWidgets -I/usr/include/qt/QtWebEngineCore -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtWebChannel -I/usr/include/qt/QtCore
 DEL_FILE      = rm -f
 INSTALL_FILE  = install -m 644 -p
