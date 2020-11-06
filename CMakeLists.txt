@@ -17,6 +17,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 find_library(fs NAMES libstdc++fs lstdc++fs stdc++fs REQUIRED)
 
+if (${fs})
+    message(FATAL_ERROR "filesystem header not found")
+else()
+    message(STATUS "fiesystem header found")
+endif()
+
 add_executable(qmarkdown
     src/helpers.cpp
     src/resgen.cpp
