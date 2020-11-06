@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
-      run: sudo apt update && sudo apt install build-essential qt5-default cmake qtwebengine5-dev
+      run: sudo apt update && sudo apt install build-essential qt5-default cmake qtwebengine5-dev libboost-filesystem-dev
     - name: cmake
       run: cmake .
     - name: make
