@@ -15,6 +15,8 @@ find_package(Qt5Gui REQUIRED)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
+find_library(fs NAMES libstdc++fs lstdc++fs stdc++fs REQUIRED)
+
 add_executable(qmarkdown
     src/helpers.cpp
     src/resgen.cpp
@@ -25,6 +27,6 @@ add_executable(qmarkdown
     src/resources/qmarkdown.qrc
 )
 
-target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngineCore Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui stdc++fs)
+target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngineCore Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui ${fs})
 
 install(TARGETS qmarkdown DESTINATION ${DESTDIR}${PREFIX}/usr/bin)
