@@ -16,7 +16,7 @@ jobs:
     - name: gcc9
       run: sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt update && sudo apt install gcc-9 g++-9
     - name: Install dependencies
-      run: sudo apt update && sudo apt install build-essential qt5-default cmake qtwebengine5-dev libboost-all
+      run: sudo apt update && sudo apt install build-essential qt5-default cmake qtwebengine5-dev libboost-all-dev
     - name: cmake
       run: CC="gcc-9" CXX="g++-9" cmake .
     - name: make
