@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 find_library(fs NAMES libstdc++fs lstdc++fs stdc++fs REQUIRED)
 
-if (${fs} STREQUAL NOTFOUND)
+if (${fs} STREQUAL fs-NOTFOUND)
     message(FATAL_ERROR "filesystem header not found")
 else()
     message(STATUS "fiesystem header found")
