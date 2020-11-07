@@ -20,7 +20,7 @@ find_library(fs NAMES c++fs libc++fs libstdc++fs lstdc++fs stdc++fs REQUIRED)
 if (${fs} STREQUAL fs-NOTFOUND)
     message(FATAL_ERROR "filesystem header not found")
 else()
-    message(STATUS "fiesystem header found")
+    message(STATUS "filesystem header found")
 endif()
 
 add_executable(qmarkdown
