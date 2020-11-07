@@ -11,10 +11,19 @@ std::string fix_path(std::string *path) {
   return regex_replace(*path, e, "$1");
 }
 
-bool fileExists(QString *path) {
+bool file_exists(QString *path) {
   path->replace("~", QDir::homePath());
   QFileInfo check_file(*path);
   if (check_file.exists() && check_file.isFile())
+    return true;
+  else
+    return false;
+}
+
+bool directory_exists(QString *path) {
+  path->replace("~", QDir::homePath());
+  QFileInfo check_file(*path);
+  if (check_file.exists() && check_file.isDir())
     return true;
   else
     return false;

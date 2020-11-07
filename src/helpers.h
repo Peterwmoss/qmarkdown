@@ -7,6 +7,7 @@
 const std::string QRC_FILE(".images.rcc");
 
 std::string fix_path(std::string *path);
-bool fileExists(QString *path);
+bool file_exists(QString *path);
+bool directory_exists(QString *path);
 
 #endif

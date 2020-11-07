@@ -71,14 +71,14 @@ void MainWindow::loadImages() {
 
   QString qpath = (current_path + QRC_FILE).c_str();
 
-  if (fileExists(&qpath)) {
+  if (file_exists(&qpath)) {
     QResource::registerResource(qpath);
     system(("rm -f " + QRC_FILE).c_str());
   }
 }
 
 bool MainWindow::setFile(QString path) {
-  if (fileExists(&path)) {
+  if (file_exists(&path)) {
     std::string std_string(path.toStdString());
     current_path = fix_path(&std_string);
     m_file->setFileName(path);
