@@ -15,6 +15,8 @@ find_package(Qt5Gui REQUIRED)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
+set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
+
 find_library(fs NAMES libstdc++fs lstdc++fs stdc++fs REQUIRED)
 
 if (${fs} STREQUAL fs-NOTFOUND)
