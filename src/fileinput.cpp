@@ -12,9 +12,7 @@
 
 using namespace std;
 
-string get_start(size_t start, string path) {
-  return path.erase(start).c_str();
-}
+string get_start(size_t end, string path) { return path.erase(end).c_str(); }
 
 string get_end(size_t start, string path) {
   return path.erase(0, start).c_str();
@@ -55,7 +53,7 @@ void FileInput::auto_complete() {
       if (entry_end->startsWith(search_word.c_str())) {
         if (entry_end->endsWith(".md")) {
           if (count < AUTO_COMPLETE_MAX) {
-            complete_list[count++] = entry.path().string();
+            complete_list[count] = entry.path().string();
           }
           count++;
         } else if (entry.is_directory()) {
