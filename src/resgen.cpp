@@ -1,7 +1,12 @@
 #include "resgen.h"
 #include "helpers.h"
 
+#if __has_include(<filesystem>)
 #include <filesystem>
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+#endif
+
 #include <fstream>
 #include <iostream>
 #include <regex>
