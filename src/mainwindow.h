@@ -11,7 +11,7 @@
 #include <QTimer>
 #include <string>
 
-#define NUM_SHORTCUTS 11
+#define NUM_SHORTCUTS 12
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

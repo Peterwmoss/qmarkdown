@@ -1,6 +1,8 @@
 #ifndef UI_MAINWINDOW_HEADER
 #define UI_MAINWINDOW_HEADER
 
+#include "fileinput.h"
+
 #include "qmainwindow.h"
 #include <QLineEdit>
 #include <QShortcut>
@@ -17,7 +19,7 @@ class Ui_MainWindow {
 public:
   QWidget *centralwidget;
   QWebEngineView *Preview;
-  QLineEdit *FileInput;
+  FileInput *Input;
   QStatusBar *StatusBar;
 
   void setupUi(QMainWindow *MainWindow) {
@@ -27,15 +29,15 @@ public:
     Preview = new QWebEngineView(MainWindow);
     Preview->setObjectName("preview");
 
-    FileInput = new QLineEdit();
-    FileInput->setObjectName("fileInput");
-    FileInput->setPlaceholderText("File");
-    FileInput->hide();
+    Input = new FileInput();
+    Input->setObjectName("fileInput");
+    Input->setPlaceholderText("File");
+    Input->hide();
 
     StatusBar = new QStatusBar();
     StatusBar->hide();
 
-    MainWindow->setMenuWidget(FileInput);
+    MainWindow->setMenuWidget(Input);
     MainWindow->setCentralWidget(Preview);
     MainWindow->setStatusBar(StatusBar);
 

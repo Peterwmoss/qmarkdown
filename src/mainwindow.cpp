@@ -8,7 +8,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
-#include <QLineEdit>
 #include <QResource>
 #include <QShortcut>
 #include <QString>
@@ -93,8 +92,8 @@ bool MainWindow::setFile(QString path) {
 
 void fileEnter(Ui::MainWindow *ui) {
   ui->Preview->setFocus();
-  ui->FileInput->hide();
-  ui->FileInput->setText("");
+  ui->Input->hide();
+  ui->Input->setText("");
 }
 
 void MainWindow::setupShortcuts() {
@@ -123,22 +122,25 @@ void MainWindow::setupShortcuts() {
 
   // o to open new file
   shortcuts[8] = new QShortcut(Qt::Key_O, ui->Preview, [this]() {
-    this->ui->FileInput->show();
-    this->ui->FileInput->setFocus();
+    this->ui->Input->show();
+    this->ui->Input->setFocus();
   });
   // Escape to close file input
   shortcuts[9] = new QShortcut(Qt::Key_Escape, ui->Preview, [this]() {
     if (this->ui->StatusBar->isVisible())
       this->ui->StatusBar->hide();
-    else if (this->ui->FileInput->isVisible())
+    else if (this->ui->Input->isVisible())
+      fileEnter(this->ui);
+  });
+  // Open file from input
+  shortcuts[10] = new QShortcut(Qt::Key_Return, ui->Preview, [this]() {
+    if (setFile(this->ui->Input->text()))
       fileEnter(this->ui);
   });
 
-  // Open file
-  shortcuts[10] = new QShortcut(Qt::Key_Return, ui->Preview, [this]() {
-    if (setFile(this->ui->FileInput->text()))
-      fileEnter(this->ui);
-  });
+  // Tab complete
+  shortcuts[11] = new QShortcut(Qt::Key_Tab, ui->Input,
+                                [this]() { this->ui->Input->auto_complete(); });
 }
 
 MainWindow::~MainWindow() {

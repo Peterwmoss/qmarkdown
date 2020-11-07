@@ -28,6 +28,7 @@ endif()
 add_executable(qmarkdown
     src/helpers.cpp
     src/resgen.cpp
+    src/fileinput.cpp
     src/preview.cpp
     src/document.cpp
     src/mainwindow.cpp
