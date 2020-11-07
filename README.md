@@ -28,7 +28,6 @@ This software is provided under the
 * `git` (to clone repository)
 * `c++` or similar compiler with support for c++17
 * `cmake` >= `3.1.0`
-* `libstdc++` >= 9.1
 * `make`
 * `sudo` or other way to grant root privileges (like `doas`)
 
