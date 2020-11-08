@@ -15,6 +15,7 @@
 #include <QTimer>
 #include <QWebChannel>
 #include <QWebEnginePage>
+#include <qnamespace.h>
 #include <string>
 
 MainWindow::MainWindow(std::string path, QString *file, QWidget *parent)
@@ -117,7 +118,7 @@ void MainWindow::setupShortcuts() {
   shortcuts[6] = new QShortcut(Qt::Key_G, ui->Preview,
                                [this]() { this->page->scrollTop(); });
   shortcuts[7] =
-      new QShortcut(QKeySequence(Qt::Key_Shift + Qt::Key_G), ui->Preview,
+      new QShortcut(QKeySequence(Qt::Modifier::SHIFT + Qt::Key_G), ui->Preview,
                     [this]() { this->page->scrollBottom(); });
 
   // o to open new file
