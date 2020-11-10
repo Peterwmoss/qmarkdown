@@ -32,19 +32,19 @@ public:
 
 private:
   // Shortcuts
-  QShortcut *shortcuts[NUM_SHORTCUTS];
+  QShortcut *m_shortcuts[NUM_SHORTCUTS];
   void setupShortcuts();
 
   // UI
-  Ui::MainWindow *ui;
-  Preview *page;
+  Ui::MainWindow *m_ui;
+  Preview *m_page;
 
   // Backend
   Document m_content;
-  QString current_text;
-  std::string current_path;
-  QWebChannel *channel;
-  QTimer *reload;
+  QString m_current_text;
+  std::string m_current_path;
+  QWebChannel *m_channel;
+  QTimer *m_reload;
   QFile *m_file;
   void loadImages();
   void loadFile();

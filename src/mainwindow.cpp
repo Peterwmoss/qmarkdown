@@ -19,37 +19,37 @@
 #include <string>
 
 MainWindow::MainWindow(std::string path, QString *file, QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow) {
-  ui->setupUi(this);
+    : QMainWindow(parent), m_ui(new Ui::MainWindow) {
+  m_ui->setupUi(this);
 
-  current_path = path;
+  m_current_path = path;
 
   m_file = new QFile(*file);
 
-  channel = new QWebChannel(this);
-  channel->registerObject(QStringLiteral("content"), &m_content);
+  m_channel = new QWebChannel(this);
+  m_channel->registerObject(QStringLiteral("content"), &m_content);
 
-  page = new Preview(this);
-  page->setWebChannel(channel);
+  m_page = new Preview(this);
+  m_page->setWebChannel(m_channel);
 
-  ui->Preview->setPage(page);
-  ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
-  ui->Preview->setUrl(QUrl("qrc:/index.html"));
+  m_ui->Preview->setPage(m_page);
+  m_ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
+  m_ui->Preview->setUrl(QUrl("qrc:/index.html"));
 
   loadImages();
   loadFile();
 
   // Reload file every 1 second
-  reload = new QTimer(this);
-  connect(reload, &QTimer::timeout, this, &MainWindow::reloadFile);
-  reload->start(1000);
+  m_reload = new QTimer(this);
+  connect(m_reload, &QTimer::timeout, this, &MainWindow::reloadFile);
+  m_reload->start(1000);
 
   setupShortcuts();
 }
 
 void MainWindow::reloadFile() {
-  if (current_text != m_content.getText()) {
-    current_text = m_content.getText();
+  if (m_current_text != m_content.getText()) {
+    m_current_text = m_content.getText();
     loadImages();
   }
   loadFile();
@@ -64,12 +64,12 @@ void MainWindow::loadFile() {
 }
 
 void MainWindow::loadImages() {
-  if (!current_path.empty())
-    res_gen(current_path);
+  if (!m_current_path.empty())
+    res_gen(m_current_path);
   else
     res_gen(".");
 
-  QString qpath = (current_path + QRC_FILE).c_str();
+  QString qpath = (m_current_path + QRC_FILE).c_str();
 
   if (file_exists(&qpath)) {
     QResource::registerResource(qpath);
@@ -80,13 +80,13 @@ void MainWindow::loadImages() {
 bool MainWindow::setFile(QString path) {
   if (file_exists(&path)) {
     std::string std_string(path.toStdString());
-    current_path = fix_path(&std_string);
+    m_current_path = fix_path(&std_string);
     m_file->setFileName(path);
     loadFile();
     return true;
   } else {
-    ui->StatusBar->show();
-    ui->StatusBar->showMessage("File not found");
+    m_ui->StatusBar->show();
+    m_ui->StatusBar->showMessage("File not found");
     return false;
   }
 }
@@ -99,65 +99,66 @@ void fileEnter(Ui::MainWindow *ui) {
 
 void MainWindow::setupShortcuts() {
   // Q to close
-  shortcuts[0] = new QShortcut(Qt::Key_Q, this, SLOT(close()));
+  m_shortcuts[0] = new QShortcut(Qt::Key_Q, this, SLOT(close()));
 
   // 0 to reset zoom
-  shortcuts[1] = new QShortcut(Qt::Key_0, ui->Preview,
-                               [this]() { this->page->resetZoom(); });
+  m_shortcuts[1] = new QShortcut(Qt::Key_0, m_ui->Preview,
+                                 [this]() { this->m_page->resetZoom(); });
 
   // Vim keys to move
-  shortcuts[2] = new QShortcut(Qt::Key_J, ui->Preview,
-                               [this]() { this->page->scrollDown(); });
-  shortcuts[3] = new QShortcut(Qt::Key_K, ui->Preview,
-                               [this]() { this->page->scrollUp(); });
-  shortcuts[4] = new QShortcut(Qt::Key_H, ui->Preview,
-                               [this]() { this->page->scrollLeft(); });
-  shortcuts[5] = new QShortcut(Qt::Key_L, ui->Preview,
-                               [this]() { this->page->scrollRight(); });
+  m_shortcuts[2] = new QShortcut(Qt::Key_J, m_ui->Preview,
+                                 [this]() { this->m_page->scrollDown(); });
+  m_shortcuts[3] = new QShortcut(Qt::Key_K, m_ui->Preview,
+                                 [this]() { this->m_page->scrollUp(); });
+  m_shortcuts[4] = new QShortcut(Qt::Key_H, m_ui->Preview,
+                                 [this]() { this->m_page->scrollLeft(); });
+  m_shortcuts[5] = new QShortcut(Qt::Key_L, m_ui->Preview,
+                                 [this]() { this->m_page->scrollRight(); });
 
-  shortcuts[6] = new QShortcut(Qt::Key_G, ui->Preview,
-                               [this]() { this->page->scrollTop(); });
-  shortcuts[7] =
-      new QShortcut(QKeySequence(Qt::Modifier::SHIFT + Qt::Key_G), ui->Preview,
-                    [this]() { this->page->scrollBottom(); });
+  m_shortcuts[6] = new QShortcut(Qt::Key_G, m_ui->Preview,
+                                 [this]() { this->m_page->scrollTop(); });
+  m_shortcuts[7] =
+      new QShortcut(QKeySequence(Qt::Modifier::SHIFT + Qt::Key_G),
+                    m_ui->Preview, [this]() { this->m_page->scrollBottom(); });
 
   // o to open new file
-  shortcuts[8] = new QShortcut(Qt::Key_O, ui->Preview, [this]() {
-    this->ui->Input->show();
-    this->ui->Input->setFocus();
+  m_shortcuts[8] = new QShortcut(Qt::Key_O, m_ui->Preview, [this]() {
+    this->m_ui->Input->show();
+    this->m_ui->Input->setFocus();
   });
   // Escape to close file input
-  shortcuts[9] = new QShortcut(Qt::Key_Escape, ui->Preview, [this]() {
-    if (this->ui->StatusBar->isVisible())
-      this->ui->StatusBar->hide();
-    else if (this->ui->Input->isVisible())
-      fileEnter(this->ui);
+  m_shortcuts[9] = new QShortcut(Qt::Key_Escape, m_ui->Preview, [this]() {
+    if (this->m_ui->StatusBar->isVisible())
+      this->m_ui->StatusBar->hide();
+    else if (this->m_ui->Input->isVisible())
+      fileEnter(this->m_ui);
   });
   // Open file from input
-  shortcuts[10] = new QShortcut(Qt::Key_Return, ui->Preview, [this]() {
-    if (setFile(this->ui->Input->text()))
-      fileEnter(this->ui);
+  m_shortcuts[10] = new QShortcut(Qt::Key_Return, m_ui->Preview, [this]() {
+    if (setFile(this->m_ui->Input->text()))
+      fileEnter(this->m_ui);
   });
 
   // Tab complete
-  shortcuts[11] = new QShortcut(Qt::Key_Tab, ui->Input,
-                                [this]() { this->ui->Input->auto_complete(); });
+  m_shortcuts[11] = new QShortcut(Qt::Key_Tab, m_ui->Input, [this]() {
+    this->m_ui->Input->auto_complete();
+  });
 }
 
 MainWindow::~MainWindow() {
   // Shortcuts
   int i = 0;
   while (i < NUM_SHORTCUTS)
-    delete shortcuts[i++];
+    delete m_shortcuts[i++];
 
   // UI
-  delete ui;
-  delete page;
+  delete m_ui;
+  delete m_page;
 
   // Backend
-  delete channel;
+  delete m_channel;
   delete m_file;
-  delete reload;
+  delete m_reload;
 
   // Cleanup
   system(("rm -f " + QRC_FILE).c_str());

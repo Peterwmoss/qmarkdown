@@ -12,7 +12,7 @@ public:
   void auto_complete();
 
 private:
-  std::string complete_list[AUTO_COMPLETE_MAX];
+  std::string m_complete_list[AUTO_COMPLETE_MAX];
 };
 
 #endif

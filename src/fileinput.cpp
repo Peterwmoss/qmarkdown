@@ -33,7 +33,7 @@ void FileInput::auto_complete() {
   // Clear previous search
   int count = 0;
   for (count = 0; count < AUTO_COMPLETE_MAX; count++)
-    complete_list[count] = "";
+    m_complete_list[count] = "";
 
   // Clear query path if its not a directory or file
   if (!directory_exists(q_path)) {
@@ -53,12 +53,12 @@ void FileInput::auto_complete() {
       if (entry_end->startsWith(search_word.c_str())) {
         if (entry_end->endsWith(".md")) {
           if (count < AUTO_COMPLETE_MAX) {
-            complete_list[count] = entry.path().string();
+            m_complete_list[count] = entry.path().string();
           }
           count++;
         } else if (entry.is_directory()) {
           if (count < AUTO_COMPLETE_MAX) {
-            complete_list[count] = entry.path().string() + "/";
+            m_complete_list[count] = entry.path().string() + "/";
           }
           count++;
         }
@@ -69,5 +69,5 @@ void FileInput::auto_complete() {
   free(q_path);
 
   if (count == 1)
-    setText(complete_list[0].c_str());
+    setText(m_complete_list[0].c_str());
 }
