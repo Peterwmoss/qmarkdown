@@ -1,8 +1,8 @@
 #ifndef RESGEN_HEADER
 #define RESGEN_HEADER
 
-#include <string>
+#include <QString>
 
-void res_gen(std::string path);
+void res_gen();
 
 #endif

@@ -5,6 +5,12 @@
 #include "resgen.h"
 #include "ui_mainwindow.h"
 
+#if __has_include(<filesystem>)
+#include <filesystem>
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+#endif
+
 #include <QDebug>
 #include <QDir>
 #include <QFile>
@@ -15,14 +21,16 @@
 #include <QTimer>
 #include <QWebChannel>
 #include <QWebEnginePage>
-#include <qnamespace.h>
+#include <iostream>
 #include <string>
+
+using namespace std;
 
 MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
     : QMainWindow(parent), m_ui(new Ui::MainWindow) {
-  m_ui->setupUi(this);
-
   m_current_path = get_file(file);
+
+  m_ui->setupUi(this);
 
   m_file = new QFile(*file);
 
@@ -65,9 +73,9 @@ void MainWindow::loadFile() {
 
 void MainWindow::loadImages() {
   if (!m_current_path.isEmpty())
-    res_gen(m_current_path.toStdString());
-  else
-    res_gen(".");
+    filesystem::current_path(m_current_path.toStdString());
+
+  res_gen();
 
   QString qpath = m_current_path + QRC_FILE.c_str();
 

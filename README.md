@@ -4,7 +4,7 @@ qMarkdown is a simple Qt-based markdown viewer, it's light-weight and easy to us
 
 ## Screenshots
 
-![Light](light.png)
+![Light](./public/light_small.png)
 
 ## License
 
@@ -71,7 +71,7 @@ arch-based users
 
 ## More screenshots
 
-![Dark](dark.png)
+![Dark](./public/dark_small.png)
 
 ## Disclaimer
 

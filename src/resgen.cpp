@@ -14,11 +14,10 @@
 
 using namespace std;
 
-bool read_directory(ofstream *outfile, int depth, string path) {
-  int status = false;
+void read_directory(ofstream *outfile, int depth, string path, bool *status) {
   for (const auto &entry : filesystem::directory_iterator(path)) {
-    if (entry.is_directory() && depth < 2)
-      read_directory(outfile, depth + 1, entry.path());
+    if (entry.is_directory() && depth < 4)
+      read_directory(outfile, depth + 1, entry.path(), status);
     const string e_path = entry.path().string();
     const string image_types[] = {".png", ".jpg", ".jpeg", ".gif"};
     for (string type : image_types) {
@@ -26,22 +25,22 @@ bool read_directory(ofstream *outfile, int depth, string path) {
       const size_t t_length = type.size();
       if (p_length >= t_length) {
         if (e_path.compare(p_length - t_length, t_length, type) == 0) {
-          status = true;
+          *status = true;
           *outfile << "<file>" << e_path << "</file>" << endl;
         }
       }
     }
   }
-  return status;
 }
 
-void res_gen(string path) {
+void res_gen() {
   ofstream outfile("images.qrc");
 
   outfile << "<!DOCTYPE RCC><RCC version='1.0'>" << endl;
   outfile << "<qresource>" << endl;
 
-  bool image_exists = read_directory(&outfile, 0, path);
+  bool image_exists = false;
+  read_directory(&outfile, 0, ".", &image_exists);
 
   outfile << "</qresource>" << endl;
   outfile << "</RCC>" << endl;

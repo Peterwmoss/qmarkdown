@@ -3,7 +3,10 @@
 
 #include <QApplication>
 #include <QString>
+#include <iostream>
 #include <string>
+
+using namespace std;
 
 int die(const char *message) {
   printf("Error: %s\n", message);
