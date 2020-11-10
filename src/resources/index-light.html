@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="utf-8" />
+    <head>
+        <link rel="stylesheet" type="text/css" href="light.css" />
+        <link rel="stylesheet" type="text/css" href="markdown.css" />
+        <script src="3rdparty/marked.js"></script>
+        <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
+        <link href="3rdparty/prism.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="placeholder"></div>
+        <script>
+            const placeholder = document.getElementById("placeholder");
+
+            const updateText = (text) => {
+                placeholder.innerHTML = marked(text);
+                const script = document.createElement("script");
+                script.src = "3rdparty/prism.js";
+                document.body.appendChild(script);
+                document.body.removeChild(script);
+            };
+
+            new QWebChannel(qt.webChannelTransport, (channel) => {
+                const content = channel.objects.content;
+                updateText(content.text);
+                content.textChanged.connect(updateText);
+            });
+        </script>
+    </body>
+</html>

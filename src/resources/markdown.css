@@ -1,24 +1,12 @@
 :root {
-    --black: #0b0c10;
-    --dark-grey: #1f2833;
-    --grey: #888;
-    --light-grey: #c5c6c7;
-    --xlight-grey: #eee;
-    --dark-blue: #0645ad;
-    --light-blue: #0677bb;
-    --cyan: #66fcf1;
-    --blue: #45a29e;
-    --white: #fefefe;
-    --yellow: #faa700;
-
     --font-s: 12px;
     --font-m: 14px;
     --font-l: 16px;
 }
 
 body {
-    color: var(--dark-grey);
-    background: var(--white);
+    color: var(--font-color);
+    background: var(--background);
     font-family: "Roboto", sans-serif;
     font-size: var(--font-s);
     padding: 1em;
@@ -34,16 +22,16 @@ p {
 a,
 a:visited,
 a:focus {
-    color: var(--dark-blue);
+    color: var(--a);
     text-decoration: none;
 }
 
 a:hover {
-    color: var(--light-blue);
+    color: var(--a-hover);
 }
 
 a:active {
-    color: var(--yellow);
+    color: var(--a-active);
 }
 
 a:focus {
@@ -67,7 +55,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: var(--black);
+    color: var(--font-color);
     font-weight: bold;
     line-height: 0.9em;
     margin: 1em 0 0.4em 0;
@@ -76,7 +64,7 @@ h6 {
 h1,
 h2 {
     padding-bottom: 0.3em;
-    border-bottom: 1px solid var(--light-grey);
+    border-bottom: 1px solid var(--h-border-bottom);
 }
 
 h1 {
@@ -103,17 +91,10 @@ h6 {
     font-size: 1em;
 }
 
-blockquote {
-    color: var(--light-grey);
-    margin: 0;
-    padding-left: 3em;
-    border-left: 0.5em #eee solid;
-}
-
 hr {
     display: block;
     border: 0;
-    border-top: 1px solid var(--light-grey);
+    border-top: 1px solid var(--hr);
     border-bottom: 1px solid #eee;
     margin: 1em 0;
     padding: 0;
@@ -121,7 +102,7 @@ hr {
 
 pre,
 code {
-    color: var(--black);
+    color: var(--font-color);
     font-family: monospace;
 }
 
@@ -152,32 +133,26 @@ table {
     min-width: 20em;
 }
 
-tr {
-    background-color: var(--xlight-grey);
-    text-align: center;
-}
-
 th {
     font-size: 1.2em;
+    background-color: var(--th);
 }
 
-th,
-tr:hover {
-    background-color: var(--grey);
+tr:hover,
+tr:nth-of-type(even),
+tr:nth-of-type(even):hover {
+    background-color: var(--table-row-dark);
 }
 
 th,
 td {
     padding: 12px 15px;
-    border: 1px solid var(--dark-grey);
+    border: 1px solid var(--table-border);
 }
 
-tr:nth-of-type(even) {
-    background-color: var(--light-grey);
-}
-
-tr:nth-of-type(even):hover {
-    background-color: var(--grey);
+tr {
+    background-color: var(--table-row-default);
+    text-align: center;
 }
 
 @media only screen and (min-width: 480px) {

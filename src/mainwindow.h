@@ -24,7 +24,7 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  explicit MainWindow(std::string path, QString *file,
+  explicit MainWindow(std::string colorscheme, std::string path, QString *file,
                       QWidget *parent = nullptr);
   ~MainWindow();
 

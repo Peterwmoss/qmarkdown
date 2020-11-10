@@ -1,0 +1,18 @@
+@import "colors.css";
+
+:root {
+    --font-color: var(--light-grey);
+    --background: var(--black);
+
+    --a: var(--dark-blue);
+    --a-hover: var(--light-blue);
+    --a-active: var(--yellow);
+
+    --h-border-bottom: var(--white);
+    --hr: var(--white);
+
+    --th: var(--light-grey);
+    --table-border: var(--dark-grey);
+    --table-row-dark: var(--grey);
+    --table-row-default: var(--light-grey);
+}

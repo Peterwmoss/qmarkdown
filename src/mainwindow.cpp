@@ -18,7 +18,8 @@
 #include <qnamespace.h>
 #include <string>
 
-MainWindow::MainWindow(std::string path, QString *file, QWidget *parent)
+MainWindow::MainWindow(std::string colorscheme, std::string path, QString *file,
+                       QWidget *parent)
     : QMainWindow(parent), m_ui(new Ui::MainWindow) {
   m_ui->setupUi(this);
 
@@ -34,7 +35,7 @@ MainWindow::MainWindow(std::string path, QString *file, QWidget *parent)
 
   m_ui->Preview->setPage(m_page);
   m_ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
-  m_ui->Preview->setUrl(QUrl("qrc:/index.html"));
+  m_ui->Preview->setUrl(QUrl(colorscheme.c_str()));
 
   loadImages();
   loadFile();
