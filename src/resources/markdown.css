@@ -59,6 +59,7 @@ a:active {
 
 img {
     max-width: 100%;
+    max-height: 50vh;
     border: 0;
     vertical-align: middle;
 }

@@ -2,6 +2,10 @@
 
 qMarkdown is a simple Qt-based markdown viewer, it's light-weight and easy to use.
 
+## Screenshots
+
+![Light](light.png)
+
 ## License
 
 This software is provided under the
@@ -64,6 +68,10 @@ arch-based users
 #### WIP
 
 * `o` - Opens a text field to enter filename of new file (WIP)
+
+## More screenshots
+
+![Dark](dark.png)
 
 ## Disclaimer
 
