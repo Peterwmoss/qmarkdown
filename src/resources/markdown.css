@@ -119,6 +119,7 @@ pre,
 code {
     color: var(--font-color);
     font-family: monospace;
+    border-radius: 0.5em;
 }
 
 pre {

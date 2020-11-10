@@ -1,5 +1,12 @@
 #include "helpers.h"
 #include "mainwindow.h"
+#include <qregexp.h>
+
+#if __has_include(<filesystem>)
+#include <filesystem>
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+#endif
 
 #include <QApplication>
 #include <QString>
@@ -76,10 +83,16 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
   QString file;
+  QString path;
   QString color;
+
+  path = filesystem::path(argv[1]).c_str();
+  QRegExp rx("/.*\.md");
+  path.replace(rx, "/");
+
   load_args(argc, argv, &file, &color);
 
-  MainWindow window(&color, &file);
+  MainWindow window(&color, &path, &file);
   window.show();
 
   return app.exec();
