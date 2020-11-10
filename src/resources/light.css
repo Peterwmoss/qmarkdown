@@ -2,9 +2,9 @@
 
 :root {
     --font-color: var(--black);
-    --background: var(--xlight-grey);
+    --background: var(--white);
 
-    --a: var(--dark-blue);
+    --a: var(--blue);
     --a-hover: var(--light-blue);
     --a-active: var(--yellow);
 
@@ -15,4 +15,6 @@
     --table-border: var(--dark-grey);
     --table-row-dark: var(--grey);
     --table-row-default: var(--light-grey);
+
+    --scrollbar: var(--light-grey);
 }
