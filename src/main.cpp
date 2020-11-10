@@ -2,10 +2,7 @@
 #include "mainwindow.h"
 
 #include <QApplication>
-#include <QDir>
-#include <QResource>
 #include <QString>
-#include <cstdio>
 #include <string>
 
 int die(const char *message) {
@@ -15,36 +12,31 @@ int die(const char *message) {
   exit(1);
 }
 
-bool parse_file(char *arg, QString *file, std::string path) {
+bool parse_file(char *arg, QString *file) {
   *file = arg;
   if (file_exists(file)) {
-    std::string s(arg);
-    path = fix_path(&s);
     return true;
   }
   return false;
 }
 
-bool parse_color(std::string color) {
-  std::string light = "light";
-  std::string dark = "dark";
-
-  if (color == light) {
-    color = ":/index-light.html";
+bool parse_color(QString *color) {
+  if (*color == "light") {
+    *color = "qrc:/index-light.html";
     return true;
   }
-  if (color == dark) {
-    color = ":/index-dark.html";
+  if (*color == "dark") {
+    *color = "qrc:/index-dark.html";
     return true;
   }
   return false;
 }
 
-void load_args(int argc, char *argv[], QString *file, std::string path,
-               std::string color) {
+void load_args(int argc, char *argv[], QString *file, QString *color) {
   // Only file as argument
   if (argc == 2) {
-    if (parse_file(argv[1], file, path))
+    *color = "qrc:/index-light.html";
+    if (parse_file(argv[1], file))
       return;
     die("File not found");
   }
@@ -53,20 +45,20 @@ void load_args(int argc, char *argv[], QString *file, std::string path,
   if (argc == 3) {
     // colorscheme first, file second
     if (argv[1][0] == '-') {
-      color = argv[1] + 1;
+      *color = argv[1] + 1;
       if (!parse_color(color))
         die("Colorscheme not found. Valid colorschemes are: 'light' 'dark'");
-      if (!parse_file(argv[2], file, path))
+      if (!parse_file(argv[2], file))
         die("File not found");
       return;
     }
 
     // file first, colorscheme second
     if (argv[2][0] == '-') {
-      color = argv[2] + 1;
+      *color = argv[2] + 1;
       if (!parse_color(color))
         die("Colorscheme not found. Valid colorschemes are: 'light' 'dark'");
-      if (!parse_file(argv[1], file, path))
+      if (!parse_file(argv[1], file))
         die("File not found");
       return;
     }
@@ -81,12 +73,10 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
   QString file;
-  std::string path;
-  std::string color;
+  QString color;
+  load_args(argc, argv, &file, &color);
 
-  load_args(argc, argv, &file, path, color);
-
-  MainWindow window(color, path, &file);
+  MainWindow window(&color, &file);
   window.show();
 
   return app.exec();

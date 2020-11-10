@@ -6,9 +6,9 @@
 #include <regex>
 #include <string>
 
-std::string fix_path(std::string *path) {
+QString get_file(QString *path) {
   std::regex e(R"((.*/)*(.*md))");
-  return regex_replace(*path, e, "$1");
+  return regex_replace(path->toStdString(), e, "$1").c_str();
 }
 
 bool file_exists(QString *path) {

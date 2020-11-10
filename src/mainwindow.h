@@ -24,7 +24,7 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  explicit MainWindow(std::string colorscheme, std::string path, QString *file,
+  explicit MainWindow(QString *colorscheme, QString *file,
                       QWidget *parent = nullptr);
   ~MainWindow();
 
@@ -42,7 +42,7 @@ private:
   // Backend
   Document m_content;
   QString m_current_text;
-  std::string m_current_path;
+  QString m_current_path;
   QWebChannel *m_channel;
   QTimer *m_reload;
   QFile *m_file;

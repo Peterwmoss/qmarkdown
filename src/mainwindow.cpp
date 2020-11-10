@@ -18,12 +18,11 @@
 #include <qnamespace.h>
 #include <string>
 
-MainWindow::MainWindow(std::string colorscheme, std::string path, QString *file,
-                       QWidget *parent)
+MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
     : QMainWindow(parent), m_ui(new Ui::MainWindow) {
   m_ui->setupUi(this);
 
-  m_current_path = path;
+  m_current_path = get_file(file);
 
   m_file = new QFile(*file);
 
@@ -35,7 +34,7 @@ MainWindow::MainWindow(std::string colorscheme, std::string path, QString *file,
 
   m_ui->Preview->setPage(m_page);
   m_ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
-  m_ui->Preview->setUrl(QUrl(colorscheme.c_str()));
+  m_ui->Preview->setUrl(QUrl(*colorscheme));
 
   loadImages();
   loadFile();
@@ -65,12 +64,12 @@ void MainWindow::loadFile() {
 }
 
 void MainWindow::loadImages() {
-  if (!m_current_path.empty())
-    res_gen(m_current_path);
+  if (!m_current_path.isEmpty())
+    res_gen(m_current_path.toStdString());
   else
     res_gen(".");
 
-  QString qpath = (m_current_path + QRC_FILE).c_str();
+  QString qpath = m_current_path + QRC_FILE.c_str();
 
   if (file_exists(&qpath)) {
     QResource::registerResource(qpath);
@@ -80,8 +79,7 @@ void MainWindow::loadImages() {
 
 bool MainWindow::setFile(QString path) {
   if (file_exists(&path)) {
-    std::string std_string(path.toStdString());
-    m_current_path = fix_path(&std_string);
+    m_current_path = get_file(&path);
     m_file->setFileName(path);
     loadFile();
     return true;
