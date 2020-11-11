@@ -9,21 +9,22 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QString>
+#include <iostream>
 #include <qregexp.h>
 #include <string>
 
 using namespace std;
 
 QString get_file(QString path) {
-  QRegExp rx("(/.*/)*");
-  path.replace(rx, "");
+  path.replace(QRegExp("(.*/)*"), "");
   return path;
 }
 
-QString get_path(QString path, QString argument) {
-  path = filesystem::path(argument.toStdString()).c_str();
-  QRegExp rx("/.*\.md");
-  path.replace(rx, "/");
+QString get_path(QString argument) {
+  QString path = filesystem::absolute(argument.toStdString()).c_str();
+  path.replace(get_file(argument), "");
+  if (path.isEmpty())
+    path = "./";
   return path;
 }
 
