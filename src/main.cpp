@@ -21,13 +21,41 @@ bool parse_file(char *arg, QString *file) {
   return false;
 }
 
-bool parse_color(QString *color) {
+bool parse_color_short(QString *color) {
+  if (*color == "l") {
+    *color = "qrc:/index-light.html";
+    return true;
+  }
+  if (*color == "d") {
+    *color = "qrc:/index-dark.html";
+    return true;
+  }
+  return false;
+}
+
+bool parse_color_long(QString *color) {
   if (*color == "light") {
     *color = "qrc:/index-light.html";
     return true;
   }
   if (*color == "dark") {
     *color = "qrc:/index-dark.html";
+    return true;
+  }
+  return false;
+}
+
+bool parse_arguments(QString *color, QString *file, char *color_argument,
+                     char *file_argument) {
+  if (color_argument[0] == '-') {
+    if (color_argument[1] == '-')
+      *color = color_argument + 2;
+    else
+      *color = color_argument + 1;
+    if (!parse_color_long(color) && !parse_color_short(color))
+      return false;
+    if (!parse_file(file_argument, file))
+      return false;
     return true;
   }
   return false;
@@ -44,26 +72,10 @@ void load_args(int argc, char *argv[], QString *file, QString *color) {
 
   // File and colorscheme
   if (argc == 3) {
-    // colorscheme first, file second
-    if (argv[1][0] == '-') {
-      *color = argv[1] + 1;
-      if (!parse_file(argv[2], file))
-        die("File not found");
-      if (!parse_color(color))
-        die("Colorscheme not found. Valid colorschemes are: 'light' 'dark'");
-      return;
-    }
-
-    // file first, colorscheme second
-    if (argv[2][0] == '-') {
-      *color = argv[2] + 1;
-      if (!parse_file(argv[1], file))
-        die("File not found");
-      if (!parse_color(color))
-        die("Colorscheme not found. Valid colorschemes are: 'light' 'dark'");
-      return;
-    }
-    die("Unknown arguments");
+    if (!parse_arguments(color, file, argv[1], argv[2]))
+      if (!parse_arguments(color, file, argv[2], argv[1]))
+        die("Could not parse arguments");
+    return;
   }
   die("Please pass valid arguments");
 }
