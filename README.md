@@ -53,7 +53,12 @@ arch-based users
 
 ## Usage
 
-`qmarkdown <file>`
+`qmarkdown [colorscheme] <file>`
+
+### Colorschemes
+
+* Light `-l` or `--light`
+* Dark `-d` or `--dark`
 
 ### Keybindings
 
