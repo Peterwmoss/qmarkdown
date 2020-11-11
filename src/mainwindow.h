@@ -9,7 +9,6 @@
 #include <QShortcut>
 #include <QString>
 #include <QTimer>
-#include <string>
 
 #define NUM_SHORTCUTS 12
 

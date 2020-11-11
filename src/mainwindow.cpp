@@ -11,8 +11,6 @@
 #include <experimental/filesystem>
 #endif
 
-#include <QDebug>
-#include <QDir>
 #include <QFile>
 #include <QResource>
 #include <QShortcut>
@@ -21,8 +19,6 @@
 #include <QTimer>
 #include <QWebChannel>
 #include <QWebEnginePage>
-#include <iostream>
-#include <string>
 
 using namespace std;
 

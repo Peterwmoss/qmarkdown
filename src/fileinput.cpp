@@ -2,7 +2,6 @@
 #include "helpers.h"
 
 #include <QString>
-#include <iostream>
 
 #if __has_include(<filesystem>)
 #include <filesystem>
