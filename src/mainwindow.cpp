@@ -28,11 +28,13 @@ using namespace std;
 
 MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
     : QMainWindow(parent), m_ui(new Ui::MainWindow) {
-  m_current_path = get_file(file);
+  // Change working directory to enable image loading
+  m_current_path = get_path(*file);
+  filesystem::current_path(m_current_path.toStdString());
+
+  m_file = new QFile(get_file(*file));
 
   m_ui->setupUi(this);
-
-  m_file = new QFile(*file);
 
   m_channel = new QWebChannel(this);
   m_channel->registerObject(QStringLiteral("content"), &m_content);
@@ -72,9 +74,6 @@ void MainWindow::loadFile() {
 }
 
 void MainWindow::loadImages() {
-  if (!m_current_path.isEmpty())
-    filesystem::current_path(m_current_path.toStdString());
-
   res_gen();
 
   QString qpath = m_current_path + QRC_FILE.c_str();
@@ -87,15 +86,17 @@ void MainWindow::loadImages() {
 
 bool MainWindow::setFile(QString path) {
   if (file_exists(&path)) {
-    m_current_path = get_file(&path);
-    m_file->setFileName(path);
+    m_current_path = get_path(path);
+    filesystem::current_path(m_current_path.toStdString());
+    m_file->setFileName(get_file(path));
     loadFile();
+    loadImages();
     return true;
-  } else {
-    m_ui->StatusBar->show();
-    m_ui->StatusBar->showMessage("File not found");
-    return false;
   }
+
+  m_ui->StatusBar->show();
+  m_ui->StatusBar->showMessage("File not found");
+  return false;
 }
 
 void fileEnter(Ui::MainWindow *ui) {

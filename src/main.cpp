@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QString>
 #include <iostream>
+#include <qregexp.h>
 #include <string>
 
 using namespace std;
@@ -13,14 +14,6 @@ int die(const char *message) {
   printf("Usage: Usage `qmarkdown <file>.md`\n");
 
   exit(1);
-}
-
-bool parse_file(char *arg, QString *file) {
-  *file = arg;
-  if (file_exists(file)) {
-    return true;
-  }
-  return false;
 }
 
 bool parse_color(QString *color) {
@@ -35,13 +28,11 @@ bool parse_color(QString *color) {
   return false;
 }
 
-void load_args(int argc, char *argv[], QString *file, QString *color) {
+void load_args(int argc, char *argv[], QString *color) {
   // Only file as argument
-  if (argc == 2) {
+  if (argc == 2 && argv[1][0] != '-') {
     *color = "qrc:/index-light.html";
-    if (parse_file(argv[1], file))
-      return;
-    die("File not found");
+    return;
   }
 
   // File and colorscheme
@@ -51,8 +42,6 @@ void load_args(int argc, char *argv[], QString *file, QString *color) {
       *color = argv[1] + 1;
       if (!parse_color(color))
         die("Colorscheme not found. Valid colorschemes are: 'light' 'dark'");
-      if (!parse_file(argv[2], file))
-        die("File not found");
       return;
     }
 
@@ -61,8 +50,6 @@ void load_args(int argc, char *argv[], QString *file, QString *color) {
       *color = argv[2] + 1;
       if (!parse_color(color))
         die("Colorscheme not found. Valid colorschemes are: 'light' 'dark'");
-      if (!parse_file(argv[1], file))
-        die("File not found");
       return;
     }
     die("Unknown arguments");
@@ -75,9 +62,9 @@ int main(int argc, char *argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QApplication app(argc, argv);
 
-  QString file;
+  QString file = argv[1];
   QString color;
-  load_args(argc, argv, &file, &color);
+  load_args(argc, argv, &color);
 
   MainWindow window(&color, &file);
   window.show();
