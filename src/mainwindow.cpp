@@ -24,13 +24,13 @@ using namespace std;
 
 MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
     : QMainWindow(parent), m_ui(new Ui::MainWindow) {
+  m_ui->setupUi(this);
+
   // Change working directory to enable image loading
   m_current_path = get_path(*file);
   filesystem::current_path(m_current_path.toStdString());
 
   m_file = new QFile(get_file(*file));
-
-  m_ui->setupUi(this);
 
   m_channel = new QWebChannel(this);
   m_channel->registerObject(QStringLiteral("content"), &m_content);
