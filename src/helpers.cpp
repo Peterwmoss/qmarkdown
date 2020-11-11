@@ -1,14 +1,30 @@
 #include "helpers.h"
 
+#if __has_include(<filesystem>)
+#include <filesystem>
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
+#endif
+
 #include <QDir>
 #include <QFileInfo>
 #include <QString>
-#include <regex>
+#include <qregexp.h>
 #include <string>
 
-QString get_file(QString *path) {
-  std::regex e(R"((.*/)*(.*md))");
-  return regex_replace(path->toStdString(), e, "$1").c_str();
+using namespace std;
+
+QString get_file(QString path) {
+  QRegExp rx("(/.*/)*");
+  path.replace(rx, "");
+  return path;
+}
+
+QString get_path(QString path, QString argument) {
+  path = filesystem::path(argument.toStdString()).c_str();
+  QRegExp rx("/.*\.md");
+  path.replace(rx, "/");
+  return path;
 }
 
 bool file_exists(QString *path) {

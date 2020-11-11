@@ -29,21 +29,13 @@ using namespace std;
 MainWindow::MainWindow(QString *colorscheme, QString *path, QString *file,
                        QWidget *parent)
     : QMainWindow(parent), m_ui(new Ui::MainWindow) {
-  cout << filesystem::current_path() << endl;
-  m_current_path = *path;
-  cout << m_current_path.toStdString() << endl;
-  cout << filesystem::current_path().string() + "/" +
-              m_current_path.toStdString()
-       << endl;
-
-  if (!m_current_path.isEmpty())
-    filesystem::current_path(filesystem::current_path().string() + "/" +
-                             m_current_path.toStdString());
+  m_current_path = get_path(*path, *file);
+  filesystem::current_path(m_current_path.toStdString());
   cout << filesystem::current_path() << endl;
 
   m_ui->setupUi(this);
 
-  m_file = new QFile(file->replace(get_file(file), ""));
+  m_file = new QFile(get_file(*file));
 
   m_channel = new QWebChannel(this);
   m_channel->registerObject(QStringLiteral("content"), &m_content);
@@ -98,15 +90,17 @@ void MainWindow::loadImages() {
 
 bool MainWindow::setFile(QString path) {
   if (file_exists(&path)) {
-    m_current_path = get_file(&path);
-    m_file->setFileName(path);
+    QString file = get_file(path);
+    m_current_path = get_path(path, file);
+    filesystem::current_path(m_current_path.toStdString());
+    m_file->setFileName(file);
     loadFile();
     return true;
-  } else {
-    m_ui->StatusBar->show();
-    m_ui->StatusBar->showMessage("File not found");
-    return false;
   }
+
+  m_ui->StatusBar->show();
+  m_ui->StatusBar->showMessage("File not found");
+  return false;
 }
 
 void fileEnter(Ui::MainWindow *ui) {
