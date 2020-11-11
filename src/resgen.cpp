@@ -7,26 +7,27 @@
 #include <experimental/filesystem>
 #endif
 
+#include <QString>
 #include <fstream>
-#include <iostream>
-#include <regex>
-#include <string>
 
 using namespace std;
 
-void read_directory(ofstream *outfile, int depth, string path, bool *status) {
-  for (const auto &entry : filesystem::directory_iterator(path)) {
-    if (entry.is_directory() && depth < 4)
-      read_directory(outfile, depth + 1, entry.path(), status);
-    const string e_path = entry.path().string();
-    const string image_types[] = {".png", ".jpg", ".jpeg", ".gif"};
-    for (string type : image_types) {
+void read_directory(ofstream *outfile, int depth, QString path, bool *status) {
+  for (const auto &entry : filesystem::directory_iterator(path.toStdString())) {
+    if (entry.is_directory() && depth < 3)
+      read_directory(outfile, depth + 1, entry.path().parent_path().c_str(),
+                     status);
+    if (entry.is_directory() && depth < 3)
+      read_directory(outfile, depth + 1, entry.path().c_str(), status);
+    const QString e_path = entry.path().c_str();
+    const QString image_types[] = {".png", ".jpg", ".jpeg", ".gif"};
+    for (QString type : image_types) {
       const size_t p_length = e_path.size();
       const size_t t_length = type.size();
       if (p_length >= t_length) {
-        if (e_path.compare(p_length - t_length, t_length, type) == 0) {
+        if (e_path.endsWith(type)) {
           *status = true;
-          *outfile << "<file>" << e_path << "</file>" << endl;
+          *outfile << "<file>" << e_path.toStdString() << "</file>" << endl;
         }
       }
     }

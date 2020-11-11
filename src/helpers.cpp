@@ -9,9 +9,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QString>
-#include <iostream>
 #include <qregexp.h>
-#include <string>
 
 using namespace std;
 

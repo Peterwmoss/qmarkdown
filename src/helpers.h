@@ -2,7 +2,6 @@
 #define HELPERS_HEADER
 
 #include <QString>
-#include <string>
 
 const std::string QRC_FILE(".images.rcc");
 
