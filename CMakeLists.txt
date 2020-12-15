@@ -17,13 +17,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
 
-find_library(fs NAMES libstdc++fs lstdc++fs stdc++fs REQUIRED)
+#find_library(fs NAMES libstdc++fs filesystem experimental/filesystem libstdc++fs lstdc++fs stdc++fs libc++fs lstdc++fs stdc++fs REQUIRED)
 
-if (${fs} STREQUAL fs-NOTFOUND)
-    message(FATAL_ERROR "filesystem header not found")
-else()
-    message(STATUS "filesystem header found")
-endif()
+#if (${fs} STREQUAL fs-NOTFOUND)
+#message(FATAL_ERROR "filesystem header not found")
+#else()
+#message(STATUS "filesystem header found")
+#endif()
 
 add_executable(qmarkdown
     src/helpers.cpp
