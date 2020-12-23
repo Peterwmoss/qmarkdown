@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install deps
-      run: apt install g++-10
+      run: sudo apt install g++-10
     - name: cmake
       run: cmake .
     - name: make
