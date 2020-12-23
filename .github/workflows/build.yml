@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install deps
-      run: sudo apt install g++-10 qt5-default
+      run: sudo apt update && sudo apt install g++-10 qt5-default
     - name: cmake
       run: cmake .
     - name: make
