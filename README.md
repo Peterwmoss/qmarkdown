@@ -35,13 +35,20 @@ This software is provided under the
 * `make`
 * `sudo` or other way to grant root privileges (like `doas`)
 
-To install:
+#### Clone and compile
 
 ```shell
-git clone https://github.com/Peterkmoss/qmarkdown.git &&
-cd qmarkdown &&
-cmake . &&
-make &&
+git clone https://github.com/Peterkmoss/qmarkdown.git
+cd qmarkdown
+mkdir build
+cd build
+cmake ..
+make
+```
+
+#### Install
+
+```shell
 sudo make install
 ```
 
@@ -80,8 +87,8 @@ arch-based users
 
 ## Disclaimer
 
-This software is provided AS-IS with all faults, security issues and alike that
+This software is provided as-is with all faults, security issues and alike that
 might come with it.
 
-By using this software product the user UNDERSTANDS and AGREES to that there is
-NO WARRANTY on this product.
+By using this software product the user understands, and agrees to, that there is
+no warranty on this product.
