@@ -13,52 +13,19 @@ qMarkdown is a simple Qt-based markdown viewer, it's light-weight and easy to us
 This software is provided under the
 [GNU GLPv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
 
-## Dependencies
-
-`qt` version `5.9.0` or above
-
-### Pacman packages
-
-* `qt5-base`
-* `qt5-webengine`
-* `qt5-webchannel`
-
-#### Optional
-
-* `ttf-roboto` - default font, but fallbacks to *sans-serif*
-
 ## Installation
 
-### Compile dependencies
+### Distribution Packages
 
-* `git` (to clone repository)
-* `c++` or similar compiler with support for c++17
-* `cmake` >= `3.1.0`
-* `make`
-* `sudo` or other way to grant root privileges (like `doas`)
-
-#### Clone and compile
-
-```shell
-git clone https://github.com/Peterkmoss/qmarkdown.git
-cd qmarkdown
-mkdir build
-cd build
-cmake ..
-make
-```
-
-#### Install
-
-```shell
-sudo make install
-```
-
-### Arch based distros
+#### AUR package
 
 There is an
 [AUR package available](https://aur.archlinux.org/packages/qmarkdown/) for all
 arch-based users
+
+### Manual
+
+See [installation](./docs/install.md) for further instructions.
 
 ## Usage
 
