@@ -29,6 +29,21 @@ public:
 
   bool setFile(QString path);
 
+private slots:
+  void resetZoom();
+  void scrollUp();
+  void scrollDown();
+  void scrollLeft();
+  void scrollRight();
+  void scrollTop();
+  void scrollBottom();
+
+  void openFileInput();
+  void closeFileInput();
+
+  void openFile();
+  void autoComplete();
+
 private:
   // Shortcuts
   QShortcut *m_shortcuts[NUM_SHORTCUTS];
@@ -36,9 +51,9 @@ private:
 
   // UI
   Ui::MainWindow *m_ui;
-  Preview *m_page;
 
   // Backend
+  Preview *m_page;
   Document m_content;
   QString m_current_text;
   QString m_current_path;
