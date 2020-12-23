@@ -1,0 +1,21 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install deps
+      run: sudo apt update && sudo apt install build-essential g++-10 qt5-default libqt5webengine5 libqt5webenginecore5 qtbase5-dev qtwebengine5-dev
+    - name: cmake
+      run: cmake .
+    - name: make
+      run: make

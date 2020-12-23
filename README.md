@@ -2,6 +2,8 @@
 
 qMarkdown is a simple Qt-based markdown viewer, it's light-weight and easy to use.
 
+![C/C++ CI](https://github.com/Peterkmoss/qmarkdown/workflows/C/C++%20CI/badge.svg)
+
 ## Screenshots
 
 ![Light](./public/light_small.png)

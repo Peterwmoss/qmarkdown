@@ -4,6 +4,7 @@
 #include "preview.h"
 #include "resgen.h"
 #include "ui_mainwindow.h"
+#include <qnamespace.h>
 
 #if __has_include(<filesystem>)
 #include <filesystem>
@@ -101,52 +102,55 @@ void fileEnter(Ui::MainWindow *ui) {
   ui->Input->setText("");
 }
 
+// Pre-lambda QT5 support
+void MainWindow::resetZoom() { this->m_page->resetZoom(); }
+
+void MainWindow::scrollDown() { this->m_page->scrollDown(); }
+void MainWindow::scrollUp() { this->m_page->scrollUp(); }
+void MainWindow::scrollLeft() { this->m_page->scrollLeft(); }
+void MainWindow::scrollRight() { this->m_page->scrollRight(); }
+void MainWindow::scrollTop() { this->m_page->scrollTop(); }
+void MainWindow::scrollBottom() { this->m_page->scrollBottom(); }
+
+void MainWindow::openFileInput() {
+    m_ui->Input->show();
+    m_ui->Input->setFocus();
+}
+void MainWindow::closeFileInput() {
+    if (m_ui->StatusBar->isVisible())
+      m_ui->StatusBar->hide();
+    else if (m_ui->Input->isVisible())
+      fileEnter(m_ui);
+}
+
+void MainWindow::openFile() {
+    if (setFile(m_ui->Input->text())) 
+      fileEnter(m_ui);
+}
+
+void MainWindow::autoComplete() { m_ui->Input->auto_complete(); }
+
 void MainWindow::setupShortcuts() {
   // Q to close
   m_shortcuts[0] = new QShortcut(Qt::Key_Q, this, SLOT(close()));
 
   // 0 to reset zoom
-  m_shortcuts[1] = new QShortcut(Qt::Key_0, m_ui->Preview,
-                                 [this]() { this->m_page->resetZoom(); });
+  m_shortcuts[1] = new QShortcut(Qt::Key_0, this, SLOT(resetZoom()));
 
   // Vim keys to move
-  m_shortcuts[2] = new QShortcut(Qt::Key_J, m_ui->Preview,
-                                 [this]() { this->m_page->scrollDown(); });
-  m_shortcuts[3] = new QShortcut(Qt::Key_K, m_ui->Preview,
-                                 [this]() { this->m_page->scrollUp(); });
-  m_shortcuts[4] = new QShortcut(Qt::Key_H, m_ui->Preview,
-                                 [this]() { this->m_page->scrollLeft(); });
-  m_shortcuts[5] = new QShortcut(Qt::Key_L, m_ui->Preview,
-                                 [this]() { this->m_page->scrollRight(); });
+  m_shortcuts[2] = new QShortcut(Qt::Key_J, this, SLOT(scrollDown()));
+  m_shortcuts[3] = new QShortcut(Qt::Key_K, this, SLOT(scrollUp()));
+  m_shortcuts[4] = new QShortcut(Qt::Key_H, this, SLOT(scrollLeft()));
+  m_shortcuts[5] = new QShortcut(Qt::Key_L, this, SLOT(scrollRight()));
 
-  m_shortcuts[6] = new QShortcut(Qt::Key_G, m_ui->Preview,
-                                 [this]() { this->m_page->scrollTop(); });
-  m_shortcuts[7] =
-      new QShortcut(QKeySequence(Qt::Modifier::SHIFT + Qt::Key_G),
-                    m_ui->Preview, [this]() { this->m_page->scrollBottom(); });
+  m_shortcuts[6] = new QShortcut(Qt::Key_G, this, SLOT(scrollTop()));
+  m_shortcuts[7] = new QShortcut(QKeySequence(Qt::Modifier::SHIFT + Qt::Key_G), this, SLOT(scrollBottom()));
 
-  // o to open new file
-  m_shortcuts[8] = new QShortcut(Qt::Key_O, m_ui->Preview, [this]() {
-    this->m_ui->Input->show();
-    this->m_ui->Input->setFocus();
-  });
-  // Escape to close file input
-  m_shortcuts[9] = new QShortcut(Qt::Key_Escape, m_ui->Preview, [this]() {
-    if (this->m_ui->StatusBar->isVisible())
-      this->m_ui->StatusBar->hide();
-    else if (this->m_ui->Input->isVisible())
-      fileEnter(this->m_ui);
-  });
-  // Open file from input
-  m_shortcuts[10] = new QShortcut(Qt::Key_Return, m_ui->Preview, [this]() {
-    if (setFile(this->m_ui->Input->text()))
-      fileEnter(this->m_ui);
-  });
+  m_shortcuts[8] = new QShortcut(Qt::Key_O, this, SLOT(openFileInput()));
+  m_shortcuts[9] = new QShortcut(Qt::Key_Escape, this, SLOT(closeFileInput()));
 
-  // Tab complete
-  m_shortcuts[11] = new QShortcut(Qt::Key_Tab, m_ui->Input, [this]() {
-    this->m_ui->Input->auto_complete();
-  });
+  m_shortcuts[10] = new QShortcut(Qt::Key_Return, this, SLOT(openFile()));
+  m_shortcuts[11] = new QShortcut(Qt::Key_Tab, this, SLOT(autoComplete()));
 }
 
 MainWindow::~MainWindow() {
