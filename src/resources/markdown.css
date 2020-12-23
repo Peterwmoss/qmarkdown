@@ -133,6 +133,10 @@ strong {
     font-weight: bold;
 }
 
+blockquote {
+    font-style: italic;
+}
+
 ul,
 ol {
     margin: 0 0;
