@@ -42,7 +42,7 @@ public:
     MainWindow->setStatusBar(StatusBar);
 
     MainWindow->setWindowTitle(
-        QCoreApplication::translate("MainWindow", "MarkDown Editor", nullptr));
+        QCoreApplication::translate("MainWindow", "qMarkdown", nullptr));
 
     QMetaObject::connectSlotsByName(MainWindow);
   }
