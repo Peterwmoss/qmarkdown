@@ -160,10 +160,13 @@ MainWindow::~MainWindow() {
     delete m_shortcuts[i++];
 
   // UI
+  delete m_ui->Input;
+  delete m_ui->Preview;
+  delete m_ui->StatusBar;
   delete m_ui;
-  delete m_page;
 
   // Backend
+  delete m_page;
   delete m_channel;
   delete m_file;
   delete m_reload;

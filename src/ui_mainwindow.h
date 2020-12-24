@@ -17,7 +17,6 @@ QT_BEGIN_NAMESPACE
 
 class Ui_MainWindow {
 public:
-  QWidget *centralwidget;
   QWebEngineView *Preview;
   FileInput *Input;
   QStatusBar *StatusBar;
