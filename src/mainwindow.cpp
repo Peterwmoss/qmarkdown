@@ -8,8 +8,10 @@
 
 #if __has_include(<filesystem>)
 #include <filesystem>
+#define FILESYSTEM filesystem
 #elif __has_include(<experimental/filesystem>)
 #include <experimental/filesystem>
+#define FILESYSTEM std::experimental::filesystem
 #endif
 
 #include <QFile>
@@ -29,7 +31,7 @@ MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
 
   // Change working directory to enable image loading
   m_current_path = get_path(*file);
-  filesystem::current_path(m_current_path.toStdString());
+  FILESYSTEM::current_path(m_current_path.toStdString());
 
   m_file = new QFile(get_file(*file));
 
@@ -84,7 +86,7 @@ void MainWindow::loadImages() {
 bool MainWindow::setFile(QString path) {
   if (file_exists(&path)) {
     m_current_path = get_path(path);
-    filesystem::current_path(m_current_path.toStdString());
+    FILESYSTEM::current_path(m_current_path.toStdString());
     m_file->setFileName(get_file(path));
     loadFile();
     loadImages();
