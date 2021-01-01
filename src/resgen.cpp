@@ -15,7 +15,7 @@
 using namespace std;
 
 void read_directory(ofstream *outfile, int depth, QString path, bool *status) {
-  for (const auto &entry : filesystem::directory_iterator(path.toStdString())) {
+  for (const auto &entry : FILESYSTEM::directory_iterator(path.toStdString())) {
     if (entry.is_directory() && depth < 3)
       read_directory(outfile, depth + 1, entry.path().c_str(), status);
     const QString e_path = entry.path().c_str();
