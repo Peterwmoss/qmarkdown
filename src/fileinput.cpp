@@ -5,8 +5,12 @@
 
 #if __has_include(<filesystem>)
 #include <filesystem>
+#define FILESYSTEM filesystem
+#define IS_DIRECTORY(p) p.is_directory()
 #elif __has_include(<experimental/filesystem>)
 #include <experimental/filesystem>
+#define FILESYSTEM std::experimental::filesystem
+#define IS_DIRECTORY(p) FILESYSTEM::is_directory(p.symlink_status())
 #endif
 
 using namespace std;
@@ -42,8 +46,7 @@ void FileInput::auto_complete() {
 
   count = 0;
   if (directory_exists(q_path)) {
-    for (const auto &entry :
-         filesystem::directory_iterator(q_path->toStdString())) {
+    for (const auto &entry : FILESYSTEM::directory_iterator(q_path->toStdString())) {
       string entry_str = entry.path();
 
       size_t e_slash = entry_str.rfind("/") + 1;
@@ -55,7 +58,7 @@ void FileInput::auto_complete() {
             m_complete_list[count] = entry.path().string();
           }
           count++;
-        } else if (entry.is_directory()) {
+        } else if (IS_DIRECTORY(entry)) {
           if (count < AUTO_COMPLETE_MAX) {
             m_complete_list[count] = entry.path().string() + "/";
           }
