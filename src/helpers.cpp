@@ -2,8 +2,10 @@
 
 #if __has_include(<filesystem>)
 #include <filesystem>
+#define FILESYSTEM filesystem
 #elif __has_include(<experimental/filesystem>)
 #include <experimental/filesystem>
+#define FILESYSTEM std::experimental::filesystem
 #endif
 
 #include <QDir>
@@ -19,7 +21,7 @@ QString get_file(QString path) {
 }
 
 QString get_path(QString argument) {
-  QString path = filesystem::absolute(argument.toStdString()).c_str();
+  QString path = FILESYSTEM::absolute(argument.toStdString()).c_str();
   path.replace(get_file(argument), "");
   if (path.isEmpty())
     path = "./";
