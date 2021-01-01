@@ -3,8 +3,10 @@
 
 #if __has_include(<filesystem>)
 #include <filesystem>
+#define FILESYSTEM filesystem
 #elif __has_include(<experimental/filesystem>)
 #include <experimental/filesystem>
+#define FILESYSTEM std::experimental::filesystem
 #endif
 
 #include <QString>
