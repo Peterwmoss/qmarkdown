@@ -4,9 +4,11 @@
 #if __has_include(<filesystem>)
 #include <filesystem>
 #define FILESYSTEM filesystem
+#define IS_DIRECTORY(p) p.is_directory()
 #elif __has_include(<experimental/filesystem>)
 #include <experimental/filesystem>
 #define FILESYSTEM std::experimental::filesystem
+#define IS_DIRECTORY(p) FILESYSTEM::is_directory(p.symlink_status())
 #endif
 
 #include <QString>
@@ -16,7 +18,7 @@ using namespace std;
 
 void read_directory(ofstream *outfile, int depth, QString path, bool *status) {
   for (const auto &entry : FILESYSTEM::directory_iterator(path.toStdString())) {
-    if (entry.is_directory() && depth < 3)
+    if (IS_DIRECTORY(entry) && depth < 3)
       read_directory(outfile, depth + 1, entry.path().c_str(), status);
     const QString e_path = entry.path().c_str();
     const QString image_types[] = {".png", ".jpg", ".jpeg", ".gif"};
