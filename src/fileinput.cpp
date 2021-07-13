@@ -65,7 +65,7 @@ void FileInput::auto_complete() {
           count++;
         }
       }
-      free(entry_end);
+      delete entry_end;
     }
   }
   free(q_path);
