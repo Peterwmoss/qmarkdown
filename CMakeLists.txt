@@ -28,6 +28,8 @@ add_executable(qmarkdown
     src/resources/qmarkdown.qrc
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+
 target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngineCore
     Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui stdc++fs)
 
