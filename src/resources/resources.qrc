@@ -1,4 +1,4 @@
-<RCC>
+<!DOCTYPE RCC><RCC version="1.0">
     <qresource prefix="/">
         <file>help.md</file>
         <file>index-dark.html</file>

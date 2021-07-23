@@ -5,11 +5,11 @@
 #include <QShortcut>
 #include <QWebEnginePage>
 
-class Preview : public QWebEnginePage {
+class WebPage : public QWebEnginePage {
   Q_OBJECT
 
 public:
-  Preview(QObject *parent = nullptr) : QWebEnginePage(parent) {}
+  WebPage(QObject *parent = nullptr) : QWebEnginePage(parent) {}
 
   bool acceptNavigationRequest(const QUrl &url,
                                QWebEnginePage::NavigationType type,

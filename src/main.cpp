@@ -8,7 +8,7 @@ using namespace std;
 
 int die(const char *message) {
   printf("Error: %s\n", message);
-  printf("Usage: Usage `qmarkdown <file>.md`\n");
+  printf("Usage: Usage `qmarkdown [colorscheme] <file>.md`\n");
 
   exit(1);
 }
@@ -21,38 +21,27 @@ bool parse_file(char *arg, QString *file) {
   return false;
 }
 
-bool parse_color_short(QString *color) {
-  if (*color == "l") {
-    *color = "qrc:/index-light.html";
+bool parse_color(QString *index_file, QString *color_scheme) {
+  if (*color_scheme == "l" || *color_scheme == "light") {
+    *index_file = ":/index-light.html";
     return true;
   }
-  if (*color == "d") {
-    *color = "qrc:/index-dark.html";
-    return true;
-  }
-  return false;
-}
-
-bool parse_color_long(QString *color) {
-  if (*color == "light") {
-    *color = "qrc:/index-light.html";
-    return true;
-  }
-  if (*color == "dark") {
-    *color = "qrc:/index-dark.html";
+  if (*color_scheme == "d" || *color_scheme == "dark") {
+    *index_file = ":/index-dark.html";
     return true;
   }
   return false;
 }
 
-bool parse_arguments(QString *color, QString *file, char *color_argument,
+bool parse_arguments(QString *index_file, QString *file, char *color_argument,
                      char *file_argument) {
+  QString *color_scheme = new QString();
   if (color_argument[0] == '-') {
     if (color_argument[1] == '-')
-      *color = color_argument + 2;
+      *color_scheme = color_argument + 2;
     else
-      *color = color_argument + 1;
-    if (!parse_color_long(color) && !parse_color_short(color))
+      *color_scheme = color_argument + 1;
+    if (!parse_color(index_file, color_scheme))
       return false;
     if (!parse_file(file_argument, file))
       return false;
@@ -61,10 +50,10 @@ bool parse_arguments(QString *color, QString *file, char *color_argument,
   return false;
 }
 
-void load_args(int argc, char *argv[], QString *file, QString *color) {
+void load_args(int argc, char *argv[], QString *file, QString *index_file) {
   // Only file as argument
   if (argc == 2 && argv[1][0] != '-') {
-    *color = "qrc:/index-light.html";
+    *index_file = "qrc:/index-light.html";
     if (!parse_file(argv[1], file))
       die("File not found");
     return;
@@ -72,8 +61,8 @@ void load_args(int argc, char *argv[], QString *file, QString *color) {
 
   // File and colorscheme
   if (argc == 3) {
-    if (!parse_arguments(color, file, argv[1], argv[2]))
-      if (!parse_arguments(color, file, argv[2], argv[1]))
+    if (!parse_arguments(index_file, file, argv[1], argv[2]))
+      if (!parse_arguments(index_file, file, argv[2], argv[1]))
         die("Could not parse arguments");
     return;
   }
@@ -86,10 +75,10 @@ int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
 
   QString file;
-  QString color;
-  load_args(argc, argv, &file, &color);
+  QString index_file;
+  load_args(argc, argv, &file, &index_file);
 
-  MainWindow window(&color, &file);
+  MainWindow window(&index_file, &file);
   window.show();
 
   return app.exec();

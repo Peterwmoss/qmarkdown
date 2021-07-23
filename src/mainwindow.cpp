@@ -1,10 +1,9 @@
 #include "mainwindow.h"
 #include "document.h"
 #include "helpers.h"
-#include "preview.h"
+#include "webpage.h"
 #include "resgen.h"
 #include "ui_mainwindow.h"
-#include <qnamespace.h>
 
 #if __has_include(<filesystem>)
 #include <filesystem>
@@ -23,9 +22,11 @@
 #include <QWebChannel>
 #include <QWebEnginePage>
 
+#include <QDebug>
+
 using namespace std;
 
-MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
+MainWindow::MainWindow(QString *index_file, QString *file, QWidget *parent)
     : QMainWindow(parent), m_ui(new Ui::MainWindow) {
   m_ui->setupUi(this);
 
@@ -38,17 +39,20 @@ MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
   m_channel = new QWebChannel(this);
   m_channel->registerObject(QStringLiteral("content"), &m_content);
 
-  m_page = new Preview(this);
+  m_page = new WebPage(this);
   m_page->setWebChannel(m_channel);
 
-  m_ui->Preview->setPage(m_page);
-  m_ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
-  m_ui->Preview->setUrl(QUrl(*colorscheme));
+  m_ui->WebView->setPage(m_page);
+  m_ui->WebView->setContextMenuPolicy(Qt::NoContextMenu);
+
+  QUrl file_url(*index_file);
+  m_ui->WebView->setUrl(file_url);
 
   loadImages();
   loadFile();
 
   // Reload file every 1 second
+  // TODO: should probably be a QFileSystemWatcher instead
   m_reload = new QTimer(this);
   connect(m_reload, &QTimer::timeout, this, &MainWindow::reloadFile);
   m_reload->start(1000);
@@ -99,7 +103,7 @@ bool MainWindow::setFile(QString path) {
 }
 
 void fileEnter(Ui::MainWindow *ui) {
-  ui->Preview->setFocus();
+  ui->WebView->setFocus();
   ui->Input->hide();
   ui->Input->setText("");
 }
@@ -163,7 +167,7 @@ MainWindow::~MainWindow() {
 
   // UI
   delete m_ui->Input;
-  delete m_ui->Preview;
+  delete m_ui->WebView;
   delete m_ui->StatusBar;
   delete m_ui;
 

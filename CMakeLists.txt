@@ -21,16 +21,13 @@ add_executable(qmarkdown
     src/helpers.cpp
     src/resgen.cpp
     src/fileinput.cpp
-    src/preview.cpp
+    src/webpage.cpp
     src/document.cpp
     src/mainwindow.cpp
     src/main.cpp
-    src/resources/qmarkdown.qrc
+    src/resources/resources.qrc
 )
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
-
-target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngineCore
-    Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui stdc++fs)
+target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngineCore Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui stdc++fs)
 
 install(TARGETS qmarkdown DESTINATION ${DESTDIR}${PREFIX}/usr/bin)

@@ -2,7 +2,7 @@
 #define MAINWINDOW_HEADER
 
 #include "document.h"
-#include "preview.h"
+#include "webpage.h"
 
 #include <QFile>
 #include <QMainWindow>
@@ -53,7 +53,7 @@ private:
   Ui::MainWindow *m_ui;
 
   // Backend
-  Preview *m_page;
+  WebPage *m_page;
   Document m_content;
   QString m_current_text;
   QString m_current_path;
