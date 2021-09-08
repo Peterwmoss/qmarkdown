@@ -53,7 +53,7 @@ bool parse_arguments(QString *index_file, QString *file, char *color_argument,
 void load_args(int argc, char *argv[], QString *file, QString *index_file) {
   // Only file as argument
   if (argc == 2 && argv[1][0] != '-') {
-    *index_file = "qrc:/index-light.html";
+    *index_file = ":/index-light.html";
     if (!parse_file(argv[1], file))
       die("File not found");
     return;

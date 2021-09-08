@@ -60,9 +60,10 @@ private:
   QWebChannel *m_channel;
   QTimer *m_reload;
   QFile *m_file;
-  void loadImages();
-  void loadFile();
-  void reloadFile();
+  void load_images();
+  void load_file();
+  void load_html(QString index_file);
+  void reload_file();
 };
 
 #endif

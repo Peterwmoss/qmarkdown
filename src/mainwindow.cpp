@@ -45,30 +45,38 @@ MainWindow::MainWindow(QString *index_file, QString *file, QWidget *parent)
   m_ui->WebView->setPage(m_page);
   m_ui->WebView->setContextMenuPolicy(Qt::NoContextMenu);
 
-  QUrl file_url(*index_file);
-  m_ui->WebView->setUrl(file_url);
+  load_html(*index_file);
 
-  loadImages();
-  loadFile();
+  load_images();
+  load_file();
 
   // Reload file every 1 second
   // TODO: should probably be a QFileSystemWatcher instead
   m_reload = new QTimer(this);
-  connect(m_reload, &QTimer::timeout, this, &MainWindow::reloadFile);
+  connect(m_reload, &QTimer::timeout, this, &MainWindow::reload_file);
   m_reload->start(1000);
 
   setupShortcuts();
 }
 
-void MainWindow::reloadFile() {
-  if (m_current_text != m_content.getText()) {
-    m_current_text = m_content.getText();
-    loadImages();
-  }
-  loadFile();
+void MainWindow::load_html(QString index_file) {
+  QFile *file = new QFile(index_file);
+  file->open(QIODevice::ReadOnly);
+  QTextStream stream(file);
+  QString file_text(stream.readAll());
+  m_ui->WebView->setHtml(file_text, QUrl("qrc:/"));
+  file->close();
 }
 
-void MainWindow::loadFile() {
+void MainWindow::reload_file() {
+  if (m_current_text != m_content.getText()) {
+    m_current_text = m_content.getText();
+    load_images();
+  }
+  load_file();
+}
+
+void MainWindow::load_file() {
   m_file->open(QIODevice::ReadOnly);
   QTextStream stream(m_file);
   QString file_text(stream.readAll());
@@ -76,7 +84,7 @@ void MainWindow::loadFile() {
   m_file->close();
 }
 
-void MainWindow::loadImages() {
+void MainWindow::load_images() {
   res_gen();
 
   QString qpath = m_current_path + QRC_FILE.c_str();
@@ -92,8 +100,8 @@ bool MainWindow::setFile(QString path) {
     m_current_path = get_path(path);
     FILESYSTEM::current_path(m_current_path.toStdString());
     m_file->setFileName(get_file(path));
-    loadFile();
-    loadImages();
+    load_file();
+    load_images();
     return true;
   }
 
