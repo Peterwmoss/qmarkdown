@@ -1,10 +1,9 @@
 #include "mainwindow.h"
 #include "document.h"
 #include "helpers.h"
-#include "preview.h"
+#include "webpage.h"
 #include "resgen.h"
 #include "ui_mainwindow.h"
-#include <qnamespace.h>
 
 #if __has_include(<filesystem>)
 #include <filesystem>
@@ -23,9 +22,11 @@
 #include <QWebChannel>
 #include <QWebEnginePage>
 
+#include <QDebug>
+
 using namespace std;
 
-MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
+MainWindow::MainWindow(QString *index_file, QString *file, QWidget *parent)
     : QMainWindow(parent), m_ui(new Ui::MainWindow) {
   m_ui->setupUi(this);
 
@@ -38,33 +39,44 @@ MainWindow::MainWindow(QString *colorscheme, QString *file, QWidget *parent)
   m_channel = new QWebChannel(this);
   m_channel->registerObject(QStringLiteral("content"), &m_content);
 
-  m_page = new Preview(this);
+  m_page = new WebPage(this);
   m_page->setWebChannel(m_channel);
 
-  m_ui->Preview->setPage(m_page);
-  m_ui->Preview->setContextMenuPolicy(Qt::NoContextMenu);
-  m_ui->Preview->setUrl(QUrl(*colorscheme));
+  m_ui->WebView->setPage(m_page);
+  m_ui->WebView->setContextMenuPolicy(Qt::NoContextMenu);
 
-  loadImages();
-  loadFile();
+  load_html(*index_file);
+
+  load_images();
+  load_file();
 
   // Reload file every 1 second
+  // TODO: should probably be a QFileSystemWatcher instead
   m_reload = new QTimer(this);
-  connect(m_reload, &QTimer::timeout, this, &MainWindow::reloadFile);
+  connect(m_reload, &QTimer::timeout, this, &MainWindow::reload_file);
   m_reload->start(1000);
 
   setupShortcuts();
 }
 
-void MainWindow::reloadFile() {
-  if (m_current_text != m_content.getText()) {
-    m_current_text = m_content.getText();
-    loadImages();
-  }
-  loadFile();
+void MainWindow::load_html(QString index_file) {
+  QFile *file = new QFile(index_file);
+  file->open(QIODevice::ReadOnly);
+  QTextStream stream(file);
+  QString file_text(stream.readAll());
+  m_ui->WebView->setHtml(file_text, QUrl("qrc:/"));
+  file->close();
 }
 
-void MainWindow::loadFile() {
+void MainWindow::reload_file() {
+  if (m_current_text != m_content.getText()) {
+    m_current_text = m_content.getText();
+    load_images();
+  }
+  load_file();
+}
+
+void MainWindow::load_file() {
   m_file->open(QIODevice::ReadOnly);
   QTextStream stream(m_file);
   QString file_text(stream.readAll());
@@ -72,7 +84,7 @@ void MainWindow::loadFile() {
   m_file->close();
 }
 
-void MainWindow::loadImages() {
+void MainWindow::load_images() {
   res_gen();
 
   QString qpath = m_current_path + QRC_FILE.c_str();
@@ -88,8 +100,8 @@ bool MainWindow::setFile(QString path) {
     m_current_path = get_path(path);
     FILESYSTEM::current_path(m_current_path.toStdString());
     m_file->setFileName(get_file(path));
-    loadFile();
-    loadImages();
+    load_file();
+    load_images();
     return true;
   }
 
@@ -99,7 +111,7 @@ bool MainWindow::setFile(QString path) {
 }
 
 void fileEnter(Ui::MainWindow *ui) {
-  ui->Preview->setFocus();
+  ui->WebView->setFocus();
   ui->Input->hide();
   ui->Input->setText("");
 }
@@ -163,7 +175,7 @@ MainWindow::~MainWindow() {
 
   // UI
   delete m_ui->Input;
-  delete m_ui->Preview;
+  delete m_ui->WebView;
   delete m_ui->StatusBar;
   delete m_ui;
 

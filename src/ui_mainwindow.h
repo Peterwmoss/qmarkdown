@@ -12,21 +12,22 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
+#include <QStackedLayout>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_MainWindow {
 public:
-  QWebEngineView *Preview;
+  QWebEngineView *WebView;
   FileInput *Input;
   QStatusBar *StatusBar;
+  QStackedLayout *Layout;
 
   void setupUi(QMainWindow *MainWindow) {
     if (MainWindow->objectName().isEmpty())
       MainWindow->setObjectName("MainWindow");
     MainWindow->resize(800, 600);
-    Preview = new QWebEngineView(MainWindow);
-    Preview->setObjectName("preview");
+    WebView = new QWebEngineView(MainWindow);
 
     Input = new FileInput();
     Input->setObjectName("fileInput");
@@ -37,13 +38,10 @@ public:
     StatusBar->hide();
 
     MainWindow->setMenuWidget(Input);
-    MainWindow->setCentralWidget(Preview);
+    MainWindow->setCentralWidget(WebView);
     MainWindow->setStatusBar(StatusBar);
 
-    MainWindow->setWindowTitle(
-        QCoreApplication::translate("MainWindow", "qMarkdown", nullptr));
-
-    QMetaObject::connectSlotsByName(MainWindow);
+    MainWindow->setWindowTitle("qMarkdown");
   }
 };
 

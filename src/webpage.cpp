@@ -1,10 +1,10 @@
-#include "preview.h"
+#include "webpage.h"
 
 #include <QDesktopServices>
 #include <QString>
 #include <QWebEnginePage>
 
-bool Preview::acceptNavigationRequest(const QUrl &url,
+bool WebPage::acceptNavigationRequest(const QUrl &url,
                                       QWebEnginePage::NavigationType type,
                                       bool isMainFrame) {
   if (type == QWebEnginePage::NavigationTypeLinkClicked) {
@@ -14,34 +14,34 @@ bool Preview::acceptNavigationRequest(const QUrl &url,
   return true;
 }
 
-void Preview::scrollDown() {
+void WebPage::scrollDown() {
   QString scrollDown("window.scrollBy(0, 50)");
   runJavaScript(scrollDown);
 }
 
-void Preview::scrollUp() {
+void WebPage::scrollUp() {
   QString scrollUp("window.scrollBy(0, -50)");
   runJavaScript(scrollUp);
 }
 
-void Preview::scrollLeft() {
+void WebPage::scrollLeft() {
   QString scrollUp("window.scrollBy(-50, 0)");
   runJavaScript(scrollUp);
 }
 
-void Preview::scrollRight() {
+void WebPage::scrollRight() {
   QString scrollUp("window.scrollBy(50, 0)");
   runJavaScript(scrollUp);
 }
 
-void Preview::scrollTop() {
+void WebPage::scrollTop() {
   QString scrollUp("window.scrollTo(0,0)");
   runJavaScript(scrollUp);
 }
 
-void Preview::scrollBottom() {
+void WebPage::scrollBottom() {
   QString scrollUp("window.scrollTo(0,document.body.scrollHeight)");
   runJavaScript(scrollUp);
 }
 
-void Preview::resetZoom() { setZoomFactor(1.0); }
+void WebPage::resetZoom() { setZoomFactor(1.0); }
