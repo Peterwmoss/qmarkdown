@@ -4,11 +4,9 @@
 #if __has_include(<filesystem>)
 #include <filesystem>
 #define FILESYSTEM filesystem
-#define IS_DIRECTORY(p) p.is_directory()
 #elif __has_include(<experimental/filesystem>)
 #include <experimental/filesystem>
 #define FILESYSTEM std::experimental::filesystem
-#define IS_DIRECTORY(p) FILESYSTEM::is_directory(p.symlink_status())
 #endif
 
 #include <QString>
@@ -16,10 +14,10 @@
 
 using namespace std;
 
-void read_directory(ofstream *outfile, int depth, QString path, bool *status) {
-  for (const auto &entry : FILESYSTEM::directory_iterator(path.toStdString())) {
-    if (IS_DIRECTORY(entry) && depth < 3)
-      read_directory(outfile, depth + 1, entry.path().c_str(), status);
+void read_directory(ofstream *outfile, QString path, bool *status) {
+  for (auto it = FILESYSTEM::recursive_directory_iterator(path.toStdString(), FILESYSTEM::directory_options::skip_permission_denied); it != FILESYSTEM::recursive_directory_iterator(); ++it) {
+    if (it.depth() > 3) continue;
+    const auto entry = *it;
     const QString e_path = entry.path().c_str();
     const QString image_types[] = {".png", ".jpg", ".jpeg", ".gif"};
     for (QString type : image_types) {
@@ -42,7 +40,7 @@ void res_gen() {
   outfile << "<qresource>" << endl;
 
   bool image_exists = false;
-  read_directory(&outfile, 0, ".", &image_exists);
+  read_directory(&outfile, ".", &image_exists);
 
   outfile << "</qresource>" << endl;
   outfile << "</RCC>" << endl;

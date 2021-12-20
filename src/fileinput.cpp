@@ -46,7 +46,9 @@ void FileInput::auto_complete() {
 
   count = 0;
   if (directory_exists(q_path)) {
-    for (const auto &entry : FILESYSTEM::directory_iterator(q_path->toStdString())) {
+    for (auto it = FILESYSTEM::recursive_directory_iterator(q_path->toStdString(), FILESYSTEM::directory_options::skip_permission_denied); it != FILESYSTEM::recursive_directory_iterator(); ++it) {
+      if (it.depth() > 0) continue;
+      const auto entry = *it;
       string entry_str = entry.path();
 
       size_t e_slash = entry_str.rfind("/") + 1;
