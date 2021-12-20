@@ -2,6 +2,7 @@
 #include "helpers.h"
 
 #include <QString>
+#include <QDebug>
 
 #if __has_include(<filesystem>)
 #include <filesystem>
@@ -15,63 +16,119 @@
 
 using namespace std;
 
-string get_start(size_t end, string path) { return path.erase(end).c_str(); }
-
-string get_end(size_t start, string path) {
-  return path.erase(0, start).c_str();
+string remove_end(size_t index, string text) {
+  if (text.empty()) {
+    return "";
+  }
+  return text.erase(index);
 }
 
-void FileInput::auto_complete() {
-  string path = text().toStdString();
-  size_t p_slash = path.rfind("/") + 1;
+string remove_start(size_t index, string text) {
+  if (text.empty()) {
+    return "";
+  }
+  return text.erase(0, index);
+}
 
-  QString *q_path;
-  if (get_start(p_slash, path) == "")
-    q_path = new QString(".");
-  else
-    q_path = new QString(path.c_str());
+size_t get_search_index(string text) {
+  // Get the index of the first character after the slash
+  return text.rfind("/") + 1;
+}
 
-  string search_word = get_end(p_slash, path);
+QString *get_path_from_text(size_t search_start_index, string text) {
+  string trimmed = remove_end(search_start_index, text);
+  if (trimmed == "") {
+    return new QString(".");
+  }
 
-  // Clear previous search
-  int count = 0;
-  for (count = 0; count < AUTO_COMPLETE_MAX; count++)
+  return new QString(trimmed.c_str());
+}
+
+void FileInput::reset_complete_list() {
+  for (int count = 0; count < AUTO_COMPLETE_MAX; count++) {
     m_complete_list[count] = "";
+  }
+}
 
-  // Clear query path if its not a directory or file
-  if (!directory_exists(q_path)) {
-    free(q_path);
-    q_path = new QString(get_start(p_slash, path).c_str());
+void FileInput::fetch_suggestions() {
+  reset_complete_list();
+
+  // Convert the current text to a std::string since QString isn't doesn't provide the needed functionality
+  string text = this->text().toStdString();
+  size_t search_start_index = get_search_index(text);
+
+  string search_word = remove_start(search_start_index, text);
+
+  QString *path = get_path_from_text(search_start_index, text);
+
+  if (!directory_exists(path)) {
+    free(path);
+    return;
   }
 
-  count = 0;
-  if (directory_exists(q_path)) {
-    for (auto it = FILESYSTEM::recursive_directory_iterator(q_path->toStdString(), FILESYSTEM::directory_options::skip_permission_denied); it != FILESYSTEM::recursive_directory_iterator(); ++it) {
-      if (it.depth() > 0) continue;
-      const auto entry = *it;
-      string entry_str = entry.path();
-
-      size_t e_slash = entry_str.rfind("/") + 1;
-      QString *entry_end = new QString(get_end(e_slash, entry_str).c_str());
-
-      if (entry_end->startsWith(search_word.c_str())) {
-        if (entry_end->endsWith(".md")) {
-          if (count < AUTO_COMPLETE_MAX) {
-            m_complete_list[count] = entry.path().string();
-          }
-          count++;
-        } else if (IS_DIRECTORY(entry)) {
-          if (count < AUTO_COMPLETE_MAX) {
-            m_complete_list[count] = entry.path().string() + "/";
-          }
-          count++;
-        }
-      }
-      delete entry_end;
+  int index = 0;
+  auto it = FILESYSTEM::recursive_directory_iterator(path->toStdString(), FILESYSTEM::directory_options::skip_permission_denied);
+  for (; it != FILESYSTEM::recursive_directory_iterator() && index < AUTO_COMPLETE_MAX; ++it) {
+    // We only want to look one layer down
+    if (it.depth() > 0) {
+      continue;
     }
-  }
-  free(q_path);
 
-  if (count == 1)
-    setText(m_complete_list[0].c_str());
+    const auto entry = *it;
+    string entry_path = entry.path();
+
+    size_t entry_search_start_index = get_search_index(entry_path);
+    QString *search_result = new QString(remove_start(entry_search_start_index, entry_path).c_str());
+
+    if (!search_result->startsWith(search_word.c_str())) {
+      delete search_result;
+      continue;
+    }
+
+    // If search result is either a markdown file or directory, we will add it to the list
+    if (search_result->endsWith(".md")) {
+      m_complete_list[index] = entry.path();
+      index++;
+    } else if (IS_DIRECTORY(entry)) {
+      m_complete_list[index] = entry.path().string() + "/";
+      index++;
+    }
+
+    delete search_result;
+  }
+  size = index;
+
+  free(path);
+}
+
+void FileInput::update_suggestion() {
+  if (text() == "" || isModified() || current_index >= AUTO_COMPLETE_MAX) {
+    fetch_suggestions();
+    current_index = 0;
+  }
+
+  string suggestion = m_complete_list[current_index];
+  if (suggestion == "") {
+    return;
+  }
+
+  setText(suggestion.c_str());
+}
+
+void FileInput::next_suggestion() {
+  if (current_index < 0) {
+    current_index = 0;
+  } else {
+    current_index = (current_index + 1) % size;
+  }
+  update_suggestion();
+}
+
+void FileInput::prev_suggestion() {
+  if (current_index <= 0) {
+    current_index = size - 1;
+  } else {
+    current_index = (current_index - 1) % size;
+  }
+  update_suggestion();
 }

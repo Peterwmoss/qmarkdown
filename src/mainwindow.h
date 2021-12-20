@@ -10,7 +10,7 @@
 #include <QString>
 #include <QTimer>
 
-#define NUM_SHORTCUTS 12
+#define NUM_SHORTCUTS 13 
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -42,7 +42,9 @@ private slots:
   void closeFileInput();
 
   void openFile();
-  void autoComplete();
+
+  void nextAutocomplete();
+  void prevAutocomplete();
 
 private:
   // Shortcuts

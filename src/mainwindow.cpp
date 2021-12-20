@@ -142,7 +142,8 @@ void MainWindow::openFile() {
       fileEnter(m_ui);
 }
 
-void MainWindow::autoComplete() { m_ui->Input->auto_complete(); }
+void MainWindow::nextAutocomplete() { m_ui->Input->next_suggestion(); }
+void MainWindow::prevAutocomplete() { m_ui->Input->prev_suggestion(); }
 
 void MainWindow::setupShortcuts() {
   // Q to close
@@ -164,7 +165,9 @@ void MainWindow::setupShortcuts() {
   m_shortcuts[9] = new QShortcut(Qt::Key_Escape, this, SLOT(closeFileInput()));
 
   m_shortcuts[10] = new QShortcut(Qt::Key_Return, this, SLOT(openFile()));
-  m_shortcuts[11] = new QShortcut(Qt::Key_Tab, this, SLOT(autoComplete()));
+
+  m_shortcuts[11] = new QShortcut(Qt::Key_Tab, this, SLOT(nextAutocomplete()));
+  m_shortcuts[12] = new QShortcut(QKeySequence(Qt::Modifier::SHIFT | Qt::Key_Tab), this, SLOT(prevAutocomplete()));
 }
 
 MainWindow::~MainWindow() {
