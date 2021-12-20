@@ -8,12 +8,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5WebEngineCore REQUIRED)
-find_package(Qt5WebEngineWidgets REQUIRED)
-find_package(Qt5WebChannel REQUIRED)
-find_package(Qt5Gui REQUIRED)
+# Qt5 libraries
+find_package(Qt6Core REQUIRED)
+find_package(Qt6Widgets REQUIRED)
+find_package(Qt6WebEngineCore REQUIRED)
+find_package(Qt6WebEngineWidgets REQUIRED)
+find_package(Qt6WebChannel REQUIRED)
+find_package(Qt6Gui REQUIRED)
 
 set(CMAKE_CXX_FLAGS "-O3 -Wall -Wextra")
 
@@ -28,6 +29,6 @@ add_executable(qmarkdown
     src/resources/resources.qrc
 )
 
-target_link_libraries(qmarkdown Qt5::Widgets Qt5::Core Qt5::WebEngineCore Qt5::WebEngineWidgets Qt5::WebChannel Qt5::Gui stdc++fs)
+target_link_libraries(qmarkdown Qt::Widgets Qt::Core Qt::WebEngineCore Qt::WebEngineWidgets Qt::WebChannel Qt::Gui stdc++fs)
 
 install(TARGETS qmarkdown DESTINATION ${DESTDIR}${PREFIX}/usr/bin)

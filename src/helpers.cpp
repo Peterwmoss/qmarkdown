@@ -11,12 +11,12 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QString>
-#include <qregexp.h>
+#include <QRegularExpression>
 
 using namespace std;
 
 QString get_file(QString path) {
-  path.replace(QRegExp("(.*/)*"), "");
+  path.replace(QRegularExpression("(.*/)*"), "");
   return path;
 }
 
