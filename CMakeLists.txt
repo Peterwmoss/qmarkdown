@@ -8,6 +8,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+# Multithreading
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
 # Qt5 libraries
 find_package(Qt6Core REQUIRED)
 find_package(Qt6Widgets REQUIRED)
@@ -29,6 +33,6 @@ add_executable(qmarkdown
     src/resources/resources.qrc
 )
 
-target_link_libraries(qmarkdown Qt::Widgets Qt::Core Qt::WebEngineCore Qt::WebEngineWidgets Qt::WebChannel Qt::Gui stdc++fs)
+target_link_libraries(qmarkdown Qt::Widgets Qt::Core Qt::WebEngineCore Qt::WebEngineWidgets Qt::WebChannel Qt::Gui stdc++fs Threads::Threads)
 
 install(TARGETS qmarkdown DESTINATION ${DESTDIR}${PREFIX}/usr/bin)
