@@ -158,7 +158,7 @@ void MainWindow::setupShortcuts() {
   m_shortcuts[5] = new QShortcut(Qt::Key_L, this, SLOT(scrollRight()));
 
   m_shortcuts[6] = new QShortcut(Qt::Key_G, this, SLOT(scrollTop()));
-  m_shortcuts[7] = new QShortcut(QKeySequence(Qt::Modifier::SHIFT + Qt::Key_G), this, SLOT(scrollBottom()));
+  m_shortcuts[7] = new QShortcut(QKeySequence(Qt::Modifier::SHIFT | Qt::Key_G), this, SLOT(scrollBottom()));
 
   m_shortcuts[8] = new QShortcut(Qt::Key_O, this, SLOT(openFileInput()));
   m_shortcuts[9] = new QShortcut(Qt::Key_Escape, this, SLOT(closeFileInput()));
