@@ -71,7 +71,6 @@ void load_args(int argc, char *argv[], QString *file, QString *index_file) {
 
 int main(int argc, char *argv[]) {
   QCoreApplication::setOrganizationName("qMarkdown");
-  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QApplication app(argc, argv);
 
   QString file;
