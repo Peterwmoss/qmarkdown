@@ -142,8 +142,16 @@ void MainWindow::openFile() {
       fileEnter(m_ui);
 }
 
-void MainWindow::nextAutocomplete() { m_ui->Input->next_suggestion(); }
-void MainWindow::prevAutocomplete() { m_ui->Input->prev_suggestion(); }
+void MainWindow::nextAutocomplete() { 
+  if (m_ui->Input->isVisible()) {
+    m_ui->Input->next_suggestion();
+  }
+}
+void MainWindow::prevAutocomplete() { 
+  if (m_ui->Input->isVisible()) {
+    m_ui->Input->prev_suggestion();
+  }
+}
 
 void MainWindow::setupShortcuts() {
   // Q to close
