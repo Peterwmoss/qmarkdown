@@ -54,10 +54,6 @@ See [installation](./docs/install.md) for further instructions.
 
 ![Dark](./public/dark_small.png)
 
-## Disclaimer
+## Support the project
 
-This software is provided as-is with all faults, security issues and alike that
-might come with it.
-
-By using this software product the user understands, and agrees to, that there is
-no warranty on this product.
+If you feel like it, you can help me out by donating to my bitcoin wallet: bc1qxz0ptg5zg8vjrylnfpve5gazjh5sztyh26flhl
