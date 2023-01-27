@@ -1,18 +1,17 @@
 #ifndef FILEINPUT_HEADER
 #define FILEINPUT_HEADER
 
-#include <qlineedit.h>
-#include <qwidget.h>
-#include <string>
 
-#define AUTO_COMPLETE_MAX 1
+#include <QLineEdit>
+
 
 class FileInput : public QLineEdit {
+    Q_OBJECT
 public:
-  void auto_complete();
-
-private:
-  std::string m_complete_list[AUTO_COMPLETE_MAX];
+    FileInput(QWidget *parent = nullptr);
+public slots:
+    void autoComplete();
 };
+
 
 #endif

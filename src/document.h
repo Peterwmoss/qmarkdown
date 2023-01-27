@@ -1,23 +1,25 @@
 #ifndef DOCUMENT_HEADER
 #define DOCUMENT_HEADER
 
+
 #include <QObject>
-#include <QString>
+
 
 class Document : public QObject {
-  Q_OBJECT
-  Q_PROPERTY(QString text MEMBER m_text NOTIFY textChanged FINAL)
+    Q_OBJECT
+    Q_PROPERTY(QString text MEMBER _text NOTIFY textChanged FINAL)
 public:
-  explicit Document(QObject *parent = nullptr) : QObject(parent) {}
+    explicit Document(QObject *parent = nullptr);
 
-  void setText(const QString &text);
-  QString getText();
+    void setText(const QString &text);
+    QString text() const;
 
 signals:
-  void textChanged(const QString &text);
+    void textChanged(const QString &text);
 
 private:
-  QString m_text;
+    QString _text;
 };
+
 
 #endif
