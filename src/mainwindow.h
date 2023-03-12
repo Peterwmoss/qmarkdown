@@ -2,68 +2,59 @@
 #define MAINWINDOW_HEADER
 
 #include "document.h"
+#include "fileinput.h"
 #include "webpage.h"
 
-#include <QFile>
+#include <QFileInfo>
+#include <QFileSystemWatcher>
 #include <QMainWindow>
 #include <QShortcut>
-#include <QString>
-#include <QTimer>
+#include <QStatusBar>
+#include <QWebChannel>
+#include <QWebEngineView>
 
-#define NUM_SHORTCUTS 12
 
-QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-
-} // namespace Ui
-QT_END_NAMESPACE
+const auto SHORTCUT_COUNT = 12u;
 
 class MainWindow : public QMainWindow {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  explicit MainWindow(QString *colorscheme, QString *file,
-                      QWidget *parent = nullptr);
-  ~MainWindow();
+    explicit MainWindow(
+        const QString &color_scheme,
+        const QString &file,
+        QWidget *parent = nullptr
+    );
+    ~MainWindow();
 
-  bool setFile(QString path);
-
-private slots:
-  void resetZoom();
-  void scrollUp();
-  void scrollDown();
-  void scrollLeft();
-  void scrollRight();
-  void scrollTop();
-  void scrollBottom();
-
-  void openFileInput();
-  void closeFileInput();
-
-  void openFile();
-  void autoComplete();
+    bool setFile(const QString &file_path);
 
 private:
-  // Shortcuts
-  QShortcut *m_shortcuts[NUM_SHORTCUTS];
-  void setupShortcuts();
+    // UI
+    FileInput _file_input;
+    QWebEngineView _web_view;
+    QStatusBar _status_bar;
+    // Backend
+    Document _content;
+    QString _current_text;
+    QWebChannel _channel;
+    WebPage _page;
+    QFileInfo _file_info;
+    QFileSystemWatcher _watcher;
+    // Shortcuts
+    QShortcut _shortcuts[SHORTCUT_COUNT];
 
-  // UI
-  Ui::MainWindow *m_ui;
+    void notify(const QString &message, int timeout = 10000);
+    bool loadFile(const QString &file_path);
+    bool reloadFile();
+    bool loadHtml(const QString &index_file);
+    bool loadImages(const QString &directory_path);
 
-  // Backend
-  WebPage *m_page;
-  Document m_content;
-  QString m_current_text;
-  QString m_current_path;
-  QWebChannel *m_channel;
-  QTimer *m_reload;
-  QFile *m_file;
-  void load_images();
-  void load_file();
-  void load_html(QString index_file);
-  void reload_file();
+private slots:
+    void fileEnter();
+    void openFileInput();
+    void closeFileInput();
+    void openFile();
 };
 
 #endif
