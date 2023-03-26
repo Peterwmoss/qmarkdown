@@ -1,23 +1,17 @@
 #include "mainwindow.h"
 #include "document.h"
 #include "webpage.h"
-#include "resgen.h"
 
-#include <QDir>
-#include <QResource>
-#include <QTextStream>
-#include <QWebEnginePage>
-
-
-MainWindow::MainWindow(const QString &index_file, const QString &file, QWidget *parent) :
-    QMainWindow(parent),
-    _file_input(this),
+MainWindow::MainWindow(const QString &index_file, const QString &file, QWidget *parent)
+    : QMainWindow(parent), 
+    _file_input(this), 
     _web_view(this),
-    _status_bar(this),
-    _channel(this),
+    _status_bar(this), 
+    _channel(this), 
     _page(this),
-    _file_info(file),
-    _watcher(this),
+    _file_info(file), 
+    _watcher(this), 
+    _index_file(index_file),
     _shortcuts{
         // Vim keys to move
         QShortcut(Qt::Key_K, this, &_page, &WebPage::scrollUp),
@@ -35,9 +29,7 @@ MainWindow::MainWindow(const QString &index_file, const QString &file, QWidget *
         QShortcut(Qt::Key_Tab, &_file_input, &_file_input, &FileInput::autoComplete),
         QShortcut(Qt::Key_Return, &_file_input, this, &MainWindow::openFile),
         // Q to close
-        QShortcut(Qt::Key_Q, this, this, &MainWindow::close)
-    }
-{
+        QShortcut(Qt::Key_Q, this, this, &MainWindow::close)} {
     if (objectName().isEmpty())
         setObjectName(QStringLiteral("MainWindow"));
     setWindowTitle(QStringLiteral("qMarkdown"));
@@ -57,8 +49,8 @@ MainWindow::MainWindow(const QString &index_file, const QString &file, QWidget *
     setStatusBar(&_status_bar);
     _status_bar.hide();
 
-    loadHtml(index_file);
-    loadFile(_file_info.filePath());
+    setFile(_file_info.filePath());
+    loadHtml();
 
     connect(&_watcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::reloadFile);
 }
@@ -74,17 +66,15 @@ bool MainWindow::loadFile(const QString &file_path) {
     if (file_info.isFile()) {
         QFile file(file_info.filePath());
         if (file.open(QIODevice::ReadOnly)) {
+            loadHtml();
             QTextStream stream(&file);
             auto content = stream.readAll();
             file.close();
-            if (loadImages(file_info.path())) {
-                _content.setText(content);
-                _watcher.removePath(_file_info.filePath()); // Stop monitoring current file
-                _file_info = file_info;
-                _watcher.addPath(_file_info.filePath()); // Start monitoring new file
-                QDir::setCurrent(_file_info.path());
-                return true;
-            }
+            _content.setText(content);
+            _watcher.removePath(_file_info.filePath()); // Stop monitoring current file
+            _file_info = file_info;
+            _watcher.addPath(_file_info.filePath()); // Start monitoring new file
+            return true;
         }
     }
     return false;
@@ -93,7 +83,6 @@ bool MainWindow::loadFile(const QString &file_path) {
 bool MainWindow::reloadFile() {
     if (_current_text != _content.text()) {
         _current_text = _content.text();
-        loadImages(_file_info.path());
     }
     if (_file_info.isFile()) {
         QFile file(_file_info.filePath());
@@ -108,26 +97,14 @@ bool MainWindow::reloadFile() {
     return false;
 }
 
-bool MainWindow::loadHtml(const QString &index_file) {
-    QFile file(index_file);
+bool MainWindow::loadHtml() {
+    QFile file(_index_file);
     if (!file.open(QIODevice::ReadOnly))
         return false;
     QTextStream stream(&file);
-    _web_view.setHtml(stream.readAll(), QUrl("qrc:/"));
+    auto fileContent = stream.readAll();
+    _web_view.setHtml(fileContent);
     file.close();
-    return true;
-}
-
-bool MainWindow::loadImages(const QString &directory_path) {
-    generateResources();
-
-    QString qpath = directory_path + QLatin1Char('/') + QRC_FILE;
-
-    if (QFileInfo::exists(qpath)) {
-        QResource::registerResource(qpath);
-        QFile::remove(QRC_FILE);
-        /*system(("rm -f " + QRC_FILE).c_str());*/
-    }
     return true;
 }
 
@@ -161,8 +138,4 @@ void MainWindow::openFile() {
         fileEnter();
 }
 
-MainWindow::~MainWindow() {
-    // Cleanup
-    QFile::remove(QRC_FILE);
-    /*system(("rm -f " + QRC_FILE).c_str());*/
-}
+MainWindow::~MainWindow() {}

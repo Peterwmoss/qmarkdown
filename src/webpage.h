@@ -1,13 +1,13 @@
 #ifndef PREVIEW_HEADER
 #define PREVIEW_HEADER
 
-
 #include <QObject>
 #include <QShortcut>
 #include <QWebEnginePage>
+#include <QWebEngineProfile>
 
-
-class WebPage : public QWebEnginePage {
+class WebPage : public QWebEnginePage
+{
     Q_OBJECT
 
 public:
@@ -16,8 +16,7 @@ public:
     bool acceptNavigationRequest(
         const QUrl &url,
         QWebEnginePage::NavigationType type,
-        bool isMainFrame
-    );
+        bool isMainFrame);
 public slots:
 
     void scrollUp();
@@ -32,6 +31,5 @@ public slots:
 private:
     void _scrollBy(int h, int v);
 };
-
 
 #endif

@@ -13,7 +13,6 @@
 #include <QWebChannel>
 #include <QWebEngineView>
 
-
 const auto SHORTCUT_COUNT = 12u;
 
 class MainWindow : public QMainWindow {
@@ -23,8 +22,7 @@ public:
     explicit MainWindow(
         const QString &color_scheme,
         const QString &file,
-        QWidget *parent = nullptr
-    );
+        QWidget *parent = nullptr);
     ~MainWindow();
 
     bool setFile(const QString &file_path);
@@ -41,14 +39,14 @@ private:
     WebPage _page;
     QFileInfo _file_info;
     QFileSystemWatcher _watcher;
+    QString _index_file;
     // Shortcuts
     QShortcut _shortcuts[SHORTCUT_COUNT];
 
     void notify(const QString &message, int timeout = 10000);
     bool loadFile(const QString &file_path);
     bool reloadFile();
-    bool loadHtml(const QString &index_file);
-    bool loadImages(const QString &directory_path);
+    bool loadHtml();
 
 private slots:
     void fileEnter();

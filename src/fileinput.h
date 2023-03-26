@@ -8,7 +8,7 @@
 class FileInput : public QLineEdit {
     Q_OBJECT
 public:
-    FileInput(QWidget *parent = nullptr);
+    explicit FileInput(QWidget *parent = nullptr);
 public slots:
     void autoComplete();
 };

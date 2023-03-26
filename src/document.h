@@ -14,6 +14,9 @@ public:
     void setText(const QString &text);
     QString text() const;
 
+public slots:
+    QString imageToBase64(const QString &imagePath);
+
 signals:
     void textChanged(const QString &text);
 
