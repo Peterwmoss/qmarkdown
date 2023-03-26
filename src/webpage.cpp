@@ -1,47 +1,32 @@
 #include "webpage.h"
 
 #include <QDesktopServices>
-#include <QString>
-#include <QWebEnginePage>
 
-bool WebPage::acceptNavigationRequest(const QUrl &url,
-                                      QWebEnginePage::NavigationType type,
-                                      bool isMainFrame) {
-  if (type == QWebEnginePage::NavigationTypeLinkClicked) {
+bool WebPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool) {
+    if (type != QWebEnginePage::NavigationTypeLinkClicked)
+        return true;
     QDesktopServices::openUrl(url);
     return false;
-  }
-  return true;
 }
 
-void WebPage::scrollDown() {
-  QString scrollDown("window.scrollBy(0, 50)");
-  runJavaScript(scrollDown);
-}
+void WebPage::scrollDown() { _scrollBy(0, 50); }
 
-void WebPage::scrollUp() {
-  QString scrollUp("window.scrollBy(0, -50)");
-  runJavaScript(scrollUp);
-}
+void WebPage::scrollUp() { _scrollBy(0, -50); }
 
-void WebPage::scrollLeft() {
-  QString scrollUp("window.scrollBy(-50, 0)");
-  runJavaScript(scrollUp);
-}
+void WebPage::scrollLeft() { _scrollBy(-50, 0); }
 
-void WebPage::scrollRight() {
-  QString scrollUp("window.scrollBy(50, 0)");
-  runJavaScript(scrollUp);
-}
+void WebPage::scrollRight() { _scrollBy(50, 0); }
 
 void WebPage::scrollTop() {
-  QString scrollUp("window.scrollTo(0,0)");
-  runJavaScript(scrollUp);
+    runJavaScript(QStringLiteral("window.scrollTo(0,0)"));
 }
 
 void WebPage::scrollBottom() {
-  QString scrollUp("window.scrollTo(0,document.body.scrollHeight)");
-  runJavaScript(scrollUp);
+    runJavaScript(QStringLiteral("window.scrollTo(0,document.body.scrollHeight)"));
 }
 
 void WebPage::resetZoom() { setZoomFactor(1.0); }
+
+void WebPage::_scrollBy(int h, int v) {
+    runJavaScript(QStringLiteral("window.scrollBy(%1,%2)").arg(h).arg(v));
+}

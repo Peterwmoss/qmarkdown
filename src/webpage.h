@@ -4,24 +4,32 @@
 #include <QObject>
 #include <QShortcut>
 #include <QWebEnginePage>
+#include <QWebEngineProfile>
 
-class WebPage : public QWebEnginePage {
-  Q_OBJECT
+class WebPage : public QWebEnginePage
+{
+    Q_OBJECT
 
 public:
-  WebPage(QObject *parent = nullptr) : QWebEnginePage(parent) {}
+    WebPage(QObject *parent = nullptr) : QWebEnginePage(parent) {}
 
-  bool acceptNavigationRequest(const QUrl &url,
-                               QWebEnginePage::NavigationType type,
-                               bool isMainFrame);
-  void scrollUp();
-  void scrollDown();
-  void scrollLeft();
-  void scrollRight();
-  void scrollTop();
-  void scrollBottom();
+    bool acceptNavigationRequest(
+        const QUrl &url,
+        QWebEnginePage::NavigationType type,
+        bool isMainFrame);
+public slots:
 
-  void resetZoom();
+    void scrollUp();
+    void scrollDown();
+    void scrollLeft();
+    void scrollRight();
+    void scrollTop();
+    void scrollBottom();
+
+    void resetZoom();
+
+private:
+    void _scrollBy(int h, int v);
 };
 
 #endif

@@ -1,190 +1,141 @@
 #include "mainwindow.h"
 #include "document.h"
-#include "helpers.h"
 #include "webpage.h"
-#include "resgen.h"
-#include "ui_mainwindow.h"
 
-#if __has_include(<filesystem>)
-#include <filesystem>
-#define FILESYSTEM filesystem
-#elif __has_include(<experimental/filesystem>)
-#include <experimental/filesystem>
-#define FILESYSTEM std::experimental::filesystem
-#endif
+MainWindow::MainWindow(const QString &index_file, const QString &file, QWidget *parent)
+    : QMainWindow(parent), 
+    _file_input(this), 
+    _web_view(this),
+    _status_bar(this), 
+    _channel(this), 
+    _page(this),
+    _file_info(file), 
+    _watcher(this), 
+    _index_file(index_file),
+    _shortcuts{
+        // Vim keys to move
+        QShortcut(Qt::Key_K, this, &_page, &WebPage::scrollUp),
+        QShortcut(Qt::Key_J, this, &_page, &WebPage::scrollDown),
+        QShortcut(Qt::Key_H, this, &_page, &WebPage::scrollLeft),
+        QShortcut(Qt::Key_L, this, &_page, &WebPage::scrollRight),
+        QShortcut(Qt::Key_G, this, &_page, &WebPage::scrollTop),
+        QShortcut(Qt::Modifier::SHIFT | Qt::Key_G, this, &_page, &WebPage::scrollBottom),
+        // 0 to reset zoom
+        QShortcut(Qt::Key_0, this, &_page, &WebPage::resetZoom),
 
-#include <QFile>
-#include <QResource>
-#include <QShortcut>
-#include <QString>
-#include <QTextStream>
-#include <QTimer>
-#include <QWebChannel>
-#include <QWebEnginePage>
+        QShortcut(Qt::Key_O, this, this, &MainWindow::openFileInput),
+        QShortcut(Qt::Key_Escape, this, this, &MainWindow::closeFileInput),
 
-#include <QDebug>
+        QShortcut(Qt::Key_Tab, &_file_input, &_file_input, &FileInput::autoComplete),
+        QShortcut(Qt::Key_Return, &_file_input, this, &MainWindow::openFile),
+        // Q to close
+        QShortcut(Qt::Key_Q, this, this, &MainWindow::close)} {
+    if (objectName().isEmpty())
+        setObjectName(QStringLiteral("MainWindow"));
+    setWindowTitle(QStringLiteral("qMarkdown"));
+    resize(800, 600);
 
-using namespace std;
+    _file_input.setObjectName(QStringLiteral("fileInput"));
+    _file_input.setPlaceholderText(QStringLiteral("File"));
+    setMenuWidget(&_file_input);
+    _file_input.hide();
 
-MainWindow::MainWindow(QString *index_file, QString *file, QWidget *parent)
-    : QMainWindow(parent), m_ui(new Ui::MainWindow) {
-  m_ui->setupUi(this);
+    _channel.registerObject(QStringLiteral("content"), &_content);
+    _page.setWebChannel(&_channel);
+    _web_view.setPage(&_page);
+    _web_view.setContextMenuPolicy(Qt::NoContextMenu);
+    setCentralWidget(&_web_view);
 
-  // Change working directory to enable image loading
-  m_current_path = get_path(*file);
-  FILESYSTEM::current_path(m_current_path.toStdString());
+    setStatusBar(&_status_bar);
+    _status_bar.hide();
 
-  m_file = new QFile(get_file(*file));
+    setFile(_file_info.filePath());
+    loadHtml();
 
-  m_channel = new QWebChannel(this);
-  m_channel->registerObject(QStringLiteral("content"), &m_content);
-
-  m_page = new WebPage(this);
-  m_page->setWebChannel(m_channel);
-
-  m_ui->WebView->setPage(m_page);
-  m_ui->WebView->setContextMenuPolicy(Qt::NoContextMenu);
-
-  load_html(*index_file);
-
-  load_images();
-  load_file();
-
-  // Reload file every 1 second
-  // TODO: should probably be a QFileSystemWatcher instead
-  m_reload = new QTimer(this);
-  connect(m_reload, &QTimer::timeout, this, &MainWindow::reload_file);
-  m_reload->start(1000);
-
-  setupShortcuts();
+    connect(&_watcher, &QFileSystemWatcher::fileChanged, this, &MainWindow::reloadFile);
 }
 
-void MainWindow::load_html(QString index_file) {
-  QFile *file = new QFile(index_file);
-  file->open(QIODevice::ReadOnly);
-  QTextStream stream(file);
-  QString file_text(stream.readAll());
-  m_ui->WebView->setHtml(file_text, QUrl("qrc:/"));
-  file->close();
+void MainWindow::notify(const QString &message, int timeout) {
+    _status_bar.show();
+    _status_bar.showMessage(message, timeout);
 }
 
-void MainWindow::reload_file() {
-  if (m_current_text != m_content.getText()) {
-    m_current_text = m_content.getText();
-    load_images();
-  }
-  load_file();
+bool MainWindow::loadFile(const QString &file_path) {
+    QFileInfo file_info(file_path);
+    file_info.makeAbsolute();
+    if (file_info.isFile()) {
+        QFile file(file_info.filePath());
+        if (file.open(QIODevice::ReadOnly)) {
+            loadHtml();
+            QTextStream stream(&file);
+            auto content = stream.readAll();
+            file.close();
+            _content.setText(content);
+            _watcher.removePath(_file_info.filePath()); // Stop monitoring current file
+            _file_info = file_info;
+            _watcher.addPath(_file_info.filePath()); // Start monitoring new file
+            return true;
+        }
+    }
+    return false;
 }
 
-void MainWindow::load_file() {
-  m_file->open(QIODevice::ReadOnly);
-  QTextStream stream(m_file);
-  QString file_text(stream.readAll());
-  m_content.setText(file_text);
-  m_file->close();
+bool MainWindow::reloadFile() {
+    if (_current_text != _content.text()) {
+        _current_text = _content.text();
+    }
+    if (_file_info.isFile()) {
+        QFile file(_file_info.filePath());
+        if (file.open(QIODevice::ReadOnly)) {
+            QTextStream stream(&file);
+            _content.setText(stream.readAll());
+            file.close();
+            return true;
+        }
+    }
+    notify(QStringLiteral("File is deleted or not available: '%1'").arg(_file_info.filePath()));
+    return false;
 }
 
-void MainWindow::load_images() {
-  res_gen();
-
-  QString qpath = m_current_path + QRC_FILE.c_str();
-
-  if (file_exists(&qpath)) {
-    QResource::registerResource(qpath);
-    system(("rm -f " + QRC_FILE).c_str());
-  }
-}
-
-bool MainWindow::setFile(QString path) {
-  if (file_exists(&path)) {
-    m_current_path = get_path(path);
-    FILESYSTEM::current_path(m_current_path.toStdString());
-    m_file->setFileName(get_file(path));
-    load_file();
-    load_images();
+bool MainWindow::loadHtml() {
+    QFile file(_index_file);
+    if (!file.open(QIODevice::ReadOnly))
+        return false;
+    QTextStream stream(&file);
+    auto fileContent = stream.readAll();
+    _web_view.setHtml(fileContent);
+    file.close();
     return true;
-  }
-
-  m_ui->StatusBar->show();
-  m_ui->StatusBar->showMessage("File not found");
-  return false;
 }
 
-void fileEnter(Ui::MainWindow *ui) {
-  ui->WebView->setFocus();
-  ui->Input->hide();
-  ui->Input->setText("");
+bool MainWindow::setFile(const QString &file_path) {
+    if (loadFile(file_path))
+        return true;
+    notify(QStringLiteral("File not found: '%1'").arg(file_path));
+    return false;
 }
 
-// Pre-lambda QT5 support
-void MainWindow::resetZoom() { this->m_page->resetZoom(); }
-
-void MainWindow::scrollDown() { this->m_page->scrollDown(); }
-void MainWindow::scrollUp() { this->m_page->scrollUp(); }
-void MainWindow::scrollLeft() { this->m_page->scrollLeft(); }
-void MainWindow::scrollRight() { this->m_page->scrollRight(); }
-void MainWindow::scrollTop() { this->m_page->scrollTop(); }
-void MainWindow::scrollBottom() { this->m_page->scrollBottom(); }
+void MainWindow::fileEnter() {
+    _web_view.setFocus();
+    _file_input.hide();
+    _file_input.clear();
+}
 
 void MainWindow::openFileInput() {
-    m_ui->Input->show();
-    m_ui->Input->setFocus();
+    _file_input.show();
+    _file_input.setFocus();
 }
+
 void MainWindow::closeFileInput() {
-    if (m_ui->StatusBar->isVisible())
-      m_ui->StatusBar->hide();
-    else if (m_ui->Input->isVisible())
-      fileEnter(m_ui);
+    if (_status_bar.isVisible())
+        _status_bar.hide();
+    else if (_file_input.isVisible())
+        fileEnter();
 }
 
 void MainWindow::openFile() {
-    if (setFile(m_ui->Input->text())) 
-      fileEnter(m_ui);
+    if (setFile(_file_input.text()))
+        fileEnter();
 }
 
-void MainWindow::autoComplete() { m_ui->Input->auto_complete(); }
-
-void MainWindow::setupShortcuts() {
-  // Q to close
-  m_shortcuts[0] = new QShortcut(Qt::Key_Q, this, SLOT(close()));
-
-  // 0 to reset zoom
-  m_shortcuts[1] = new QShortcut(Qt::Key_0, this, SLOT(resetZoom()));
-
-  // Vim keys to move
-  m_shortcuts[2] = new QShortcut(Qt::Key_J, this, SLOT(scrollDown()));
-  m_shortcuts[3] = new QShortcut(Qt::Key_K, this, SLOT(scrollUp()));
-  m_shortcuts[4] = new QShortcut(Qt::Key_H, this, SLOT(scrollLeft()));
-  m_shortcuts[5] = new QShortcut(Qt::Key_L, this, SLOT(scrollRight()));
-
-  m_shortcuts[6] = new QShortcut(Qt::Key_G, this, SLOT(scrollTop()));
-  m_shortcuts[7] = new QShortcut(QKeySequence(Qt::Modifier::SHIFT | Qt::Key_G), this, SLOT(scrollBottom()));
-
-  m_shortcuts[8] = new QShortcut(Qt::Key_O, this, SLOT(openFileInput()));
-  m_shortcuts[9] = new QShortcut(Qt::Key_Escape, this, SLOT(closeFileInput()));
-
-  m_shortcuts[10] = new QShortcut(Qt::Key_Return, this, SLOT(openFile()));
-  m_shortcuts[11] = new QShortcut(Qt::Key_Tab, this, SLOT(autoComplete()));
-}
-
-MainWindow::~MainWindow() {
-  // Shortcuts
-  int i = 0;
-  while (i < NUM_SHORTCUTS)
-    delete m_shortcuts[i++];
-
-  // UI
-  delete m_ui->Input;
-  delete m_ui->WebView;
-  delete m_ui->StatusBar;
-  delete m_ui;
-
-  // Backend
-  delete m_page;
-  delete m_channel;
-  delete m_file;
-  delete m_reload;
-
-  // Cleanup
-  system(("rm -f " + QRC_FILE).c_str());
-}
+MainWindow::~MainWindow() {}

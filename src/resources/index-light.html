@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta charset="utf-8" />
-    <head>
-        <link rel="stylesheet" type="text/css" href="light.css" />
-        <link rel="stylesheet" type="text/css" href="markdown.css" />
-        <script src="3rdparty/marked.js"></script>
-        <script src="qtwebchannel/qwebchannel.js"></script>
-        <link href="3rdparty/prism.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div id="placeholder">LOADING...</div>
-        <script>
-            const placeholder = document.getElementById("placeholder");
+<meta charset="utf-8" />
 
-            const updateText = (text) => {
-                placeholder.innerHTML = marked(text);
-                const script = document.createElement("script");
-                script.src = "3rdparty/prism.js";
-                document.body.appendChild(script);
-                document.body.removeChild(script);
-            };
+<head>
+    <link rel="stylesheet" type="text/css" href="qrc:/light.css" />
+    <link rel="stylesheet" type="text/css" href="qrc:/markdown.css" />
+    <script src="qrc:/3rdparty/marked.js"></script>
+    <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
+    <link href="qrc:/3rdparty/prism.css" rel="stylesheet" />
+</head>
 
-            new QWebChannel(qt.webChannelTransport, (channel) => {
-                const content = channel.objects.content;
-                updateText(content.text);
-                content.textChanged.connect(updateText);
-            });
-        </script>
-    </body>
+<body>
+    <div id="placeholder"></div>
+    <script>
+        const placeholder = document.getElementById("placeholder");
+        const test = document.getElementById("test");
+
+        const updateText = async (text, obj) => {
+            const converted = marked(text);
+            placeholder.innerHTML = converted;
+
+            const images = document.getElementsByTagName("img");
+            for (const image of images) {
+                const src = image.getAttribute("src");
+                if (src.startsWith(".") || src.startsWith("/")) {
+                    image.src = await obj.imageToBase64(src);
+                }
+            }
+
+            const script = document.createElement("script");
+            script.src = "qrc:/3rdparty/prism.js";
+            document.body.appendChild(script);
+            document.body.removeChild(script);
+        };
+
+        new QWebChannel(qt.webChannelTransport, (channel) => {
+            const content = channel.objects.content;
+            updateText(content.text, content);
+            content.textChanged.connect(updateText);
+        });
+    </script>
+</body>
+
 </html>
