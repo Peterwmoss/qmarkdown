@@ -23,7 +23,7 @@
             const images = document.getElementsByTagName("img");
             for (const image of images) {
                 const src = image.getAttribute("src");
-                if (src.startsWith(".") || src.startsWith("/")) {
+                if (!src.startsWith("http://") && !src.startsWith("https://")) {
                     image.src = await obj.imageToBase64(src);
                 }
             }

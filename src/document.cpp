@@ -21,11 +21,8 @@ QString Document::text() const {
 }
 
 QString Document::imageToBase64(const QString &imagePath) {
-    QString absolutePath = imagePath;
-    if (imagePath.startsWith(".") || imagePath.startsWith("/")) {
-        QFileInfo currentDir(".");
-        absolutePath = currentDir.absolutePath() + "/" + imagePath;
-    }
+    QFileInfo f(imagePath);
+    QString absolutePath = f.absoluteFilePath();
 
     QFile imageFile(absolutePath);
     QFileInfo fileInfo(absolutePath);
